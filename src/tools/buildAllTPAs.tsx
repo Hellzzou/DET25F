@@ -1,61 +1,117 @@
 /* eslint-disable indent */
-import {
-	INITIAL_DENAE_DATE_TPA,
-	INITIAL_MECBO_DATE_TPA,
-	INITIAL_PILOT_DATE_TPA,
-	INITIAL_RADIO_DATE_TPA,
-} from "../Datas/dateTPA"
-import {
-	allTPAs,
-	crewMember,
-	crewTPA,
-	denaeDateTPA,
-	denaeTPA,
-	flight,
-	mecboDateTPA,
-	mecboTPA,
-	pilotDateTPA,
-	pilotTPA,
-	radioDateTPA,
-	radioTPA,
-} from "../types/Objects"
+import { INITIAL_PILOT_DATE_TPA, old } from "../Datas/dateTPA";
+import { crewMember, flight, pilotDateTPA } from "../types/Objects";
 
-export const buildInitialPilotTPAs = (members: Array<crewMember>): Array<{ name: string; TPA: pilotDateTPA }> => {
-	const pilotTPAs: Array<{ name: string; TPA: pilotDateTPA }> = []
-	members.forEach((member) => {
-		if (member.onBoardFunction === "CDA" || member.onBoardFunction === "pilote") {
-			pilotTPAs.push({
-				name: member.trigram,
-				TPA: INITIAL_PILOT_DATE_TPA,
-			})
-		}
-	})
-	return pilotTPAs
-}
-export const updatePilotTPA = (
-	flightTPAs: pilotTPA,
-	flightCrewTPAs: crewTPA,
-	flightDate: Date,
-	tpa: { name: string; TPA: pilotDateTPA }
-): { name: string; TPA: pilotDateTPA } => {
-	// if (flightCrewTPAs.TMAHD.value) {
-	// 	tpa.TPA.TMAHD.unshift(flightDate)
-	// 	tpa.TPA.TMAHD.pop()
-	// }
-	return {
-		name: tpa.name,
-		TPA: {
-			COOPBAT: flightCrewTPAs.COOPBAT.value ? flightDate : tpa.TPA.COOPBAT,
-			SAR: flightCrewTPAs.SAR.value ? flightDate : tpa.TPA.SAR,
-			DITCHING: flightCrewTPAs.DITCHING.value ? flightDate : tpa.TPA.DITCHING,
-			SIMAR: flightCrewTPAs.SIMAR.value ? flightDate : tpa.TPA.SIMAR,
-			ATTPC: flightTPAs.TPA.ATTPC.value ? flightDate : tpa.TPA.ATTPC,
-			IFR: flightTPAs.TPA.IFR.value ? flightDate : tpa.TPA.IFR,
-			LCS: flightTPAs.TPA.LCS.value ? flightDate : tpa.TPA.LCS,
-			TMAHD: tpa.TPA.TMAHD,
-		},
-	}
-}
+export const buildAllTPAs = (
+  members: Array<crewMember>,
+  allFlights: Array<flight>
+): Array<{ name: string; TPA: pilotDateTPA }> => {
+  const membersActions = allFlights
+    /**
+     * here we want a couple flight / member to iterate, so
+     * 1- we filter  flightMember that are either CDA or pilote
+     * 2- we return a couple for each flight and member
+     *
+     * Note - flatMap is like map but will return a 1 dimension array even if you return an array in the map
+     * it's like .map().flat()
+     */
+    .flatMap((flight) =>
+      // for each flight filter members
+      [flight.chief, flight.pilot, ...flight.crewMembers]
+        // we find the members in the original members DB items
+        .map((flightMember) => members.find((m) => m.trigram === flightMember)!)
+        // we only keep CDA and pilot
+        .filter((flightMember) =>
+          ["CDA", "pilote"].includes(flightMember?.onBoardFunction ?? "")
+        )
+        // return a couple flight / member for each flight
+        .map((flightMember) => {
+          return {
+            flight,
+            flightMember,
+          };
+        })
+    )
+    /**
+     * From the couple flight / member we will check for each flight the member's dates actions
+     */
+    .flatMap(({ flight, flightMember }) => {
+      const { pilotTPA, crewTPA, departureDate } = flight;
+      const flightDate = new Date(departureDate);
+
+      // from the pilotTPA and crewTPA we check all the action from the member
+      return (
+        /**
+         * note Object.entries transform {a:1, b:2} to [[a,1], [b,1]], very convenient to iterate over an object
+         * so this will be [[ATTPC , { name: string; value: boolean } ] , [TMAHD, { name: string; value: boolean }] , ....etc]
+         */
+        [
+          ...Object.entries(
+            pilotTPA.find((tpa) => tpa.name === flightMember.trigram)!.TPA
+          ),
+          ...Object.entries(crewTPA),
+        ]
+          // filter only ones with values
+          .filter(([, val]) => !!val.value)
+          // map one action with flight date and flightmember
+          .map(([type]) => ({
+            type,
+            flightDate,
+            flightMember,
+          }))
+      );
+    })
+    /**
+     * at this stage with have a big array of each action for each member for each flight
+     *  so we want to group them by member, so we use reduce to have something like
+     *
+     *  {
+     *   trigram1 : { TMAHD : [date1, date2, ...], IFR : [date1, date2, ...] },
+     *   trigram2 : { DITCHING : [date1, date2, ...], SAR : [date1, date2, ...] }
+     *  }
+     */
+    .reduce<Record<string, Record<string, Date[]>>>(
+      (acc, { type, flightDate, flightMember: { trigram } }) => {
+        if (!acc[trigram]) acc[trigram] = {};
+        if (!acc[trigram][type]) acc[trigram][type] = [];
+        acc[trigram][type].push(flightDate);
+        return acc;
+      },
+      {}
+    );
+
+  /**
+   * Final step we want to keep only the latest date for each action except TMAHD where we want the two latest
+   */
+  return Object.entries(membersActions).map(([trigram, actions]) => {
+    /**
+     * we sort the date array and we keep the first date
+     * [[DITCHING, date], [TMAHD, [date1, date2]], [LCS, date]]
+     * /!\ missing actions will not be in the array
+     */
+    const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(
+      ([type, dates]) => {
+        // sort dates descending
+        const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime());
+        if (type === "TMAHD") {
+          // if TMAHD we keep the 2 first one, if the array is smaller than 2 we fill it with 1970/1/1 until 2
+          return [
+            type,
+            [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2),
+          ];
+        }
+        return [type, sortedDates[0]];
+      }
+    );
+
+    return {
+      name: trigram,
+      // merge default item INITIAL_PILOT_DATE_TPA with action to populate missing actions
+      TPA: { ...INITIAL_PILOT_DATE_TPA, ...Object.fromEntries(actionLatest) },
+    };
+  });
+};
+
 // export const updateMecboTPA = (
 // 	mecboDateTPA: { name: string; TPA: mecboDateTPA },
 // 	mecbo: string,
@@ -165,26 +221,3 @@ export const updatePilotTPA = (
 // 	}
 // 	return denaeDateTPA
 // }
-export const buildAllTPAs = (
-	members: Array<crewMember>,
-	allFlights: Array<flight>
-): Array<{ name: string; TPA: pilotDateTPA }> => {
-	let pilotTPA: Array<{ name: string; TPA: pilotDateTPA }> = buildInitialPilotTPAs(members)
-	console.log(pilotTPA)
-	allFlights.forEach((flight) => {
-		const flightDate = new Date(flight.departureDate)
-		const allCrewMembers = [flight.chief, flight.pilot, ...flight.crewMembers]
-		allCrewMembers.forEach((crewMember) => {
-			const speciality = members[members.findIndex((member) => member.trigram === crewMember)].onBoardFunction
-			if (speciality === "CDA" || speciality === "pilote") {
-				pilotTPA = pilotTPA.map((tpa) => {
-					if (tpa.name === crewMember) {
-						const TPAIndex = flight.pilotTPA.findIndex((element) => element.name === crewMember)
-						return updatePilotTPA(flight.pilotTPA[TPAIndex], flight.crewTPA, flightDate, tpa)
-					} else return tpa
-				})
-			}
-		})
-	})
-	return pilotTPA
-}
