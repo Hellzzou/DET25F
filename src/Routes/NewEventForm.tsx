@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { useHistory } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
+import useAsyncEffect from "use-async-effect"
 import { Legend } from "../BasicComponents/Legend"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
@@ -9,10 +10,12 @@ import { Navbar } from "../Sections/Navbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { saveNewEvent } from "../tools/saveToDatabase"
+import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
 
 export const NewEventForm = (): JSX.Element => {
 	const history = useHistory()
+	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
@@ -24,7 +27,13 @@ export const NewEventForm = (): JSX.Element => {
 		const newEvent = await saveNewEvent(hooks)
 		if (newEvent === "success") history.push("/activities")
 	}
-	return (
+	useAsyncEffect(async () => {
+		const token = await tokenCheck()
+		setToken(token)
+	})
+	return !token ? (
+		<Redirect to='/' />
+	) : (
 		<>
 			<Header />
 			<Navbar />

@@ -26,7 +26,7 @@ export const getBetweenColSpan = (event: flight | newEvent, events: Array<flight
 	return returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]) - 6
 }
 export const getColSpan = (event: flight | newEvent): number => {
-	return new Date(event.arrivalDate).getHours() - new Date(event.departureDate).getHours()
+	return new Date(event.arrivalDate).getUTCHours() - new Date(event.departureDate).getUTCHours()
 }
 export const getSunsets = (nights: Nights, monday: number, date: number, type: string): string => {
 	const thisDate = new Date(monday + date * inDays)

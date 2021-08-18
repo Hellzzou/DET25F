@@ -10,5 +10,5 @@ export async function checkUser(login: string, password: string): Promise<any> {
 }
 export async function tokenCheck(): Promise<boolean> {
 	const user = await getFetchRequest(DB_URL + "user/getOne")
-	return user.error === ""
+	return typeof user.error === "undefined"
 }

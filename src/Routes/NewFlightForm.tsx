@@ -8,7 +8,7 @@ import { CrewFieldset } from "../Sections/CrewFieldset"
 import { MissionFieldset } from "../Sections/MissionFieldset"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
-import { useHistory } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/saveToDatabase"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
@@ -19,9 +19,11 @@ import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { DB_URL } from "../Datas/datas"
 import { useEffect } from "react"
 import { manageAddableList, manageCrewMembers, manageNCAreas } from "../tools/form"
+import { tokenCheck } from "../tools/user"
 
 export const NewFlightForm = (): JSX.Element => {
 	const history = useHistory()
+	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
@@ -82,15 +84,19 @@ export const NewFlightForm = (): JSX.Element => {
 		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
 		if (res === "success") history.push("/activities")
 	}
-	useAsyncEffect(() => {
-		;(async () => {
+	useAsyncEffect(async () => {
+		const token = await tokenCheck()
+		setToken(token)
+		if (token) {
 			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
 			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
-			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
+			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", {
+				function: "pilote",
+			})
 			setAddableCrewMembers(getTrigrams(crewMembers))
 			setCDAList(getTrigrams(CDA))
 			setPilotList(getTrigrams(pilots))
-		})()
+		}
 	}, [])
 	useEffect(() => {
 		setAddableCrewMembers(manageAddableList(addableCrewMembers, CDAlist, chief.value))
@@ -103,7 +109,9 @@ export const NewFlightForm = (): JSX.Element => {
 	useEffect(() => {
 		manageNCAreas(area.value, setNCArea, NCArea.value)
 	}, [area.value])
-	return (
+	return !token ? (
+		<Redirect to='/' />
+	) : (
 		<>
 			<Header />
 			<Navbar />

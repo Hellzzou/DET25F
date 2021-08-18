@@ -1,5 +1,6 @@
 export const old = new Date(1970, 1, 1)
 export const second = new Date(1985, 5, 10)
+
 export const INITIAL_PILOT_DATE_TPA = {
 	TMAHD: [old, old],
 	COOPBAT: old,
@@ -10,6 +11,7 @@ export const INITIAL_PILOT_DATE_TPA = {
 	IFR: old,
 	LCS: old,
 }
+
 export const INITIAL_MECBO_DATE_TPA = {
 	TMAHD: [old, old],
 	COOPBAT: old,

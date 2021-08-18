@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { RouteComponentProps, useHistory } from "react-router-dom"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
 import { DB_URL } from "../Datas/datas"
@@ -27,6 +27,7 @@ import {
 } from "../tools/form"
 import { buildDebriefedFlight, buildNewFlight } from "../tools/saveToDatabase"
 import { getTrigrams, removeAnEntry, returnZeroOrValue } from "../tools/tools"
+import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import { controlArray, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "../types/Objects"
 
@@ -34,6 +35,7 @@ export const DebriefFlightForm = ({
 	match,
 }: RouteComponentProps<{ id: string; jAero: string; nAero: string }>): JSX.Element => {
 	const history = useHistory()
+	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
@@ -210,16 +212,20 @@ export const DebriefFlightForm = ({
 		}
 	}
 	useAsyncEffect(async () => {
-		const flight = await postFetchRequest(DB_URL + "flights/getOne", { id: match.params.id })
-		fullfillFlightForm(setters, flight[0])
-		const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
-		const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
-		const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
-		setCDAList(getTrigrams(CDA))
-		setPilotList(getTrigrams(pilots))
-		setAddableCrewMembers(
-			removeCrewMembers(getTrigrams(crewMembers), flight[0].crewMembers, flight[0].chief, flight[0].pilot)
-		)
+		const token = await tokenCheck()
+		setToken(token)
+		if (token) {
+			const flight = await postFetchRequest(DB_URL + "flights/getOne", { id: match.params.id })
+			fullfillFlightForm(setters, flight[0])
+			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
+			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
+			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
+			setCDAList(getTrigrams(CDA))
+			setPilotList(getTrigrams(pilots))
+			setAddableCrewMembers(
+				removeCrewMembers(getTrigrams(crewMembers), flight[0].crewMembers, flight[0].chief, flight[0].pilot)
+			)
+		}
 	}, [])
 	useEffect(() => {
 		setAddableCrewMembers(manageAddableList(addableCrewMembers, CDAlist, chief.value))
@@ -271,7 +277,9 @@ export const DebriefFlightForm = ({
 			})
 		)
 	}, [departureTime.value, arrivalTime.value, done.value])
-	return (
+	return !token ? (
+		<Redirect to='/' />
+	) : (
 		<>
 			<Header />
 			<Navbar />
