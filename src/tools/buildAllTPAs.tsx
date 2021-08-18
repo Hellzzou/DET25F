@@ -2,13 +2,12 @@
 import { INITIAL_PILOT_DATE_TPA, old } from "../Datas/dateTPA"
 import { crewMember, flight, pilotDateTPA } from "../types/Objects"
 
+const ACCEPTED_ROLES = ["CDA", "pilote"]
+
 export const buildAllTPAs = (
 	members: Array<crewMember>,
 	allFlights: Array<flight>
 ): Array<{ name: string; TPA: pilotDateTPA }> => {
-	const allPilots = members
-		.filter((member) => ["CDA", "pilote"].includes(member?.onBoardFunction ?? ""))
-		.map((pilot) => pilot.trigram)
 	const membersActions = allFlights
 		/**
 		 * here we want a couple flight / member to iterate, so
@@ -25,7 +24,7 @@ export const buildAllTPAs = (
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				.map((flightMember) => members.find((m) => m.trigram === flightMember)!)
 				// we only keep CDA and pilot
-				.filter((flightMember) => ["CDA", "pilote"].includes(flightMember?.onBoardFunction ?? ""))
+				.filter((flightMember) => ACCEPTED_ROLES.includes(flightMember?.onBoardFunction ?? ""))
 				// return a couple flight / member for each flight
 				.map((flightMember) => {
 					return {
@@ -79,7 +78,7 @@ export const buildAllTPAs = (
 		}, {})
 
 	/**
-	 * Final step we want to keep only the latest date for each action except TMAHD where we want the two latest
+	 * Final step we want to keep only the latest date	 for each action except TMAHD where we want the two latest
 	 */
 	const pilotsTPAs = Object.entries(membersActions).map(([trigram, actions]) => {
 		/**
@@ -103,12 +102,17 @@ export const buildAllTPAs = (
 			TPA: { ...INITIAL_PILOT_DATE_TPA, ...Object.fromEntries(actionLatest) },
 		}
 	})
-	const allPilotsTPAs = allPilots.map((pilot) => {
-		const index = pilotsTPAs.findIndex((pilotTPA) => pilotTPA.name === pilot)
-		if (index === -1) return { name: pilot, TPA: INITIAL_PILOT_DATE_TPA }
-		else return pilotsTPAs[index]
-	})
-	return allPilotsTPAs
+
+	const pilotsTPAsNames = pilotsTPAs.map(({ name }) => name)
+
+	const missingMembers = members
+		.filter((member) => {
+			const { onBoardFunction = "" } = member
+			return !pilotsTPAsNames.includes(onBoardFunction) && ACCEPTED_ROLES.includes(onBoardFunction)
+		})
+		.map((m) => ({ name: m.trigram, TPA: INITIAL_PILOT_DATE_TPA }))
+
+	return [...pilotsTPAs, ...missingMembers]
 }
 
 // export const updateMecboTPA = (
