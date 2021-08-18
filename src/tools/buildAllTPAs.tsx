@@ -102,7 +102,6 @@ export const buildAllTPAs = (
 			TPA: { ...INITIAL_PILOT_DATE_TPA, ...Object.fromEntries(actionLatest) },
 		}
 	})
-
 	const pilotsTPAsNames = pilotsTPAs.map(({ name }) => name)
 
 	const missingMembers = members
