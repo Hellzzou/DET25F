@@ -78,7 +78,7 @@ export const buildAllTPAs = (
 		}, {})
 
 	/**
-	 * Final step we want to keep only the latest date	 for each action except TMAHD where we want the two latest
+	 * Final step we want to keep only the latest date for each action except TMAHD where we want the two latest
 	 */
 	const pilotsTPAs = Object.entries(membersActions).map(([trigram, actions]) => {
 		/**
