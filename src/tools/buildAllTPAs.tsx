@@ -26,41 +26,30 @@ export const buildAllTPAs = (
 				// we only keep CDA and pilot
 				.filter((flightMember) => ACCEPTED_ROLES.includes(flightMember?.onBoardFunction ?? ""))
 				// return a couple flight / member for each flight
-				.map((flightMember) => {
-					return {
-						flight,
-						flightMember,
-					}
+				.flatMap((flightMember) => {
+					const { pilotTPA, crewTPA, departureDate } = flight
+					const flightDate = new Date(departureDate)
+					return (
+						/**
+						 * note Object.entries transform {a:1, b:2} to [[a,1], [b,1]], very convenient to iterate over an object
+						 * so this will be [[ATTPC , { name: string; value: boolean } ] , [TMAHD, { name: string; value: boolean }] , ....etc]
+						 */
+						[
+							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+							...Object.entries(pilotTPA.find((tpa) => tpa.name === flightMember.trigram)!.TPA),
+							...Object.entries(crewTPA),
+						]
+							// filter only ones with values
+							.filter(([, val]) => !!val.value)
+							// map one action with flight date and flightmember
+							.map(([type]) => ({
+								type,
+								flightDate,
+								flightMember,
+							}))
+					)
 				})
 		)
-		/**
-		 * From the couple flight / member we will check for each flight the member's dates actions
-		 */
-		.flatMap(({ flight, flightMember }) => {
-			const { pilotTPA, crewTPA, departureDate } = flight
-			const flightDate = new Date(departureDate)
-
-			// from the pilotTPA and crewTPA we check all the action from the member
-			return (
-				/**
-				 * note Object.entries transform {a:1, b:2} to [[a,1], [b,1]], very convenient to iterate over an object
-				 * so this will be [[ATTPC , { name: string; value: boolean } ] , [TMAHD, { name: string; value: boolean }] , ....etc]
-				 */
-				[
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					...Object.entries(pilotTPA.find((tpa) => tpa.name === flightMember.trigram)!.TPA),
-					...Object.entries(crewTPA),
-				]
-					// filter only ones with values
-					.filter(([, val]) => !!val.value)
-					// map one action with flight date and flightmember
-					.map(([type]) => ({
-						type,
-						flightDate,
-						flightMember,
-					}))
-			)
-		})
 		/**
 		 * at this stage with have a big array of each action for each member for each flight
 		 *  so we want to group them by member, so we use reduce to have something like
