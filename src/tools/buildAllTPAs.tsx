@@ -38,10 +38,11 @@ export const updatePilotTPA = (
 	flightDate: Date,
 	tpa: { name: string; TPA: pilotDateTPA }
 ): { name: string; TPA: pilotDateTPA } => {
-	// if (flightCrewTPAs.TMAHD.value) {
-	// 	tpa.TPA.TMAHD.unshift(flightDate)
-	// 	tpa.TPA.TMAHD.pop()
-	// }
+	const newArray = tpa.TPA.TMAHD
+	if (flightCrewTPAs.TMAHD.value) {
+		newArray.unshift(flightDate)
+		newArray.pop()
+	}
 	return {
 		name: tpa.name,
 		TPA: {
@@ -52,7 +53,7 @@ export const updatePilotTPA = (
 			ATTPC: flightTPAs.TPA.ATTPC.value ? flightDate : tpa.TPA.ATTPC,
 			IFR: flightTPAs.TPA.IFR.value ? flightDate : tpa.TPA.IFR,
 			LCS: flightTPAs.TPA.LCS.value ? flightDate : tpa.TPA.LCS,
-			TMAHD: tpa.TPA.TMAHD,
+			TMAHD: flightCrewTPAs.TMAHD.value ? newArray : tpa.TPA.TMAHD,
 		},
 	}
 }
