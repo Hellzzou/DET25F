@@ -6,6 +6,9 @@ export const buildAllTPAs = (
 	members: Array<crewMember>,
 	allFlights: Array<flight>
 ): Array<{ name: string; TPA: pilotDateTPA }> => {
+	const allPilots = members
+		.filter((member) => ["CDA", "pilote"].includes(member?.onBoardFunction ?? ""))
+		.map((pilot) => pilot.trigram)
 	const membersActions = allFlights
 		/**
 		 * here we want a couple flight / member to iterate, so
@@ -78,7 +81,7 @@ export const buildAllTPAs = (
 	/**
 	 * Final step we want to keep only the latest date for each action except TMAHD where we want the two latest
 	 */
-	return Object.entries(membersActions).map(([trigram, actions]) => {
+	const pilotsTPAs = Object.entries(membersActions).map(([trigram, actions]) => {
 		/**
 		 * we sort the date array and we keep the first date
 		 * [[DITCHING, date], [TMAHD, [date1, date2]], [LCS, date]]
@@ -100,6 +103,12 @@ export const buildAllTPAs = (
 			TPA: { ...INITIAL_PILOT_DATE_TPA, ...Object.fromEntries(actionLatest) },
 		}
 	})
+	const allPilotsTPAs = allPilots.map((pilot) => {
+		const index = pilotsTPAs.findIndex((pilotTPA) => pilotTPA.name === pilot)
+		if (index === -1) return { name: pilot, TPA: INITIAL_PILOT_DATE_TPA }
+		else return pilotsTPAs[index]
+	})
+	return allPilotsTPAs
 }
 
 // export const updateMecboTPA = (
