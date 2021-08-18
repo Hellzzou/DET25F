@@ -107,8 +107,8 @@ export const buildAllTPAs = (
 
 	const missingMembers = members
 		.filter((member) => {
-			const { onBoardFunction = "" } = member
-			return !pilotsTPAsNames.includes(onBoardFunction) && ACCEPTED_ROLES.includes(onBoardFunction)
+			const { onBoardFunction = "", trigram } = member
+			return !pilotsTPAsNames.includes(trigram) && ACCEPTED_ROLES.includes(onBoardFunction)
 		})
 		.map((m) => ({ name: m.trigram, TPA: INITIAL_PILOT_DATE_TPA }))
 
