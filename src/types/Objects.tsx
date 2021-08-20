@@ -130,7 +130,7 @@ export type mecboTPA = {
 }
 export type radioTPA = {
 	name: string
-	TPA: Array<{ name: string; value: boolean }>
+	TPA: { IMINT: { name: string; value: boolean } }
 }
 export type denaeTPA = {
 	name: string

@@ -54,3 +54,10 @@ export const INITIAL_PILOT_DATE_EQA = {
 	fourMonthsNight: 0,
 	lastMonth: 0,
 }
+export const INITIAL_DATE_TPAS: Record<string, Record<string, Date | Date[]>> = {
+	pilote: INITIAL_PILOT_DATE_TPA,
+	CDA: INITIAL_PILOT_DATE_TPA,
+	MECBO: INITIAL_MECBO_DATE_TPA,
+	GETBO: INITIAL_RADIO_DATE_TPA,
+	DENAE: INITIAL_DENAE_DATE_TPA,
+}

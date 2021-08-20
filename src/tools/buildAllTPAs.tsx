@@ -1,49 +1,50 @@
 /* eslint-disable indent */
-import { INITIAL_PILOT_DATE_TPA, old } from "../Datas/dateTPA"
-import { crewMember, flight, pilotDateTPA } from "../types/Objects"
+import { INITIAL_DATE_TPAS, old } from "../Datas/dateTPA"
+import { crewMember, denaeTPA, flight, mecboTPA, pilotTPA, radioTPA } from "../types/Objects"
 
-const ACCEPTED_ROLES = ["CDA", "pilote"]
-
-export const buildAllTPAs = (
-	members: Array<crewMember>,
-	allFlights: Array<flight>
-): Array<{ name: string; TPA: pilotDateTPA }> => {
+export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<flight>): Array<unknown> => {
 	const membersActions = allFlights
 		/**
 		 * here we want a couple flight / member to iterate, so
-		 * 1- we filter  flightMember that are either CDA or pilote
 		 * 2- we return a couple for each flight and member
-		 *
-		 * Note - flatMap is like map but will return a 1 dimension array even if you return an array in the map
-		 * it's like .map().flat()
-		 */
+		 **/
 		.flatMap((flight) =>
 			// for each flight filter members
 			[flight.chief, flight.pilot, ...flight.crewMembers]
 				// we find the members in the original members DB items
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				.map((flightMember) => members.find((m) => m.trigram === flightMember)!)
-				// we only keep CDA and pilot
-				.filter((flightMember) => ACCEPTED_ROLES.includes(flightMember?.onBoardFunction ?? ""))
 				// return a couple flight / member for each flight
 				.flatMap((flightMember) => {
-					const { pilotTPA, crewTPA, departureDate } = flight
+					const { pilotTPA, mecboTPA, radioTPA, denaeTPA, crewTPA, departureDate } = flight
 					const flightDate = new Date(departureDate)
+					const { onBoardFunction } = flightMember
+					const specialityTPA: Array<pilotTPA | mecboTPA | radioTPA | denaeTPA> = ((onBoardFunction) => {
+						switch (onBoardFunction) {
+							case "CDA":
+							case "pilote":
+								return pilotTPA
+							case "MECBO":
+								return mecboTPA
+							case "GETBO":
+								return radioTPA
+							case "DENAE":
+								return denaeTPA
+							default:
+								return pilotTPA
+						}
+					})(onBoardFunction)
 					return (
-						/**
-						 * note Object.entries transform {a:1, b:2} to [[a,1], [b,1]], very convenient to iterate over an object
-						 * so this will be [[ATTPC , { name: string; value: boolean } ] , [TMAHD, { name: string; value: boolean }] , ....etc]
-						 */
 						[
 							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-							...Object.entries(pilotTPA.find((tpa) => tpa.name === flightMember.trigram)!.TPA),
+							...Object.entries(specialityTPA.find((tpa) => tpa.name === flightMember.trigram)!.TPA),
 							...Object.entries(crewTPA),
 						]
 							// filter only ones with values
-							.filter(([, val]) => !!val.value)
+							.filter(([, val]) => val.value || typeof val.value === "string")
 							// map one action with flight date and flightmember
-							.map(([type]) => ({
-								type,
+							.map(([name, type]) => ({
+								tpa: { name: name, value: type.value },
 								flightDate,
 								flightMember,
 							}))
@@ -52,163 +53,47 @@ export const buildAllTPAs = (
 		)
 		/**
 		 * at this stage with have a big array of each action for each member for each flight
-		 *  so we want to group them by member, so we use reduce to have something like
-		 *
-		 *  {
-		 *   trigram1 : { TMAHD : [date1, date2, ...], IFR : [date1, date2, ...] },
-		 *   trigram2 : { DITCHING : [date1, date2, ...], SAR : [date1, date2, ...] }
-		 *  }
+		 *  so we want to group them by member, so we use reduce
 		 */
-		.reduce<Record<string, Record<string, Date[]>>>((acc, { type, flightDate, flightMember: { trigram } }) => {
+		.reduce<Record<string, Record<string, Date[]>>>((acc, { tpa, flightDate, flightMember: { trigram } }) => {
 			if (!acc[trigram]) acc[trigram] = {}
-			if (!acc[trigram][type]) acc[trigram][type] = []
-			acc[trigram][type].push(flightDate)
+			if (!acc[trigram][tpa.name]) acc[trigram][tpa.name] = []
+			if (typeof tpa.value === "string") {
+				for (let i = 0; i < parseInt(tpa.value); i++) acc[trigram][tpa.name].push(flightDate)
+			} else acc[trigram][tpa.name].push(flightDate)
 			return acc
 		}, {})
 
 	/**
 	 * Final step we want to keep only the latest date for each action except TMAHD where we want the two latest
 	 */
-	const pilotsTPAs = Object.entries(membersActions).map(([trigram, actions]) => {
+	const allTPAs = Object.entries(membersActions).map(([trigram, actions]) => {
 		/**
 		 * we sort the date array and we keep the first date
-		 * [[DITCHING, date], [TMAHD, [date1, date2]], [LCS, date]]
 		 * /!\ missing actions will not be in the array
 		 */
 		const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(([type, dates]) => {
 			// sort dates descending
 			const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime())
-			if (type === "TMAHD") {
-				// if TMAHD we keep the 2 first one, if the array is smaller than 2 we fill it with 1970/1/1 until 2
+			if (type === "TMAHD" || type === "PH" || type === "IMINT")
 				return [type, [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2)]
-			}
+			if (type === "appRDR") return [type, [...sortedDates.slice(0, 6), ...Array(6).fill(old)].slice(0, 6)]
 			return [type, sortedDates[0]]
 		})
-
 		return {
 			name: trigram,
-			// merge default item INITIAL_PILOT_DATE_TPA with action to populate missing actions
-			TPA: { ...INITIAL_PILOT_DATE_TPA, ...Object.fromEntries(actionLatest) },
+			// merge default item INITIAL__DATE_TPAS with action to populate missing actions
+			TPA: {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				...INITIAL_DATE_TPAS[members.find((member) => member.trigram === trigram)!.onBoardFunction],
+				...Object.fromEntries(actionLatest),
+			},
 		}
 	})
-	const pilotsTPAsNames = pilotsTPAs.map(({ name }) => name)
+	const allTPAsNames = allTPAs.map(({ name }) => name)
 
 	const missingMembers = members
-		.filter((member) => {
-			const { onBoardFunction = "", trigram } = member
-			return !pilotsTPAsNames.includes(trigram) && ACCEPTED_ROLES.includes(onBoardFunction)
-		})
-		.map((m) => ({ name: m.trigram, TPA: INITIAL_PILOT_DATE_TPA }))
-
-	return [...pilotsTPAs, ...missingMembers]
+		.filter((member) => !allTPAsNames.includes(member.trigram))
+		.map((m) => ({ name: m.trigram, TPA: INITIAL_DATE_TPAS[m.onBoardFunction] }))
+	return [...allTPAs, ...missingMembers]
 }
-
-// export const updateMecboTPA = (
-// 	mecboDateTPA: { name: string; TPA: mecboDateTPA },
-// 	mecbo: string,
-// 	crewTPA: crewTPA,
-// 	mecboTPA: Array<mecboTPA>,
-// 	flightDate: Date
-// ): { name: string; TPA: mecboDateTPA } => {
-// 	const TPAindex = mecboTPA.findIndex((tpa) => tpa.name === mecbo)
-// 	crewTPA.forEach((tpa) => {
-// 		if (tpa.name === "TMA HD" && tpa.value && mecboDateTPA.TPA.TMAHD[0] < flightDate) {
-// 			mecboDateTPA.TPA.TMAHD[0] = flightDate
-// 			mecboDateTPA.TPA.TMAHD.sort(
-// 				(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 			)
-// 		}
-// 		if (tpa.name === "coop BAT" && tpa.value && mecboDateTPA.TPA.COOPBAT < flightDate)
-// 			mecboDateTPA.TPA.COOPBAT = flightDate
-// 		if (tpa.name === "SAR/SECMAR" && tpa.value && mecboDateTPA.TPA.SAR < flightDate)
-// 			mecboDateTPA.TPA.SAR = flightDate
-// 		if (tpa.name === "Ditching" && tpa.value && mecboDateTPA.TPA.DITCHING < flightDate)
-// 			mecboDateTPA.TPA.DITCHING = flightDate
-// 		if (tpa.name === "SIMAR" && tpa.value && mecboDateTPA.TPA.SIMAR < flightDate)
-// 			mecboDateTPA.TPA.SIMAR = flightDate
-// 	})
-// 	if (mecboTPA[TPAindex].TPA.LCS.value && mecboDateTPA.TPA.LCS < flightDate) mecboDateTPA.TPA.LCS = flightDate
-// 	if (mecboTPA[TPAindex].TPA.PH.value !== "") {
-// 		for (let i = 0; i < parseInt(mecboTPA[TPAindex].TPA.PH.value); i++) {
-// 			if (mecboDateTPA.TPA.PH[0] < flightDate) {
-// 				mecboDateTPA.TPA.PH[0] = flightDate
-// 				mecboDateTPA.TPA.PH.sort(
-// 					(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 				)
-// 			}
-// 		}
-// 	}
-// 	if (mecboTPA[TPAindex].TPA.TRP.value && mecboDateTPA.TPA.TRP < flightDate) mecboDateTPA.TPA.TRP = flightDate
-// 	return mecboDateTPA
-// }
-// export const updateRadioTPA = (
-// 	radioDateTPA: { name: string; TPA: radioDateTPA },
-// 	radio: string,
-// 	crewTPA: crewTPA,
-// 	radioTPA: Array<radioTPA>,
-// 	flightDate: Date
-// ): { name: string; TPA: radioDateTPA } => {
-// 	const TPAindex = radioTPA.findIndex((tpa) => tpa.name === radio)
-// 	crewTPA.forEach((tpa) => {
-// 		if (tpa.name === "TMA HD" && tpa.value && radioDateTPA.TPA.TMAHD[0] < flightDate) {
-// 			radioDateTPA.TPA.TMAHD[0] = flightDate
-// 			radioDateTPA.TPA.TMAHD.sort(
-// 				(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 			)
-// 		}
-// 		if (tpa.name === "coop BAT" && tpa.value && radioDateTPA.TPA.COOPBAT < flightDate)
-// 			radioDateTPA.TPA.COOPBAT = flightDate
-// 		if (tpa.name === "SAR/SECMAR" && tpa.value && radioDateTPA.TPA.SAR < flightDate)
-// 			radioDateTPA.TPA.SAR = flightDate
-// 		if (tpa.name === "Ditching" && tpa.value && radioDateTPA.TPA.DITCHING < flightDate)
-// 			radioDateTPA.TPA.DITCHING = flightDate
-// 		if (tpa.name === "SIMAR" && tpa.value && radioDateTPA.TPA.SIMAR < flightDate)
-// 			radioDateTPA.TPA.SIMAR = flightDate
-// 	})
-// 	radioTPA[TPAindex].TPA.forEach((tpa) => {
-// 		if (tpa.name === "dossier IMINT" && tpa.value && radioDateTPA.TPA.IMINT[0] < flightDate) {
-// 			radioDateTPA.TPA.IMINT[0] = flightDate
-// 			radioDateTPA.TPA.IMINT.sort(
-// 				(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 			)
-// 		}
-// 	})
-// 	return radioDateTPA
-// }
-// export const updateDenaeTPA = (
-// 	denaeDateTPA: { name: string; TPA: denaeDateTPA },
-// 	denae: string,
-// 	crewTPA: crewTPA,
-// 	denaeTPA: Array<denaeTPA>,
-// 	flightDate: Date
-// ): { name: string; TPA: denaeDateTPA } => {
-// 	const TPAindex = denaeTPA.findIndex((tpa) => tpa.name === denae)
-// 	crewTPA.forEach((tpa) => {
-// 		if (tpa.name === "TMA HD" && tpa.value && denaeDateTPA.TPA.TMAHD[0] < flightDate) {
-// 			denaeDateTPA.TPA.TMAHD[0] = flightDate
-// 			denaeDateTPA.TPA.TMAHD.sort(
-// 				(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 			)
-// 		}
-// 		if (tpa.name === "coop BAT" && tpa.value && denaeDateTPA.TPA.COOPBAT < flightDate)
-// 			denaeDateTPA.TPA.COOPBAT = flightDate
-// 		if (tpa.name === "SAR/SECMAR" && tpa.value && denaeDateTPA.TPA.SAR < flightDate)
-// 			denaeDateTPA.TPA.SAR = flightDate
-// 		if (tpa.name === "Ditching" && tpa.value && denaeDateTPA.TPA.DITCHING < flightDate)
-// 			denaeDateTPA.TPA.DITCHING = flightDate
-// 		if (tpa.name === "SIMAR" && tpa.value && denaeDateTPA.TPA.SIMAR < flightDate)
-// 			denaeDateTPA.TPA.SIMAR = flightDate
-// 	})
-// 	if (denaeTPA[TPAindex].TPA.PGPS.value && denaeDateTPA.TPA.PGPS < flightDate) denaeDateTPA.TPA.PGPS = flightDate
-// 	if (denaeTPA[TPAindex].TPA.appRDR.value !== "") {
-// 		for (let i = 0; i < parseInt(denaeTPA[TPAindex].TPA.appRDR.value); i++) {
-// 			if (denaeDateTPA.TPA.APPRDR[0] < flightDate) {
-// 				denaeDateTPA.TPA.APPRDR[0] = flightDate
-// 				denaeDateTPA.TPA.APPRDR.sort(
-// 					(a, b) => Date.parse(a.toLocaleDateString()) - Date.parse(b.toLocaleDateString())
-// 				)
-// 			}
-// 		}
-// 	}
-// 	return denaeDateTPA
-// }
