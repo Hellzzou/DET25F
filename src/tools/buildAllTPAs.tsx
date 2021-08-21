@@ -41,7 +41,7 @@ export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<fligh
 							...Object.entries(crewTPA),
 						]
 							// filter only ones with values
-							.filter(([, val]) => val.value || typeof val.value === "string")
+							.filter(([, val]) => val.value || (typeof val.value === "string" && !!val.value))
 							// map one action with flight date and flightmember
 							.map(([name, type]) => ({
 								tpa: { name: name, value: type.value },

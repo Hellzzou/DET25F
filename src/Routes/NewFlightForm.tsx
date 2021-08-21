@@ -12,7 +12,7 @@ import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/saveToDatabase"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { controlArray } from "../types/Objects"
+import { controlArray, Nights } from "../types/Objects"
 import { getTrigrams, removeAnEntry } from "../tools/tools"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
@@ -23,6 +23,9 @@ import { tokenCheck } from "../tools/user"
 
 export const NewFlightForm = (): JSX.Element => {
 	const history = useHistory()
+	const [jAero, setJAero] = useState("")
+	const [nAero, setNAero] = useState("")
+	const [nights, setNights] = useState<Nights>([[]])
 	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
@@ -88,11 +91,13 @@ export const NewFlightForm = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
+			const nights = await getFetchRequest(DB_URL + "nights")
 			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
 			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
 			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "pilote",
 			})
+			setNights(nights[0])
 			setAddableCrewMembers(getTrigrams(crewMembers))
 			setCDAList(getTrigrams(CDA))
 			setPilotList(getTrigrams(pilots))
@@ -109,6 +114,15 @@ export const NewFlightForm = (): JSX.Element => {
 	useEffect(() => {
 		manageNCAreas(area.value, setNCArea, NCArea.value)
 	}, [area.value])
+	useAsyncEffect(async () => {
+		if (departureDate.validity) {
+			const departure = new Date(departureDate.value)
+			const jAero = nights[departure.getMonth()][departure.getDate() - 1].jour + "L"
+			const nAero = nights[departure.getMonth()][departure.getDate() - 1].nuit + "L"
+			setJAero(jAero)
+			setNAero(nAero)
+		}
+	}, [departureDate.value])
 	return !token ? (
 		<Redirect to='/' />
 	) : (
@@ -128,6 +142,8 @@ export const NewFlightForm = (): JSX.Element => {
 						setEndDate={setArrivalDate}
 						endTime={arrivalTime}
 						setEndTime={setArrivalTime}
+						jAero={jAero}
+						nAero={nAero}
 					/>
 				</div>
 				<div className='col-md-6 m-1 justify-content-center'>

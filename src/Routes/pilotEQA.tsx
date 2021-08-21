@@ -16,33 +16,12 @@ export const PilotEQA = (): JSX.Element => {
 		if (token) {
 			const endDate = new Date(Date.now())
 			const lastFourYears = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const lastYear = new Date(endDate.getFullYear() - 1, endDate.getMonth(), endDate.getDate())
-			const lastFourMonths = new Date(endDate.getFullYear(), endDate.getMonth() - 4, endDate.getDate())
-			const lastMonth = new Date(endDate.getFullYear(), endDate.getMonth() - 1, endDate.getDate())
 			const lastFourYearsFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
 				startDate: lastFourYears,
 				endDate: endDate,
 			})
-			const lastYearFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: lastYear,
-				endDate: endDate,
-			})
-			const lastFourMonthsFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: lastFourMonths,
-				endDate: endDate,
-			})
-			const lastMonthFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: lastMonth,
-				endDate: endDate,
-			})
 			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const EQAs = buildAllEQAs(
-				allMembers,
-				lastFourYearsFlights,
-				lastYearFlights,
-				lastFourMonthsFlights,
-				lastMonthFlights
-			)
+			const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights)
 			console.log(EQAs)
 		}
 	}, [])
