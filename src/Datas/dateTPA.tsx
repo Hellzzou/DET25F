@@ -36,7 +36,7 @@ export const INITIAL_DENAE_DATE_TPA = {
 	SAR: old,
 	DITCHING: old,
 	SIMAR: old,
-	APPRDR: [old, old, old, old, old, old],
+	appRDR: [old, old, old, old, old, old],
 	PGPS: old,
 }
 export const INITIAL_PILOT_DATE_EQA = {

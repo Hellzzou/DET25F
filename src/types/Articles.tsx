@@ -1,4 +1,15 @@
-import { crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "./Objects"
+import {
+	crewTPA,
+	denaeDateTPA,
+	denaeTPA,
+	mecboDateTPA,
+	mecboTPA,
+	pilotDateTPA,
+	pilotEQA,
+	pilotTPA,
+	radioDateTPA,
+	radioTPA,
+} from "./Objects"
 
 export type pilotTPAProps = {
 	pilotTPA: pilotTPA
@@ -37,4 +48,32 @@ export type pilotEQAProps = {
 	setDayDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
 	nightDuration: { value: number; validity: boolean }
 	setNightDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
+}
+export type PilotMiniCardProps = {
+	pilot: {
+		name: string
+		TPA: pilotDateTPA
+	}
+	date: number
+}
+export type MecboMiniCardProps = {
+	mecbo: {
+		name: string
+		TPA: mecboDateTPA
+	}
+	date: number
+}
+export type RadioMiniCardProps = {
+	radio: {
+		name: string
+		TPA: radioDateTPA
+	}
+	date: number
+}
+export type DenaeMiniCardProps = {
+	denae: {
+		name: string
+		TPA: denaeDateTPA
+	}
+	date: number
 }

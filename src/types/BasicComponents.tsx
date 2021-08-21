@@ -1,4 +1,14 @@
-import { control, controlArray, newAlert, newEvent, flight } from "./Objects"
+import {
+	control,
+	controlArray,
+	newAlert,
+	newEvent,
+	flight,
+	pilotDateTPA,
+	mecboDateTPA,
+	radioDateTPA,
+	denaeDateTPA,
+} from "./Objects"
 
 export type NavButtonProps = {
 	content: string
@@ -84,4 +94,11 @@ export type unvalidateInputProps = {
 	placeholder?: string
 	control: { name: string; value: string; validity?: boolean }
 	handleChange: (e: React.ChangeEvent<HTMLInputElement>, arg1: { name: string; value: string }) => void
+}
+export type CrewTPACardProps = {
+	member: {
+		name: string
+		TPA: pilotDateTPA | mecboDateTPA | radioDateTPA | denaeDateTPA
+	}
+	date: number
 }

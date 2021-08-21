@@ -204,11 +204,11 @@ export type denaeDateTPA = {
 	SAR: Date
 	DITCHING: Date
 	SIMAR: Date
-	APPRDR: Array<Date>
+	appRDR: Array<Date>
 	PGPS: Date
 }
 export type allTPAs = {
-	pilotTPA: Array<{ name: string; TPA: pilotDateTPA }>
+	pilotTPA: Array<Record<string, pilotDateTPA>>
 	mecboTPA: Array<{ name: string; TPA: mecboDateTPA }>
 	radioTPA: Array<{ name: string; TPA: radioDateTPA }>
 	denaeTPA: Array<{ name: string; TPA: denaeDateTPA }>

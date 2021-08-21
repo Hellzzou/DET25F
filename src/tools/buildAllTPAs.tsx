@@ -2,7 +2,10 @@
 import { INITIAL_DATE_TPAS, old } from "../Datas/dateTPA"
 import { crewMember, denaeTPA, flight, mecboTPA, pilotTPA, radioTPA } from "../types/Objects"
 
-export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<flight>): Array<unknown> => {
+export const buildAllTPAs = (
+	members: Array<crewMember>,
+	allFlights: Array<flight>
+): { pilotTPA: any; mecboTPA: any; radioTPA: any; denaeTPA: any } => {
 	const membersActions = allFlights
 		/**
 		 * here we want a couple flight / member to iterate, so
@@ -95,5 +98,22 @@ export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<fligh
 	const missingMembers = members
 		.filter((member) => !allTPAsNames.includes(member.trigram))
 		.map((m) => ({ name: m.trigram, TPA: INITIAL_DATE_TPAS[m.onBoardFunction] }))
-	return [...allTPAs, ...missingMembers]
+	return {
+		pilotTPA: [...allTPAs, ...missingMembers].filter((tpa) =>
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			["CDA", "pilote"].includes(members.find((m) => m.trigram === tpa.name)!.onBoardFunction)
+		),
+		mecboTPA: [...allTPAs, ...missingMembers].filter(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			(tpa) => members.find((m) => m.trigram === tpa.name)!.onBoardFunction === "MECBO"
+		),
+		radioTPA: [...allTPAs, ...missingMembers].filter(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			(tpa) => members.find((m) => m.trigram === tpa.name)!.onBoardFunction === "GETBO"
+		),
+		denaeTPA: [...allTPAs, ...missingMembers].filter(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			(tpa) => members.find((m) => m.trigram === tpa.name)!.onBoardFunction === "DENAE"
+		),
+	}
 }

@@ -40,3 +40,13 @@ export const returnHoursInInteger = (value: string): number => {
 	if (value.split("")[0] === "0") return parseInt(value.split("")[1])
 	return parseInt(value)
 }
+export const getAnnual = (date: Date, dateToCompare: number): string => {
+	const lastYear = new Date(new Date().getFullYear(), dateToCompare - 12, 1)
+	const lastMonth = new Date(new Date().getFullYear(), dateToCompare - 11, 1)
+	return date < lastYear ? "danger" : date < lastMonth ? "warning" : "success"
+}
+export const getQuadri = (date: Date, dateToCompare: number): string => {
+	const fourMonths = new Date(new Date().getFullYear(), dateToCompare - 4, 1)
+	const lastMonth = new Date(new Date().getFullYear(), dateToCompare - 3, 1)
+	return date < fourMonths ? "danger" : date < lastMonth ? "warning" : "success"
+}

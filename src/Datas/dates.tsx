@@ -1,4 +1,18 @@
 export const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+export const months = [
+	"Janvier",
+	"Février",
+	"Mars",
+	"Avril",
+	"Mai",
+	"Juin",
+	"Juillet",
+	"Août",
+	"Septembre",
+	"Octobre",
+	"Novembre",
+	"Décembre",
+]
 export const daysIndex = [6, 0, 1, 2, 3, 4, 5]
 export const inDays = 86400000
 export const currentMonday =

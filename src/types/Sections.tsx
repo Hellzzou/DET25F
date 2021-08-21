@@ -108,3 +108,8 @@ export type crewTPAFieldsetProps = {
 	nightDuration: { value: number; validity: boolean }
 	setNightDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
 }
+export type NavbarTPAEQAProps = {
+	date: number
+	next: () => void
+	prev: () => void
+}
