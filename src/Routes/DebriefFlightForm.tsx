@@ -29,7 +29,7 @@ import { buildDebriefedFlight, buildNewFlight } from "../tools/saveToDatabase"
 import { getTrigrams, removeAnEntry, returnZeroOrValue } from "../tools/tools"
 import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
-import { controlArray, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "../types/Objects"
+import { controlArray, crewMember, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "../types/Objects"
 
 export const DebriefFlightForm = ({
 	match,
@@ -69,6 +69,7 @@ export const DebriefFlightForm = ({
 	const [radioTPA, setRadioTPA] = useState<Array<radioTPA>>([])
 	const [denaeTPA, setDenaeTPA] = useState<Array<denaeTPA>>([])
 	const [pilotEQA, setPilotEQA] = useState<Array<pilotEQA>>([])
+	const [allMembers, setAllMembers] = useState<Array<crewMember>>([])
 	const modifyHooks = [
 		departureDate,
 		departureTime,
@@ -137,7 +138,7 @@ export const DebriefFlightForm = ({
 		setDayDuration,
 		setNightDuration,
 	]
-	async function addCrewMember() {
+	const addCrewMember = () => {
 		setCrewMembers({
 			value: [...crewMembers.value, addMemberSelect.value],
 			validity: arrayIsNotEmpty(crewMembers.value),
@@ -148,6 +149,7 @@ export const DebriefFlightForm = ({
 		setAddMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		addTPA(
 			addMemberSelect.value,
+			allMembers,
 			pilotTPA,
 			mecboTPA,
 			radioTPA,
@@ -220,6 +222,7 @@ export const DebriefFlightForm = ({
 			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
 			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
 			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
+			setAllMembers(crewMembers)
 			setCDAList(getTrigrams(CDA))
 			setPilotList(getTrigrams(pilots))
 			setAddableCrewMembers(

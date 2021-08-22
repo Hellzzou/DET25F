@@ -70,8 +70,9 @@ export const removeTPA = (
 	setDenaeTPA(removeATPA(denaeTPA, member))
 	setPilotEQA(removeATPA(pilotEQA, member))
 }
-export async function addTPA(
+export function addTPA(
 	member: string,
+	members: crewMember[],
 	pilotTPA: Array<pilotTPA>,
 	mecboTPA: Array<mecboTPA>,
 	radioTPA: Array<radioTPA>,
@@ -82,10 +83,9 @@ export async function addTPA(
 	setRadioTPA: React.Dispatch<React.SetStateAction<Array<radioTPA>>>,
 	setDenaeTPA: React.Dispatch<React.SetStateAction<Array<denaeTPA>>>,
 	setPilotEQA: React.Dispatch<React.SetStateAction<Array<pilotEQA>>>
-): Promise<void> {
-	const allMembers = await getFetchRequest(DB_URL + "crewMembers")
+): void {
 	const onBoardFunction =
-		allMembers[allMembers.findIndex((element: crewMember) => element.trigram === member)].onBoardFunction
+		members[members.findIndex((element: crewMember) => element.trigram === member)].onBoardFunction
 	const newPilotTPA = pilotTPA
 	const newPilotEQA = pilotEQA
 	const newMecboTPA = mecboTPA
