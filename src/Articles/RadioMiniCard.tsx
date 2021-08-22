@@ -28,7 +28,7 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>IMINT: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.radio.TPA.IMINT[0],
 									props.date
 								)}`}>
@@ -38,7 +38,7 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>IMINT : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.radio.TPA.IMINT[1],
 									props.date
 								)}`}>

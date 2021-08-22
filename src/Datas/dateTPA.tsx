@@ -44,7 +44,7 @@ export const INITIAL_PILOT_DATE_EQA = {
 	ATTN1: old,
 	ATTN: old,
 	AMVPADV: old,
-	AMVMANU: old,
+	AMVM: old,
 	AMVN: old,
 	STAND: old,
 	ERGTR: old,

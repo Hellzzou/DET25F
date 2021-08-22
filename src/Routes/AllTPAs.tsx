@@ -35,7 +35,6 @@ export const AllTPAs = (): JSX.Element => {
 			})
 			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
 			const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
-			console.log(TPAs)
 			setPilotTPA(TPAs.pilotTPA)
 			setMecboTPA(TPAs.mecboTPA)
 			setRadioTPA(TPAs.radioTPA)

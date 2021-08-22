@@ -1,4 +1,5 @@
 import { inDays } from "../Datas/dates"
+import { old } from "../Datas/dateTPA"
 import { newEvent, flight, Nights } from "../types/Objects"
 
 export const getWeekNumber = (date: number): number => {
@@ -49,4 +50,15 @@ export const getQuadri = (date: Date, dateToCompare: number): string => {
 	const fourMonths = new Date(new Date().getFullYear(), dateToCompare - 4, 1)
 	const lastMonth = new Date(new Date().getFullYear(), dateToCompare - 3, 1)
 	return date < fourMonths ? "danger" : date < lastMonth ? "warning" : "success"
+}
+export const getMonthly = (date: Date, dateToCompare: number): string => {
+	return date.getMonth() === dateToCompare ? "success" : "danger"
+}
+export const getDone = (date: Date): string => {
+	return date !== old ? "success" : "danger"
+}
+export const getDurationsValidity = (duration: number, durationToCompare: number): string => {
+	if (duration < durationToCompare - durationToCompare / 4) return "danger"
+	if (duration < durationToCompare) return "warning"
+	return "success"
 }

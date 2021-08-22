@@ -166,15 +166,15 @@ export type pilotDateTPA = {
 	LCS: Date
 }
 export type PilotDateEQA = {
-	ATTJOUR: Array<Date>
-	ATTN_1: Date
+	ATTJ: Array<Date>
+	ATTN1: Date
 	ATTN: Date
 	AMVPADV: Date
 	AMVM: Date
 	AMVN: Date
 	STAND: Date
 	ERGTR: Date
-	BANUIT: number
+	BAN: number
 	lastYear: number
 	fourMonths: number
 	fourMonthsNight: number

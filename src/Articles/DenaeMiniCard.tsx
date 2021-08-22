@@ -28,7 +28,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[0],
 									props.date
 								)}`}>
@@ -38,7 +38,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[1],
 									props.date
 								)}`}>
@@ -48,7 +48,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[2],
 									props.date
 								)}`}>
@@ -58,7 +58,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[3],
 									props.date
 								)}`}>
@@ -68,7 +68,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[4],
 									props.date
 								)}`}>
@@ -78,7 +78,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>APP RDR: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.appRDR[5],
 									props.date
 								)}`}>
@@ -88,7 +88,7 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>P GPS : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.denae.TPA.PGPS,
 									props.date
 								)}`}>

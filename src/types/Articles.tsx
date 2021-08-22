@@ -4,6 +4,7 @@ import {
 	denaeTPA,
 	mecboDateTPA,
 	mecboTPA,
+	PilotDateEQA,
 	pilotDateTPA,
 	pilotEQA,
 	pilotTPA,
@@ -74,6 +75,13 @@ export type DenaeMiniCardProps = {
 	denae: {
 		name: string
 		TPA: denaeDateTPA
+	}
+	date: number
+}
+export type pilotEQAMiniCArdProps = {
+	pilot: {
+		name: string
+		EQA: PilotDateEQA
 	}
 	date: number
 }

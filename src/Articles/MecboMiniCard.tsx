@@ -28,7 +28,7 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>LCS: </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.mecbo.TPA.LCS,
 									props.date
 								)}`}>
@@ -38,7 +38,7 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>Photos : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.mecbo.TPA.PH[0],
 									props.date
 								)}`}>
@@ -48,7 +48,7 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>Photos : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.mecbo.TPA.PH[1],
 									props.date
 								)}`}>
@@ -58,7 +58,7 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>Trappe : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getAnnual(
+								className={`col-md-6 text-end fw-bold text-${getAnnual(
 									props.mecbo.TPA.TRP,
 									props.date
 								)}`}>

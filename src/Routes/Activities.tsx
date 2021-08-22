@@ -11,7 +11,6 @@ export const Activities = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
-		console.log(token)
 		setToken(token)
 	})
 	return !token ? (

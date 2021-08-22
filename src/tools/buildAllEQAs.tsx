@@ -1,10 +1,14 @@
 import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/dateTPA"
 import { crewMember, flight } from "../types/Objects"
 
-export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array<flight>): unknown => {
-	const lastYear = new Date(new Date().getFullYear() - 1, new Date().getMonth(), 1)
-	const fourMonths = new Date(new Date().getFullYear(), new Date().getMonth() - 4, 1)
-	const lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+export const buildAllEQAs = (
+	members: Array<crewMember>,
+	fourYearsFlights: Array<flight>,
+	month: number
+): Array<any> => {
+	const lastYear = new Date(new Date().getFullYear() - 1, month, 1)
+	const fourMonths = new Date(new Date().getFullYear(), month - 4, 1)
+	const lastMonth = new Date(new Date().getFullYear(), month, 1)
 	const pilotActions = fourYearsFlights.flatMap((flight) =>
 		[flight.chief, flight.pilot, ...flight.crewMembers]
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -82,5 +86,13 @@ export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array
 			},
 		}
 	})
-	return allEQAs
+	const allEQAsNames = allEQAs.map(({ name }) => name)
+
+	const missingMembers = members
+		.filter(
+			(member) => !allEQAsNames.includes(member.trigram) && ["CDA", "pilote"].includes(member.onBoardFunction)
+		)
+		.map((m) => ({ name: m.trigram, EQA: INITIAL_PILOT_DATE_EQA }))
+
+	return [...allEQAs, ...missingMembers]
 }

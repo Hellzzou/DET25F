@@ -83,3 +83,6 @@ export const returnDayNightDuration = (
 	nuit = Math.ceil(nuit * 10) / 10
 	return { jour: jour, nuit: nuit }
 }
+export const roundToDecimal = (value: number): number => {
+	return Math.round(value * 10) / 10
+}
