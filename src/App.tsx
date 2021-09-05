@@ -11,6 +11,7 @@ import { PilotEQA } from "./Routes/pilotEQA"
 import { FlightHours } from "./Routes/FlightHours"
 import { MemberHoursDetail } from "./Routes/MemberHoursDetail"
 import { FlightSearch } from "./Routes/FlightSearch"
+import { QOG } from "./Routes/QOG"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -27,6 +28,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/flightHours' component={FlightHours} />
 				<Route path='/memberDetails/:name/:startDate/:endDate' component={MemberHoursDetail} />
 				<Route path='/flightSearch' component={FlightSearch} />
+				<Route path='/QOG' component={QOG} />
 			</Switch>
 		</BrowserRouter>
 	)

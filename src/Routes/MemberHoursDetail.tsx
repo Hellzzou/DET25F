@@ -7,7 +7,6 @@ import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { crewMembersFlights } from "../tools/buildAllHours"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { returnZeroOrValue } from "../tools/tools"
 import { crewMember, flight } from "../types/Objects"
 
 export const MemberHoursDetail = ({

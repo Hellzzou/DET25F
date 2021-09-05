@@ -25,10 +25,15 @@ export const FlightSearch = (): JSX.Element => {
 	const [time, setTime] = useState(INITIAL_FALSE_SELECT)
 	const [flights, setFlights] = useState<Array<flight>>([])
 	useAsyncEffect(async () => {
+		let CDAName = "Choix..."
+		if (crew.value !== "Choix...") {
+			const CDA = await postFetchRequest(DB_URL + "crewMembers/findCDA", { crew: crew.value })
+			CDAName = CDA[0].trigram
+		}
 		const filteredFlights = await postFetchRequest(DB_URL + "flights/filteredFlights", {
 			date: { startDate: new Date(startDate.value), endDate: new Date(endDate.value) },
 			aircraft: aircraft.value,
-			chief: crew.value,
+			chief: CDAName,
 			type: type.value,
 			group: group.value,
 			belonging: belonging.value,
