@@ -98,6 +98,7 @@ export type crewMember = {
 	firstName: string
 	surName: string
 	rank: string
+	crew?: string
 	onBoardFunction: string
 	groundFunction: string
 	trigram: string
@@ -216,3 +217,12 @@ export type allTPAs = {
 export type AllEQAs = Array<{ name: string; EQA: PilotDateEQA }>
 
 export type Nights = Array<Array<{ jour: string; nuit: string }>>
+
+export type Group = {
+	group: string
+	underGroup: string
+	description: string
+	manager: string
+	client: string
+	allocation: number
+}

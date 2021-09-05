@@ -1,4 +1,4 @@
-import { control, controlArray, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "./Objects"
+import { control, controlArray, crewTPA, denaeTPA, flight, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "./Objects"
 
 export type weekProps = {
 	date: Date
@@ -112,4 +112,38 @@ export type NavbarTPAEQAProps = {
 	date: number
 	next: () => void
 	prev: () => void
+}
+export type DateChoiceNavbarProps = {
+	startDate: control
+	setStartDate: React.Dispatch<React.SetStateAction<control>>
+	endDate: control
+	setEndDate: React.Dispatch<React.SetStateAction<control>>
+}
+export type CrewMembersCardsProps = {
+	crewMembersHours: { name: string; flight: flight[] }[]
+	startDate: string
+	endDate: string
+}
+export type FlightFiltersProps = {
+	aircraft: control
+	setAircraft: React.Dispatch<React.SetStateAction<control>>
+	crew: control
+	setCrew: React.Dispatch<React.SetStateAction<control>>
+	type: control
+	setType: React.Dispatch<React.SetStateAction<control>>
+	group: control
+	setGroup: React.Dispatch<React.SetStateAction<control>>
+	belonging: control
+	setBelonging: React.Dispatch<React.SetStateAction<control>>
+	area: control
+	setArea: React.Dispatch<React.SetStateAction<control>>
+	NCArea: control
+	setNCArea: React.Dispatch<React.SetStateAction<control>>
+	done: control
+	setDone: React.Dispatch<React.SetStateAction<control>>
+	time: control
+	setTime: React.Dispatch<React.SetStateAction<control>>
+}
+export type FlightTableProps = {
+	flights: Array<flight>
 }

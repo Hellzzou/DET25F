@@ -1,4 +1,3 @@
-import { DB_URL } from "../Datas/datas"
 import { INITIAL_DENAETPA, INITIAL_MECBOTPA, INITIAL_PILOTEQA, INITIAL_PILOTTPA, INITIAL_RADIOTPA } from "../Datas/TPA"
 import {
 	control,
@@ -11,7 +10,6 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
-import { getFetchRequest } from "./fetch"
 import { removeAnEntry, removeATPA, returnDayNightDuration, returnZeroOrValue } from "./tools"
 import { selectChoiceIsDone, timeIsCorrect } from "./validators"
 

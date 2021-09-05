@@ -7,7 +7,7 @@ import { FlightRow } from "../Articles/FlightRow"
 import { OtherEvent } from "../Articles/OtherEventRow"
 import { DB_URL } from "../Datas/datas"
 import { currentMonday, days, inDays } from "../Datas/dates"
-import { getSunsets, getWeekNumber } from "../tools/date"
+import { getSunsets } from "../tools/date"
 import { getFetchRequest } from "../tools/fetch"
 import { getWeekEvents } from "../tools/getWeekEvents"
 import { newAlert, newEvent, flight, Nights } from "../types/Objects"
@@ -54,6 +54,7 @@ export const Week = (): JSX.Element => {
 				previousClick={previousWeekClick}
 				nowClick={thisWeekClick}
 				newEventClick={newEventClick}
+				firstDay={monday}
 			/>
 			<table className='col-md-12 table table-secondary table-sm table-striped align-middle caption-top'>
 				<colgroup>
@@ -61,7 +62,6 @@ export const Week = (): JSX.Element => {
 					<col width='82%'></col>
 					<col width='7%'></col>
 				</colgroup>
-				<caption className='text-center text-dark fw-bold fs-3'>{`Semaine ${getWeekNumber(monday)}`}</caption>
 				<thead>
 					<tr>
 						<th>

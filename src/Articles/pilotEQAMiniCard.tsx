@@ -6,7 +6,6 @@ import { DB_URL } from "../Datas/datas"
 import { EQADurations } from "../Datas/EQADurations"
 import { getDone, getDurationsValidity, getMonthly, getQuadri } from "../tools/date"
 import { getFetchRequest } from "../tools/fetch"
-import { roundToDecimal } from "../tools/tools"
 import { pilotEQAMiniCArdProps } from "../types/Articles"
 import { crewMember } from "../types/Objects"
 

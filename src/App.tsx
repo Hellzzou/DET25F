@@ -8,6 +8,9 @@ import { Login } from "./Routes/Login"
 import { DebriefFlightForm } from "./Routes/DebriefFlightForm"
 import { AllTPAs } from "./Routes/AllTPAs"
 import { PilotEQA } from "./Routes/pilotEQA"
+import { FlightHours } from "./Routes/FlightHours"
+import { MemberHoursDetail } from "./Routes/MemberHoursDetail"
+import { FlightSearch } from "./Routes/FlightSearch"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -21,6 +24,9 @@ export const App = (): React.ReactElement => {
 				<Route path='/debriefFlight/:id/:jAero/:nAero' component={DebriefFlightForm} />
 				<Route path='/allTPAs' component={AllTPAs} />
 				<Route path='/pilotEQA' component={PilotEQA} />
+				<Route path='/flightHours' component={FlightHours} />
+				<Route path='/memberDetails/:name/:startDate/:endDate' component={MemberHoursDetail} />
+				<Route path='/flightSearch' component={FlightSearch} />
 			</Switch>
 		</BrowserRouter>
 	)

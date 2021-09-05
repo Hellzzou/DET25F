@@ -26,6 +26,7 @@ export type weekNavBarProps = {
 	nextClick: () => void
 	nowClick: () => void
 	newEventClick: () => void
+	firstDay: number
 }
 export type flightRowProps = {
 	events: Array<flight>

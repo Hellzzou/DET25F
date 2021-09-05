@@ -2,6 +2,7 @@ import {
 	crewTPA,
 	denaeDateTPA,
 	denaeTPA,
+	flight,
 	mecboDateTPA,
 	mecboTPA,
 	PilotDateEQA,
@@ -84,4 +85,10 @@ export type pilotEQAMiniCArdProps = {
 		EQA: PilotDateEQA
 	}
 	date: number
+}
+export type CrewMemberCardProps = {
+	crewMemberName: string
+	crewMemberHours: flight[]
+	startDate: string
+	endDate: string
 }

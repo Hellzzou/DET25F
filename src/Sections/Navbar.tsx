@@ -7,6 +7,8 @@ export const Navbar = (): JSX.Element => {
 			<NavButton content='Planchette' link='/activities' />
 			<NavButton content='TPA' link='/AllTPAs' />
 			<NavButton content='EQA' link='/pilotEQA' />
+			<NavButton content='HDV' link='/flightHours' />
+			<NavButton content='Recherche' link='/flightSearch' />
 		</div>
 	)
 }

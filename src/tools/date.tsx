@@ -62,3 +62,20 @@ export const getDurationsValidity = (duration: number, durationToCompare: number
 	if (duration < durationToCompare) return "warning"
 	return "success"
 }
+export const getDateNumber = (number: number): string => (number < 10 ? "0" + number : number.toString())
+export const getMonthNumber = (number: number): string => (number < 10 ? "0" + (number + 1) : (number + 1).toString())
+export const INITIAL_STARTDATE_CONTROL = {
+	value: new Date().getFullYear() + "-" + getMonthNumber(new Date().getMonth()) + "-01",
+	validity: true,
+	disabled: false,
+}
+export const INITIAL_ENDDATE_CONTROL = {
+	value:
+		new Date().getFullYear() +
+		"-" +
+		getMonthNumber(new Date().getMonth()) +
+		"-" +
+		getDateNumber(new Date().getDate()),
+	validity: true,
+	disabled: false,
+}

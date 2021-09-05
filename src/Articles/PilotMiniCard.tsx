@@ -39,7 +39,7 @@ export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>IFR : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.pilot.TPA.IFR,
 									props.date
 								)}`}>
@@ -49,7 +49,7 @@ export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 						<div className='row'>
 							<div className='col-md-6 text-start'>LCS : </div>
 							<div
-								className={`col-md-6 text-right fw-bold text-${getQuadri(
+								className={`col-md-6 text-end fw-bold text-${getQuadri(
 									props.pilot.TPA.LCS,
 									props.date
 								)}`}>
