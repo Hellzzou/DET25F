@@ -3,6 +3,7 @@ import {
 	denaeDateTPA,
 	denaeTPA,
 	flight,
+	Group,
 	mecboDateTPA,
 	mecboTPA,
 	PilotDateEQA,
@@ -91,4 +92,9 @@ export type CrewMemberCardProps = {
 	crewMemberHours: flight[]
 	startDate: string
 	endDate: string
+}
+export type QOGRowProps = {
+	groups: Group[]
+	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>
+	groupName: string
 }

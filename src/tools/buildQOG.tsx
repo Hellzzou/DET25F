@@ -24,9 +24,9 @@ export const buildQOG = (
 	)
 	// fullfill empty groups with [{dayDuration: 0, nightDuration: 0}]
 	const mergedFlights = Object.entries(QOG).map((group) => [group[0], { ...INITIAL_QOG(allGroups), ...group[1] }])
-	// find empty months
 	const QOGMonths = mergedFlights.map((month) => month[0])
-	//fullfill empty months with [{dayDuration: 0, nightDuration: 0}] for each groups
+	// find empty months
+	// fullfill empty months with [{dayDuration: 0, nightDuration: 0}] for each groups
 	const missingMonths = englishMonths
 		.filter((month) => !QOGMonths.includes(month))
 		.map((month) => [month, INITIAL_QOG(allGroups)])

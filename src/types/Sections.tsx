@@ -147,3 +147,6 @@ export type FlightFiltersProps = {
 export type FlightTableProps = {
 	flights: Array<flight>
 }
+export type QOGTableProps = {
+	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>
+}

@@ -1,27 +1,38 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
+import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
+import { QOGTable } from "../Sections/QOGTable"
 import { buildQOG } from "../tools/buildQOG"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
+import { tokenCheck } from "../tools/user"
 
 export const QOG = (): JSX.Element => {
-	const [QOGFlights, setQOGFlights] = useState()
-	const [allGroups, setAllGroups] = useState()
+	const [token, setToken] = useState(true)
+	const [QOGFlights, setQOGFlights] =
+		useState<Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>>()
 	useAsyncEffect(async () => {
-		const allGroups = await getFetchRequest(DB_URL + "groups")
-		setAllGroups(allGroups)
-		const yearFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-			startDate: new Date(new Date().getFullYear(), 0, 1),
-			endDate: new Date(),
-		})
-		buildQOG(yearFlights, allGroups)
+		const token = await tokenCheck()
+		setToken(token)
+		if (token) {
+			const allGroups = await getFetchRequest(DB_URL + "groups")
+			const yearFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
+				startDate: new Date(new Date().getFullYear(), 0, 1),
+				endDate: new Date(),
+			})
+			setQOGFlights(buildQOG(yearFlights, allGroups))
+		}
 	}, [])
-	return (
+	return !token ? (
+		<Redirect to='/' />
+	) : (
 		<>
 			<Header />
 			<Navbar />
+			{QOGFlights && <QOGTable flights={QOGFlights!} />}
 		</>
 	)
 }
