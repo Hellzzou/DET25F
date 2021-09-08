@@ -1,4 +1,4 @@
-import { crewMember } from "../types/Objects"
+import { crewMember, flight } from "../types/Objects"
 import { returnHoursInInteger } from "./date"
 export const removeATPA = (array: Array<any>, value: string): Array<any> => {
 	const newTPA = array
@@ -86,3 +86,4 @@ export const returnDayNightDuration = (
 export const roundToDecimal = (value: number): number => {
 	return Math.round(value * 10) / 10
 }
+export const getFlightColor = (flight: flight): string => (flight.client === "25F" ? "primary" : "danger")

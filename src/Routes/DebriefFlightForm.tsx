@@ -29,7 +29,17 @@ import { buildDebriefedFlight, buildNewFlight } from "../tools/saveToDatabase"
 import { getTrigrams, removeAnEntry, returnZeroOrValue } from "../tools/tools"
 import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
-import { controlArray, crewMember, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "../types/Objects"
+import {
+	controlArray,
+	crewMember,
+	crewTPA,
+	denaeTPA,
+	Group,
+	mecboTPA,
+	pilotEQA,
+	pilotTPA,
+	radioTPA,
+} from "../types/Objects"
 
 export const DebriefFlightForm = ({
 	match,
@@ -47,6 +57,7 @@ export const DebriefFlightForm = ({
 	const [config, setConfig] = useState(INITIAL_FALSE_CONTROL)
 	const [type, setType] = useState(INITIAL_FALSE_CONTROL)
 	const [mission, setMission] = useState(INITIAL_FALSE_CONTROL)
+	const [allGroups, setAllGroups] = useState<Group[]>()
 	const [area, setArea] = useState(INITIAL_FALSE_CONTROL)
 	const [NCArea, setNCArea] = useState(INITIAL_FALSE_CONTROL)
 	const [group, setGroup] = useState(INITIAL_FALSE_CONTROL)
@@ -80,6 +91,8 @@ export const DebriefFlightForm = ({
 		config,
 		type,
 		mission,
+		group,
+		belonging,
 		area,
 		NCArea,
 		chief,
@@ -187,7 +200,7 @@ export const DebriefFlightForm = ({
 	}
 	const returnClick = () => history.push("/activities")
 	async function modifyFlightClick() {
-		const newFlight = await buildNewFlight(modifyHooks, crewMembers)
+		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups!)
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
@@ -213,6 +226,10 @@ export const DebriefFlightForm = ({
 			if (deleted === "success") history.push("/activities")
 		}
 	}
+	async function deleteFlight() {
+		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
+		if (deleted === "success") history.push("/activities")
+	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
@@ -222,6 +239,8 @@ export const DebriefFlightForm = ({
 			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
 			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
 			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
+			const allGroups = await getFetchRequest(DB_URL + "groups")
+			setAllGroups(allGroups)
 			setAllMembers(crewMembers)
 			setCDAList(getTrigrams(CDA))
 			setPilotList(getTrigrams(pilots))
@@ -319,6 +338,10 @@ export const DebriefFlightForm = ({
 								setArea={setArea}
 								NCArea={NCArea}
 								setNCArea={setNCArea}
+								group={group}
+								setGroup={setGroup}
+								belonging={belonging}
+								setBelonging={setBelonging}
 							/>
 						</div>
 						<div className='col-md-12'>
@@ -346,10 +369,6 @@ export const DebriefFlightForm = ({
 								setOnDayDuration={setOnDayDuration}
 								onNightDuration={onNightDuration}
 								setOnNightDuration={setOnNightDuration}
-								group={group}
-								setGroup={setGroup}
-								belonging={belonging}
-								setBelonging={setBelonging}
 								done={done}
 								setDone={setDone}
 								cause={cause}
@@ -385,7 +404,7 @@ export const DebriefFlightForm = ({
 			</form>
 			<div className='row justify-content-center' style={{ width: "100%" }}>
 				<Button
-					size={3}
+					size={2}
 					buttonColor='primary'
 					buttonContent='Modifier'
 					onClick={modifyFlightClick}
@@ -393,14 +412,16 @@ export const DebriefFlightForm = ({
 				/>
 				<div className='col-md-1'></div>
 				<Button
-					size={3}
+					size={2}
 					buttonColor='success'
 					buttonContent='Debriefer'
 					onClick={addFlightClick}
 					disabled={!formValidity(hooks)}
 				/>
 				<div className='col-md-1'></div>
-				<Button size={3} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
+				<Button size={2} buttonColor='danger' buttonContent='Supprimer' onClick={deleteFlight} />
+				<div className='col-md-1'></div>
+				<Button size={2} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
 			</div>
 		</>
 	)

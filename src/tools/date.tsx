@@ -24,10 +24,19 @@ export const getBetweenColSpan = (event: flight | newEvent, events: Array<flight
 			returnHoursInInteger(events[events.indexOf(event) - 1].arrivalDate.split("T")[1].split(":")[0])
 		)
 	}
+	if (returnHoursInInteger(event.arrivalDate.split("T")[1].split(":")[0]) >= 20)
+		return (
+			14 -
+			Math.max(
+				returnHoursInInteger(event.arrivalDate.split("T")[1].split(":")[0]) -
+					returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]),
+				3
+			)
+		)
 	return returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]) - 6
 }
 export const getColSpan = (event: flight | newEvent): number => {
-	return new Date(event.arrivalDate).getUTCHours() - new Date(event.departureDate).getUTCHours()
+	return Math.max(new Date(event.arrivalDate).getUTCHours() - new Date(event.departureDate).getUTCHours(), 3)
 }
 export const getSunsets = (nights: Nights, monday: number, date: number, type: string): string => {
 	const thisDate = new Date(monday + date * inDays)
@@ -36,6 +45,18 @@ export const getSunsets = (nights: Nights, monday: number, date: number, type: s
 			? nights[thisDate.getMonth()][thisDate.getDate() - 1].jour + "L"
 			: nights[thisDate.getMonth()][thisDate.getDate() - 1].nuit + "L"
 	return ""
+}
+export const sortEventByRow = (events: newEvent[]): newEvent[][] => {
+	let departureTime = 0
+	const newRow: newEvent[] = []
+	const currentRow: newEvent[] = []
+	events.map((event) => {
+		if (returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]) >= departureTime)
+			currentRow.push(event)
+		else newRow.push(event)
+		departureTime = returnHoursInInteger(event.arrivalDate.split("T")[1].split(":")[0])
+	})
+	return newRow.length === 0 ? [currentRow] : [currentRow, ...sortEventByRow(newRow)]
 }
 export const returnHoursInInteger = (value: string): number => {
 	if (value.split("")[0] === "0") return parseInt(value.split("")[1])

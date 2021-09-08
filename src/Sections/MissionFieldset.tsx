@@ -9,6 +9,7 @@ import { DB_URL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
 import { getName, getNumber, getQuantity } from "../tools/tools"
 import { selectChoiceIsDone, textIsNotNull } from "../tools/validators"
+import { Group } from "../types/Objects"
 import { missionFieldsetProps } from "../types/Sections"
 
 export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
@@ -17,6 +18,8 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 	const [type, setType] = useState<Array<string>>([])
 	const [areas, setAreas] = useState<Array<string>>([])
 	const [NCAreas, setNCAreas] = useState<Array<string>>([])
+	const [groups, setGroups] = useState<Array<string>>([])
+	const belongings = ["DET25F", "HORS DET25F"]
 	const [config, setConfig] = useState<Array<string>>([])
 	useAsyncEffect(async () => {
 		const fuels = await getFetchRequest(DB_URL + "fuel")
@@ -31,6 +34,8 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 		setNCAreas(getName(NCAreas))
 		const configs = await getFetchRequest(DB_URL + "config")
 		setConfig(getName(configs))
+		const allGroups = await getFetchRequest(DB_URL + "groups")
+		setGroups(allGroups.map((group: Group) => group.underGroup))
 	}, [])
 	return (
 		<fieldset className='bg-light rounded py-1'>
@@ -107,6 +112,27 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					control={props.NCArea}
 					setControl={props.setNCArea}
 					options={NCAreas}
+					validator={selectChoiceIsDone}
+				/>
+			</div>
+			<div className='row form-group m-1'>
+				<Label title='Groupe :' size={4} />
+				<Select
+					size={4}
+					backgroundColor='dark'
+					textColor='white'
+					control={props.group}
+					setControl={props.setGroup}
+					options={groups}
+					validator={selectChoiceIsDone}
+				/>
+				<Select
+					size={4}
+					backgroundColor='dark'
+					textColor='white'
+					control={props.belonging}
+					setControl={props.setBelonging}
+					options={belongings}
 					validator={selectChoiceIsDone}
 				/>
 			</div>

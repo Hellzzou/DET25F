@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+import { Alert } from "../types/Objects"
 import { DB_URL } from "../Datas/datas"
 import {
 	INITIAL_CREWTPA,
@@ -8,11 +9,25 @@ import {
 	INITIAL_PILOTTPA,
 	INITIAL_RADIOTPA,
 } from "../Datas/TPA"
-import { control, controlArray, crewTPA, denaeTPA, mecboTPA, pilotEQA, pilotTPA, radioTPA } from "../types/Objects"
+import {
+	control,
+	controlArray,
+	crewTPA,
+	denaeTPA,
+	Group,
+	mecboTPA,
+	pilotEQA,
+	pilotTPA,
+	radioTPA,
+} from "../types/Objects"
 import { getFetchRequest, postFetchRequest } from "./fetch"
 import { returnDayNightDuration } from "./tools"
 
-export async function buildNewFlight(hooks: Array<control>, crewMembers: controlArray): Promise<unknown> {
+export async function buildNewFlight(
+	hooks: Array<control>,
+	crewMembers: controlArray,
+	allGroups: Group[]
+): Promise<unknown> {
 	const allMembers = await getFetchRequest(DB_URL + "crewMembers")
 	const pilotTPA: Array<pilotTPA> = []
 	const pilotEQA: Array<pilotEQA> = []
@@ -35,7 +50,6 @@ export async function buildNewFlight(hooks: Array<control>, crewMembers: control
 		if (onBoardFunction === "GETBO") radioTPA.push({ name: member, TPA: INITIAL_RADIOTPA })
 		if (onBoardFunction === "DENAE") denaeTPA.push({ name: member, TPA: INITIAL_DENAETPA })
 	})
-	console.log(hooks[0].value, hooks[1].value)
 	const newFlight = {
 		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value) + 11 * 3600000),
 		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value) + 11 * 3600000),
@@ -44,13 +58,15 @@ export async function buildNewFlight(hooks: Array<control>, crewMembers: control
 		config: hooks[6].value,
 		type: hooks[7].value,
 		mission: hooks[8].value,
-		area: hooks[9].value,
-		NCArea: hooks[10].value,
-		chief: hooks[11].value,
-		pilot: hooks[12].value,
+		group: hooks[9].value,
+		belonging: hooks[10].value,
+		area: hooks[11].value,
+		NCArea: hooks[12].value,
+		chief: hooks[13].value,
+		pilot: hooks[14].value,
+		manager: allGroups.find((group) => group.underGroup === hooks[9].value)?.manager,
+		client: allGroups.find((group) => group.underGroup === hooks[9].value)?.client,
 		crewMembers: crewMembers.value,
-		group: "Choix...",
-		belonging: "Choix...",
 		status: "inProgress",
 		done: "Choix...",
 		cause: "Choix...",
@@ -117,25 +133,22 @@ export const buildDebriefedFlight = (
 	return debriefedFlight
 }
 
-export async function saveNewEvent(hooks: Array<control>): Promise<unknown> {
-	const newEvent = {
-		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value)),
-		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value)),
+export const buildNewEvent = (hooks: Array<control>): unknown => {
+	return {
+		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value) + 11 * 3600000),
+		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value) + 11 * 3600000),
 		event: hooks[4].value,
 	}
-	const res = await postFetchRequest(DB_URL + "events/save", { newEvent: newEvent })
-	return res
 }
-export async function saveNewAlert(hooks: Array<control>): Promise<unknown> {
-	const newAlert = {
-		departureDate: new Date(Date.parse(hooks[0].value + " " + "00:00")),
+export const buildNewAlert = (hooks: Array<control>): unknown => {
+	return {
+		departureDate: new Date(Date.parse(hooks[0].value + " " + "00:00") + 11 * 3600000),
 		chief: hooks[1].value,
 		pilot: hooks[2].value,
 		mecbo: hooks[3].value,
 		nav: hooks[4].value,
 		rdr: hooks[5].value,
 		radio: hooks[6].value,
+		tech: hooks[7].value,
 	}
-	const res = await postFetchRequest(DB_URL + "newAlert/save", { newAlert: newAlert })
-	return res
 }

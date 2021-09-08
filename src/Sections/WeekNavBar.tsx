@@ -5,7 +5,7 @@ import { getWeekNumber } from "../tools/date"
 
 export const WeekNavBar = (props: weekNavBarProps): JSX.Element => {
 	return (
-		<div className='row m-1 my-2 justify-content-center'>
+		<div className='row m-1 my-0 justify-content-center'>
 			<Button size={2} buttonContent='Semaine précédente' buttonColor='warning' onClick={props.previousClick} />
 			<div className='col-md-1'></div>
 			<Button size={2} buttonContent='Nouvel évènement' buttonColor='primary' onClick={props.newEventClick} />

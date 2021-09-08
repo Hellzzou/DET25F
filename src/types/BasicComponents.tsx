@@ -21,6 +21,14 @@ export type ButtonProps = {
 	onClick: () => void
 	disabled?: boolean
 }
+export type FDVButtonProps = {
+	date: Date
+	size: number
+	buttonColor: string
+	buttonContent: string
+	onClick: (arg: Date) => void
+	disabled?: boolean
+}
 export type weekNavBarProps = {
 	previousClick: () => void
 	nextClick: () => void

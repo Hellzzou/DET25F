@@ -1,3 +1,4 @@
+import { Alert, Event } from "../types/Objects"
 import { INITIAL_DENAETPA, INITIAL_MECBOTPA, INITIAL_PILOTEQA, INITIAL_PILOTTPA, INITIAL_RADIOTPA } from "../Datas/TPA"
 import {
 	control,
@@ -180,22 +181,14 @@ export const manageCNL = (
 	ON: control,
 	setON: React.Dispatch<React.SetStateAction<control>>,
 	OFF: control,
-	setOFF: React.Dispatch<React.SetStateAction<control>>,
-	group: control,
-	setGroupe: React.Dispatch<React.SetStateAction<control>>,
-	belongin: control,
-	setBelonging: React.Dispatch<React.SetStateAction<control>>
+	setOFF: React.Dispatch<React.SetStateAction<control>>
 ): void => {
 	if (doneValue === "ME" || doneValue === "MPE") {
 		setON({ value: ON.value, validity: timeIsCorrect(ON.value), disabled: false })
 		setOFF({ value: OFF.value, validity: timeIsCorrect(OFF.value), disabled: false })
-		setGroupe({ value: group.value, validity: selectChoiceIsDone(group.value), disabled: false })
-		setBelonging({ value: belongin.value, validity: selectChoiceIsDone(belongin.value), disabled: false })
 	} else {
 		setON({ value: "", validity: true, disabled: true })
 		setOFF({ value: "", validity: true, disabled: true })
-		setGroupe({ value: "Choix...", validity: true, disabled: true })
-		setBelonging({ value: "Choix...", validity: true, disabled: true })
 	}
 	if (doneValue !== "ME" && cause.value !== "")
 		setCause({ value: cause.value, validity: selectChoiceIsDone(cause.value), disabled: false })
@@ -226,4 +219,22 @@ export const removeCrewMembers = (
 	addableCrewMembers = removeAnEntry(addableCrewMembers, chief)
 	addableCrewMembers = removeAnEntry(addableCrewMembers, pilot)
 	return addableCrewMembers
+}
+export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
+	setters[0]({ value: alert.departureDate.split("T")[0], validity: true, disabled: false })
+	setters[1]({ value: alert.chief, validity: true, disabled: false })
+	setters[2]({ value: alert.pilot, validity: true, disabled: false })
+	setters[3]({ value: alert.mecbo, validity: true, disabled: false })
+	setters[4]({ value: alert.nav, validity: true, disabled: false })
+	setters[5]({ value: alert.rdr, validity: true, disabled: false })
+	setters[6]({ value: alert.radio, validity: true, disabled: false })
+}
+export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
+	const departureTime = event.departureDate.split("T")[1].split("Z")[0]
+	const arrivalTime = event.arrivalDate.split("T")[1].split("Z")[0]
+	setters[0]({ value: event.departureDate.split("T")[0], validity: true, disabled: false })
+	setters[1]({ value: departureTime, validity: true, disabled: false })
+	setters[2]({ value: event.arrivalDate.split("T")[0], validity: true, disabled: false })
+	setters[3]({ value: arrivalTime, validity: true, disabled: false })
+	setters[4]({ value: event.event, validity: true, disabled: false })
 }

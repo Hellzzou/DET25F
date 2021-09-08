@@ -1,27 +1,15 @@
 import React, { useEffect } from "react"
-import { useState } from "react"
-import useAsyncEffect from "use-async-effect/"
 import { Input } from "../BasicComponents/input"
 import { Label } from "../BasicComponents/Label"
 import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
-import { DB_URL } from "../Datas/datas"
-import { getFetchRequest } from "../tools/fetch"
 import { manageCNL } from "../tools/form"
 import { selectChoiceIsDone, timeIsCorrect } from "../tools/validators"
-import { Group } from "../types/Objects"
 import { debriefTimingFieldsetProps } from "../types/Sections"
 
 export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.Element => {
-	const [groups, setGroups] = useState<Array<string>>([])
-	const belongings = ["DET25F", "HORS DET25F"]
 	const done = ["ME", "MPE", "CNL"]
 	const cause = ["MTO", "TECH", "OPS"]
-	useAsyncEffect(async () => {
-		const allGroups = await getFetchRequest(DB_URL + "groups")
-
-		setGroups(allGroups.map((group: Group) => group.underGroup))
-	}, [])
 	useEffect(() => {
 		manageCNL(
 			props.done.value,
@@ -30,11 +18,7 @@ export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.El
 			props.onDayDuration,
 			props.setOnDayDuration,
 			props.onNightDuration,
-			props.setOnNightDuration,
-			props.group,
-			props.setGroup,
-			props.belonging,
-			props.setBelonging
+			props.setOnNightDuration
 		)
 	}, [props.done.value])
 	return (
@@ -84,27 +68,6 @@ export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.El
 					control={props.onNightDuration}
 					setControl={props.setOnNightDuration}
 					validator={timeIsCorrect}
-				/>
-			</div>
-			<div className='row form-group m-1'>
-				<Label title='Groupe :' size={4} />
-				<Select
-					size={4}
-					backgroundColor='dark'
-					textColor='white'
-					control={props.group}
-					setControl={props.setGroup}
-					options={groups}
-					validator={selectChoiceIsDone}
-				/>
-				<Select
-					size={4}
-					backgroundColor='dark'
-					textColor='white'
-					control={props.belonging}
-					setControl={props.setBelonging}
-					options={belongings}
-					validator={selectChoiceIsDone}
 				/>
 			</div>
 		</fieldset>

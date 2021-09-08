@@ -12,7 +12,7 @@ import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/saveToDatabase"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { controlArray, Nights } from "../types/Objects"
+import { controlArray, Group, Nights } from "../types/Objects"
 import { getTrigrams, removeAnEntry } from "../tools/tools"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
@@ -20,6 +20,7 @@ import { DB_URL } from "../Datas/datas"
 import { useEffect } from "react"
 import { manageAddableList, manageCrewMembers, manageNCAreas } from "../tools/form"
 import { tokenCheck } from "../tools/user"
+import { Button } from "../BasicComponents/Button"
 
 export const NewFlightForm = (): JSX.Element => {
 	const history = useHistory()
@@ -36,6 +37,9 @@ export const NewFlightForm = (): JSX.Element => {
 	const [config, setConfig] = useState(INITIAL_FALSE_CONTROL)
 	const [type, setType] = useState(INITIAL_FALSE_CONTROL)
 	const [mission, setMission] = useState(INITIAL_FALSE_CONTROL)
+	const [group, setGroup] = useState(INITIAL_FALSE_CONTROL)
+	const [allGroups, setAllGroups] = useState<Group[]>()
+	const [belonging, setBelonging] = useState(INITIAL_FALSE_CONTROL)
 	const [area, setArea] = useState(INITIAL_FALSE_CONTROL)
 	const [NCArea, setNCArea] = useState(INITIAL_FALSE_SELECT)
 	const [chief, setChief] = useState(INITIAL_FALSE_CONTROL)
@@ -56,6 +60,8 @@ export const NewFlightForm = (): JSX.Element => {
 		config,
 		type,
 		mission,
+		group,
+		belonging,
 		area,
 		NCArea,
 		chief,
@@ -83,7 +89,7 @@ export const NewFlightForm = (): JSX.Element => {
 	}
 	const returnClick = () => history.push("/activities")
 	async function addFlightClick() {
-		const newFlight = await buildNewFlight(hooks, crewMembers)
+		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups!)
 		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
 		if (res === "success") history.push("/activities")
 	}
@@ -97,6 +103,8 @@ export const NewFlightForm = (): JSX.Element => {
 			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "pilote",
 			})
+			const allGroups = await getFetchRequest(DB_URL + "groups")
+			setAllGroups(allGroups)
 			setNights(nights[0])
 			setAddableCrewMembers(getTrigrams(crewMembers))
 			setCDAList(getTrigrams(CDA))
@@ -162,6 +170,10 @@ export const NewFlightForm = (): JSX.Element => {
 						setArea={setArea}
 						NCArea={NCArea}
 						setNCArea={setNCArea}
+						group={group}
+						setGroup={setGroup}
+						belonging={belonging}
+						setBelonging={setBelonging}
 					/>
 				</div>
 				<div className='col-md-6 m-1 justify-content-center'>
@@ -184,12 +196,35 @@ export const NewFlightForm = (): JSX.Element => {
 					/>
 				</div>
 			</form>
-			<AddOrReturnButtons
-				validity={formValidity(hooks)}
-				addContent='Ajouter'
-				addClick={addFlightClick}
-				returnClick={returnClick}
-			/>
+			<div className='row justify-content-center' style={{ width: "100%" }}>
+				<div className='col-md-6 row justify-content-center'>
+					<Button
+						size={4}
+						buttonColor='success'
+						buttonContent='Ajouter'
+						onClick={addFlightClick}
+						disabled={
+							!formValidity([
+								departureDate,
+								departureTime,
+								arrivalDate,
+								arrivalTime,
+								aircraft,
+								fuel,
+								config,
+								type,
+								mission,
+								group,
+								belonging,
+								area,
+								NCArea,
+							])
+						}
+					/>
+					<div className='col-md-1'></div>
+					<Button size={4} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
+				</div>
+			</div>
 		</>
 	)
 }

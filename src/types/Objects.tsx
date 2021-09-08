@@ -93,6 +93,7 @@ export type newAlert = {
 	nav: string
 	rdr: string
 	radio: string
+	tech: string
 }
 export type crewMember = {
 	firstName: string
@@ -225,4 +226,19 @@ export type Group = {
 	manager: string
 	client: string
 	allocation: number
+}
+export type Alert = {
+	departureDate: string
+	chief: string
+	pilot: string
+	mecbo: string
+	nav: string
+	rdr: string
+	radio: string
+	tech: string
+}
+export type Event = {
+	departureDate: string
+	arrivalDate: string
+	event: string
 }

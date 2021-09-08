@@ -30,6 +30,10 @@ export type missionFieldsetProps = {
 	setArea: React.Dispatch<React.SetStateAction<control>>
 	NCArea: control
 	setNCArea: React.Dispatch<React.SetStateAction<control>>
+	group: control
+	setGroup: React.Dispatch<React.SetStateAction<control>>
+	belonging: control
+	setBelonging: React.Dispatch<React.SetStateAction<control>>
 }
 export type crewFieldsetProps = {
 	chief: control
@@ -52,6 +56,8 @@ export type addOrReturnButtonsProps = {
 	addContent: string
 	validity: boolean
 	returnClick: () => void
+	deleteClick: () => void
+	disableDelete: boolean
 	addClick: () => void
 }
 export type eventFieldsetProps = {
@@ -73,16 +79,14 @@ export type alertFieldsetProps = {
 	setRdr: React.Dispatch<React.SetStateAction<control>>
 	radio: control
 	setRadio: React.Dispatch<React.SetStateAction<control>>
+	tech: control
+	setTech: React.Dispatch<React.SetStateAction<control>>
 }
 export type debriefTimingFieldsetProps = {
 	onDayDuration: control
 	setOnDayDuration: React.Dispatch<React.SetStateAction<control>>
 	onNightDuration: control
 	setOnNightDuration: React.Dispatch<React.SetStateAction<control>>
-	group: control
-	setGroup: React.Dispatch<React.SetStateAction<control>>
-	belonging: control
-	setBelonging: React.Dispatch<React.SetStateAction<control>>
 	done: control
 	setDone: React.Dispatch<React.SetStateAction<control>>
 	cause: control

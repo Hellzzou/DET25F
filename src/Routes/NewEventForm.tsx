@@ -1,7 +1,8 @@
 import React, { useState } from "react"
-import { Redirect, useHistory } from "react-router-dom"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Legend } from "../BasicComponents/Legend"
+import { DB_URL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { EventFieldset } from "../Sections/EventFieldset"
@@ -9,11 +10,13 @@ import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
-import { saveNewEvent } from "../tools/saveToDatabase"
+import { postFetchRequest } from "../tools/fetch"
+import { fullfillEvent } from "../tools/form"
+import { buildNewEvent } from "../tools/saveToDatabase"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
 
-export const NewEventForm = (): JSX.Element => {
+export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
 	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
@@ -22,15 +25,33 @@ export const NewEventForm = (): JSX.Element => {
 	const [arrivalTime, setArrivalTime] = useState(INITIAL_FALSE_CONTROL)
 	const [event, setEvent] = useState(INITIAL_FALSE_CONTROL)
 	const hooks = [departureDate, departureTime, arrivalDate, arrivalTime, event]
+	const setters = [setDepartureDate, setDepartureTime, setArrivalDate, setArrivalTime, setEvent]
 	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
-		const newEvent = await saveNewEvent(hooks)
-		if (newEvent === "success") history.push("/activities")
+		const newEvent = buildNewEvent(hooks)
+		const saved = await postFetchRequest(DB_URL + "events/save", { newEvent })
+		if (saved === "success") history.push("/activities")
+	}
+	async function modifyEventClick() {
+		const newEvent = buildNewEvent(hooks)
+		const deleted = await postFetchRequest(DB_URL + "events/deleteOne", { id: match.params.id })
+		if (deleted === "success") {
+			const res = await postFetchRequest(DB_URL + "events/save", { newEvent })
+			if (res === "success") history.push("/activities")
+		}
+	}
+	async function deleteClick() {
+		const deleted = await postFetchRequest(DB_URL + "events/deleteOne", { id: match.params.id })
+		if (deleted === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
-	})
+		if (match.params.id !== "newOne") {
+			const event = await postFetchRequest(DB_URL + "events/findWithId", { id: match.params.id })
+			fullfillEvent(event[0], setters)
+		}
+	}, [])
 	return !token ? (
 		<Redirect to='/' />
 	) : (
@@ -58,8 +79,10 @@ export const NewEventForm = (): JSX.Element => {
 			</form>
 			<AddOrReturnButtons
 				validity={formValidity(hooks)}
-				addContent='Ajouter'
-				addClick={addEventClick}
+				addContent={match.params.id !== "newOne" ? "Modifier" : "Ajouter"}
+				addClick={match.params.id !== "newOne" ? modifyEventClick : addEventClick}
+				deleteClick={deleteClick}
+				disableDelete={match.params.id === "newOne"}
 				returnClick={returnClick}
 			/>
 		</>
