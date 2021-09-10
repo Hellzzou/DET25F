@@ -12,18 +12,17 @@ import { tokenCheck } from "../tools/user"
 
 export const QOG = (): JSX.Element => {
 	const [token, setToken] = useState(true)
-	const [QOGFlights, setQOGFlights] =
-		useState<Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>>()
+	const [QOGFlights, setQOGFlights] = useState<Record<string, { dayDuration: number; nightDuration: number }>[]>()
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allGroups = await getFetchRequest(DB_URL + "groups")
+			const underGroups = await getFetchRequest(DB_URL + "groups/distinctUnderGroup")
 			const yearFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
 				startDate: new Date(new Date().getFullYear(), 0, 1),
 				endDate: new Date(),
 			})
-			setQOGFlights(buildQOG(yearFlights, allGroups))
+			setQOGFlights(buildQOG(yearFlights, underGroups))
 		}
 	}, [])
 	return !token ? (
