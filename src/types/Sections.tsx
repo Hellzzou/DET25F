@@ -154,3 +154,9 @@ export type FlightTableProps = {
 export type QOGTableProps = {
 	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>
 }
+export type DBCardProps = {
+	title: string
+	infos: string
+	warning: string
+	onClick: () => void
+}

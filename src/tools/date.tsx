@@ -6,11 +6,19 @@ export const getWeekNumber = (date: number): number => {
 	const year = new Date(date).getFullYear()
 	let i = 0
 	while (i <= 7) {
-		if (new Date(year, 0, 1).getDay() === 0) break
+		if (new Date(new Date(date).getFullYear(), 0, 1).getDay() === 0) break
 		i++
 	}
 	const firstMonday = Date.parse(new Date(year, 0, i).toDateString())
 	return Math.ceil((date - firstMonday) / 1000 / 60 / 60 / 24 / 7) + 1
+}
+export const findNumberOfWeeks = (): number => {
+	let i = 0
+	while (i <= 7) {
+		if (new Date(new Date().getFullYear(), 0, 1).getDay() === 0) break
+		i++
+	}
+	return getWeekNumber(Date.parse(new Date(new Date().getFullYear(), 11, 31 - i).toDateString())) + 1
 }
 export const getHour = (date: Date): string => {
 	const hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours()

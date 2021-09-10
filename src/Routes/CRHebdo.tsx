@@ -4,7 +4,7 @@ import useAsyncEffect from "use-async-effect"
 import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { buildCrHebdo } from "../tools/buildQOG"
+import { buildWeekReport } from "../tools/buildQOG"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { hebdoColor, sumHebdoFlights, sumHebdoFlightsByUnderGroups, sumHebdoFlightsByWeek } from "../tools/table"
 
@@ -18,7 +18,7 @@ export const CRHebdo = (): JSX.Element => {
 			startDate: new Date(new Date().getFullYear(), 0, 1),
 			endDate: new Date(),
 		})
-		const sortedFlights = buildCrHebdo(yearFlights, underGroups)
+		const sortedFlights = buildWeekReport(yearFlights, underGroups)
 		setFlights(sortedFlights)
 	}, [])
 	return (

@@ -11,6 +11,7 @@ export const Navbar = (): JSX.Element => {
 			<NavButton content='Recherche' link='/flightSearch' />
 			<NavButton content='C/R Mensuel' link='/QOG' />
 			<NavButton content='C/R Hebdo' link='/crHebdo' />
+			<NavButton content='GERER LA DB' link='/manageDB' />
 		</div>
 	)
 }

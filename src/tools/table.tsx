@@ -82,7 +82,6 @@ export const sumQOGFlightsNight = (
 ): number =>
 	englishMonths.reduce((acc, month) => (acc = acc + sumQOGFlightsByMontAndGroupNight(flights, underGroups, month)), 0)
 export const sumHebdoFlightsByUnderGroups = (flights: Record<string, number>[], underGroup: string): number => {
-	console.log(flights)
 	return flights.reduce((acc, week) => (acc = acc + week[underGroup]), 0)
 }
 export const sumHebdoFlightsByWeek = (flight: Record<string, number>, underGroups: string[]): number =>

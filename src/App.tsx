@@ -13,6 +13,7 @@ import { MemberHoursDetail } from "./Routes/MemberHoursDetail"
 import { FlightSearch } from "./Routes/FlightSearch"
 import { QOG } from "./Routes/QOG"
 import { CRHebdo } from "./Routes/CRHebdo"
+import { ManageDB } from "./Routes/ManageDB"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -31,6 +32,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/flightSearch' component={FlightSearch} />
 				<Route path='/QOG' component={QOG} />
 				<Route path='/crHebdo' component={CRHebdo} />
+				<Route path='/manageDB' component={ManageDB} />
 			</Switch>
 		</BrowserRouter>
 	)
