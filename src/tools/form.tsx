@@ -228,6 +228,7 @@ export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetSta
 	setters[4]({ value: alert.nav, validity: true, disabled: false })
 	setters[5]({ value: alert.rdr, validity: true, disabled: false })
 	setters[6]({ value: alert.radio, validity: true, disabled: false })
+	setters[7]({ value: alert.tech, validity: true, disabled: false })
 }
 export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
 	const departureTime = event.departureDate.split("T")[1].split("Z")[0]

@@ -19,7 +19,7 @@ import { QOGTableProps } from "../types/Sections"
 
 export const QOGTable = (props: QOGTableProps): JSX.Element => {
 	const [allGroups, setAllGroups] = useState([INITIAL_GROUP])
-	const [allDistinctGroups, setAllDistinctGroups] = useState(["1"])
+	const [allDistinctGroups, setAllDistinctGroups] = useState([])
 	useAsyncEffect(async () => {
 		const allGroups = await getFetchRequest(DB_URL + "groups")
 		setAllGroups(allGroups)

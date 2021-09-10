@@ -48,13 +48,10 @@ export const Week = (): JSX.Element => {
 	useAsyncEffect(async () => {
 		const weekFlights = await getWeekEvents(monday, monday + 7 * inDays, "flights")
 		if (typeof weekFlights !== "string") setWeekFlights(weekFlights)
-		else console.log(weekFlights)
 		const weekEvents = await getWeekEvents(monday, monday + 7 * inDays, "events")
 		if (typeof weekEvents !== "string") setWeekEvents(weekEvents)
-		else console.log(weekEvents)
 		const weekAlerts = await getWeekEvents(monday, monday + 7 * inDays, "alerts")
 		if (typeof weekAlerts !== "string") setWeekAlerts(weekAlerts)
-		else console.log(weekAlerts)
 		const nights = await getFetchRequest(DB_URL + "nights")
 		setNights(nights[0])
 	}, [monday])

@@ -34,10 +34,10 @@ export async function buildNewFlight(
 	const mecboTPA: Array<mecboTPA> = []
 	const radioTPA: Array<radioTPA> = []
 	const denaeTPA: Array<denaeTPA> = []
-	pilotTPA.push({ name: hooks[11].value, TPA: INITIAL_PILOTTPA })
-	pilotTPA.push({ name: hooks[12].value, TPA: INITIAL_PILOTTPA })
-	pilotEQA.push({ name: hooks[11].value, EQA: INITIAL_PILOTEQA })
-	pilotEQA.push({ name: hooks[12].value, EQA: INITIAL_PILOTEQA })
+	pilotTPA.push({ name: hooks[13].value, TPA: INITIAL_PILOTTPA })
+	pilotTPA.push({ name: hooks[14].value, TPA: INITIAL_PILOTTPA })
+	pilotEQA.push({ name: hooks[13].value, EQA: INITIAL_PILOTEQA })
+	pilotEQA.push({ name: hooks[14].value, EQA: INITIAL_PILOTEQA })
 
 	crewMembers.value.forEach((member) => {
 		const onBoardFunction =
@@ -89,7 +89,8 @@ export const buildDebriefedFlight = (
 	denaeTPA: Array<denaeTPA>,
 	pilotEQA: Array<pilotEQA>,
 	jAero: string,
-	nAero: string
+	nAero: string,
+	allGroups: Group[]
 ): unknown => {
 	const dayDuration =
 		hooks[15].value === "CNL" ? 0 : returnDayNightDuration(hooks[1].value, hooks[3].value, jAero, nAero).jour
@@ -122,6 +123,8 @@ export const buildDebriefedFlight = (
 		done: hooks[15].value,
 		cause: hooks[16].value,
 		group: hooks[17].value,
+		manager: allGroups.find((group) => group.underGroup === hooks[17].value)?.manager,
+		client: allGroups.find((group) => group.underGroup === hooks[17].value)?.client,
 		belonging: hooks[18].value,
 		pilotTPA: pilotTPA,
 		mecboTPA: mecboTPA,
@@ -130,6 +133,7 @@ export const buildDebriefedFlight = (
 		pilotEQA: pilotEQA,
 		crewTPA: crewTPA,
 	}
+	console.log(debriefedFlight)
 	return debriefedFlight
 }
 

@@ -218,7 +218,8 @@ export const DebriefFlightForm = ({
 			denaeTPA,
 			pilotEQA,
 			match.params.jAero,
-			match.params.nAero
+			match.params.nAero,
+			allGroups!
 		)
 		const saved = await postFetchRequest(DB_URL + "flights/save", { newFlight: debriefedFlight })
 		if (saved === "success") {

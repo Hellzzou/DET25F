@@ -1,4 +1,5 @@
 import React from "react"
+import { useEffect } from "react"
 import { CrewTPA } from "../Articles/CrewTPA"
 import { MecboTPA } from "../Articles/MecboTPA"
 import { NavTPA } from "../Articles/NavTPA"

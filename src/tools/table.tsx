@@ -7,7 +7,11 @@ export const tableColor = (group: string): string => {
 	if (group === "2") return "danger"
 	return "primary"
 }
-
+export const hebdoColor = (underGroup: string): string => {
+	if (/^1/.test(underGroup)) return "warning"
+	if (/^2/.test(underGroup)) return "danger"
+	return "primary"
+}
 export const groupFilter = (groups: Group[], groupName: string): Group[] => {
 	const regex = "^" + groupName
 	return groups.filter((group) => new RegExp(regex).test(group.underGroup))
@@ -70,18 +74,18 @@ export const sumQOGFlightsByMontAndGroupNight = (
 export const sumQOGFlights = (
 	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
 	underGroups: Group[]
-): number => {
-	return englishMonths.reduce(
-		(acc, month) => (acc = acc + sumQOGFlightsByMontAndGroup(flights, underGroups, month)),
-		0
-	)
-}
+): number =>
+	englishMonths.reduce((acc, month) => (acc = acc + sumQOGFlightsByMontAndGroup(flights, underGroups, month)), 0)
 export const sumQOGFlightsNight = (
 	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
 	underGroups: Group[]
-): number => {
-	return englishMonths.reduce(
-		(acc, month) => (acc = acc + sumQOGFlightsByMontAndGroupNight(flights, underGroups, month)),
-		0
-	)
+): number =>
+	englishMonths.reduce((acc, month) => (acc = acc + sumQOGFlightsByMontAndGroupNight(flights, underGroups, month)), 0)
+export const sumHebdoFlightsByUnderGroups = (flights: Record<string, number>[], underGroup: string): number => {
+	console.log(flights)
+	return flights.reduce((acc, week) => (acc = acc + week[underGroup]), 0)
 }
+export const sumHebdoFlightsByWeek = (flight: Record<string, number>, underGroups: string[]): number =>
+	underGroups.reduce((acc, underGroup) => (acc = acc + flight[underGroup]), 0)
+export const sumHebdoFlights = (flights: Record<string, number>[], underGroups: string[]): number =>
+	underGroups.reduce((acc, underGroup) => (acc = acc + sumHebdoFlightsByUnderGroups(flights, underGroup)), 0)
