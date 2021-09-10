@@ -45,14 +45,9 @@ export const buildWeekReport = (yearFlights: flight[], allunderGroups: string[])
 	// build an Array with objects where all groups equals 0, its length equals the number of week in the year
 	const emptyArray = Array.from(Array(findNumberOfWeeks()), () => allUnderGroupsToZero(allunderGroups))
 	// sum all the year flights of the same week sorting them by week and groups
-	const sortedArray = yearFlights.reduce<Record<string, number>[]>((acc, flight) => {
-		if (!acc[getWeekNumber(Date.parse(flight.departureDate)) - 1])
-			acc[getWeekNumber(Date.parse(flight.departureDate)) - 1] = allUnderGroupsToZero(allunderGroups)
+	return yearFlights.reduce<Record<string, number>[]>((acc, flight) => {
 		acc[getWeekNumber(Date.parse(flight.departureDate)) - 1][flight.group] +=
 			parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
 		return acc
-	}, [])
-	// merge the two arrays
-	sortedArray.map((week) => (emptyArray[sortedArray.indexOf(week)] = week))
-	return emptyArray
+	}, emptyArray)
 }
