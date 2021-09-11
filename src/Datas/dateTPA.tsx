@@ -1,3 +1,5 @@
+import { denaeDateTPA, mecboDateTPA, pilotDateTPA, radioDateTPA } from "../types/Objects"
+
 export const old = new Date(1970, 1, 1)
 export const second = new Date(1985, 5, 10)
 
@@ -54,7 +56,7 @@ export const INITIAL_PILOT_DATE_EQA = {
 	fourMonthsNight: 0,
 	lastMonth: 0,
 }
-export const INITIAL_DATE_TPAS: Record<string, Record<string, Date | Date[]>> = {
+export const INITIAL_DATE_TPAS: Record<string, pilotDateTPA | mecboDateTPA | radioDateTPA | denaeDateTPA> = {
 	pilote: INITIAL_PILOT_DATE_TPA,
 	CDA: INITIAL_PILOT_DATE_TPA,
 	MECBO: INITIAL_MECBO_DATE_TPA,

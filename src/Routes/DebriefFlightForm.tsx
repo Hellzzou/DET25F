@@ -4,7 +4,14 @@ import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
 import { DB_URL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
-import { INITIAL_CREWTPA } from "../Datas/TPA"
+import {
+	INITIAL_CREWTPA,
+	INITIAL_DENAETPA,
+	INITIAL_MECBOTPA,
+	INITIAL_PILOTEQA,
+	INITIAL_PILOTTPA,
+	INITIAL_RADIOTPA,
+} from "../Datas/TPA"
 import { CrewFieldset } from "../Sections/CrewFieldset"
 import { CrewTPAFieldset } from "../Sections/CrewTPAFieldset"
 import { DebriefTimingFieldset } from "../Sections/DebriefTimingFieldset"
@@ -13,20 +20,10 @@ import { MissionFieldset } from "../Sections/MissionFieldset"
 import { Navbar } from "../Sections/Navbar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import {
-	addTPA,
-	changePilotsEQA,
-	changePilotsTPA,
-	fullfillFlightForm,
-	manageAddableList,
-	manageCrewMembers,
-	manageDuration,
-	manageNCAreas,
-	removeCrewMembers,
-	removeTPA,
-} from "../tools/form"
-import { buildDebriefedFlight, buildNewFlight } from "../tools/saveToDatabase"
-import { returnZeroOrValue } from "../tools/tools"
+import { manageDuration, manageNCAreas } from "../tools/formManager"
+import { fullfillFlightForm } from "../tools/fullfillForms"
+import { buildDebriefedFlight, buildNewFlight } from "../tools/buildEvents"
+import { returnZeroOrValue } from "../tools/maths"
 import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import {
@@ -40,6 +37,7 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
+import { INITIAL_GROUP } from "../Datas/group"
 
 export const DebriefFlightForm = ({
 	match,
@@ -50,14 +48,14 @@ export const DebriefFlightForm = ({
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalTime, setArrivalTime] = useState(INITIAL_FALSE_CONTROL)
-	const [dayDuration, setDayDuration] = useState({ value: 0, validity: true })
-	const [nightDuration, setNightDuration] = useState({ value: 0, validity: true })
+	const [dayDuration, setDayDuration] = useState(INITIAL_FALSE_CONTROL)
+	const [nightDuration, setNightDuration] = useState(INITIAL_FALSE_CONTROL)
 	const [aircraft, setAircraft] = useState(INITIAL_FALSE_CONTROL)
 	const [fuel, setFuel] = useState(INITIAL_FALSE_CONTROL)
 	const [config, setConfig] = useState(INITIAL_FALSE_CONTROL)
 	const [type, setType] = useState(INITIAL_FALSE_CONTROL)
 	const [mission, setMission] = useState(INITIAL_FALSE_CONTROL)
-	const [allGroups, setAllGroups] = useState<Group[]>()
+	const [allGroups, setAllGroups] = useState<Group[]>(INITIAL_GROUP)
 	const [area, setArea] = useState(INITIAL_FALSE_CONTROL)
 	const [NCArea, setNCArea] = useState(INITIAL_FALSE_CONTROL)
 	const [group, setGroup] = useState(INITIAL_FALSE_CONTROL)
@@ -160,19 +158,32 @@ export const DebriefFlightForm = ({
 		setAddableCrewMembers(addableCrewMembers.filter((crewMember) => crewMember !== addMemberSelect.value))
 		setDeleteMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		setAddMemberSelect({ value: "Choix...", validity: false, disabled: false })
-		addTPA(
-			addMemberSelect.value,
-			allMembers,
-			pilotTPA,
-			mecboTPA,
-			radioTPA,
-			denaeTPA,
-			pilotEQA,
-			setPilotTPA,
-			setMecboTPA,
-			setRadioTPA,
-			setDenaeTPA,
-			setPilotEQA
+		const { onBoardFunction } =
+			allMembers[allMembers.findIndex((element: crewMember) => element.trigram === addMemberSelect.value)]
+		setPilotTPA(
+			["CDA", "pilote"].includes(onBoardFunction)
+				? pilotTPA.concat([{ name: addMemberSelect.value, TPA: INITIAL_PILOTTPA }])
+				: pilotTPA
+		)
+		setMecboTPA(
+			onBoardFunction === "MECBO"
+				? mecboTPA.concat([{ name: addMemberSelect.value, TPA: INITIAL_MECBOTPA }])
+				: mecboTPA
+		)
+		setRadioTPA(
+			onBoardFunction === "GETBO"
+				? radioTPA.concat([{ name: addMemberSelect.value, TPA: INITIAL_RADIOTPA }])
+				: radioTPA
+		)
+		setDenaeTPA(
+			onBoardFunction === "DENAE"
+				? denaeTPA.concat([{ name: addMemberSelect.value, TPA: INITIAL_DENAETPA }])
+				: denaeTPA
+		)
+		setPilotEQA(
+			["CDA", "pilote"].includes(onBoardFunction)
+				? pilotEQA.concat([{ name: addMemberSelect.value, EQA: INITIAL_PILOTEQA }])
+				: pilotEQA
 		)
 	}
 	const deleteCrewMember = () => {
@@ -184,23 +195,15 @@ export const DebriefFlightForm = ({
 		addableCrewMembers.push(deleteMemberSelect.value)
 		setDeleteMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		setAddMemberSelect({ value: "Choix...", validity: false, disabled: false })
-		removeTPA(
-			deleteMemberSelect.value,
-			pilotTPA,
-			mecboTPA,
-			radioTPA,
-			denaeTPA,
-			pilotEQA,
-			setPilotTPA,
-			setMecboTPA,
-			setRadioTPA,
-			setDenaeTPA,
-			setPilotEQA
-		)
+		setPilotTPA(pilotTPA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
+		setMecboTPA(mecboTPA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
+		setRadioTPA(radioTPA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
+		setDenaeTPA(denaeTPA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
+		setPilotEQA(pilotEQA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
 	}
 	const returnClick = () => history.push("/activities")
 	async function modifyFlightClick() {
-		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups!)
+		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups)
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
@@ -219,7 +222,7 @@ export const DebriefFlightForm = ({
 			pilotEQA,
 			match.params.jAero,
 			match.params.nAero,
-			allGroups!
+			allGroups
 		)
 		const saved = await postFetchRequest(DB_URL + "flights/save", { newFlight: debriefedFlight })
 		if (saved === "success") {
@@ -246,26 +249,58 @@ export const DebriefFlightForm = ({
 			setCDAList(CDA.map((member: crewMember) => member.trigram))
 			setPilotList(pilots.map((member: crewMember) => member.trigram))
 			setAddableCrewMembers(
-				removeCrewMembers(
-					crewMembers.map((member: crewMember) => member.trigram),
-					flight[0].crewMembers,
-					flight[0].chief,
-					flight[0].pilot
-				)
+				crewMembers
+					.map((member: crewMember) => member.trigram)
+					.filter(
+						(crewMember: string) =>
+							!flight[0].crewMembers.includes(crewMember) &&
+							crewMember !== flight[0].chief &&
+							crewMember !== flight[0].pilot
+					)
 			)
 		}
 	}, [])
 	useEffect(() => {
-		setAddableCrewMembers(manageAddableList(addableCrewMembers, CDAlist, chief.value))
-		manageCrewMembers(crewMembers, setCrewMembers, chief.value)
-		setPilotTPA(changePilotsTPA(chief.value, pilotTPA, "chief"))
-		setPilotEQA(changePilotsEQA(chief.value, pilotEQA, "chief"))
+		setAddableCrewMembers(
+			addableCrewMembers
+				.filter((member) => !CDAlist.includes(member))
+				.concat(CDAlist)
+				.filter((member) => member !== chief.value)
+		)
+		if (!!chief.value && crewMembers.value.length > 0) {
+			setCrewMembers({
+				value: crewMembers.value.filter((member) => member !== chief.value),
+				validity: crewMembers.validity,
+				disabled: false,
+			})
+		}
+		const newpilotTPA = pilotTPA.filter((pilotTPA) => pilotTPA.name !== chief.value)
+		newpilotTPA.splice(0, 1, { name: chief.value, TPA: INITIAL_PILOTTPA })
+		setPilotTPA(newpilotTPA)
+		const newPilotEQA = pilotEQA.filter((pilotTPA) => pilotTPA.name !== chief.value)
+		newPilotEQA.splice(0, 1, { name: chief.value, EQA: INITIAL_PILOTEQA })
+		setPilotEQA(newPilotEQA)
 	}, [chief.value])
 	useEffect(() => {
-		setAddableCrewMembers(manageAddableList(addableCrewMembers, pilotList, pilot.value))
-		manageCrewMembers(crewMembers, setCrewMembers, pilot.value)
-		setPilotTPA(changePilotsTPA(pilot.value, pilotTPA, "pilot"))
-		setPilotEQA(changePilotsEQA(pilot.value, pilotEQA, "pilot"))
+		setAddableCrewMembers(
+			addableCrewMembers
+				.filter((member) => !pilotList.includes(member))
+				.concat(pilotList)
+				.filter((member) => member !== pilot.value)
+		)
+		if (!!pilot.value && crewMembers.value.length > 0) {
+			setCrewMembers({
+				value: crewMembers.value.filter((member) => member !== pilot.value),
+				validity: crewMembers.validity,
+				disabled: false,
+			})
+		}
+		const newpilotTPA = pilotTPA.filter((pilotTPA) => pilotTPA.name !== pilot.value)
+		newpilotTPA.splice(1, 1, { name: pilot.value, TPA: INITIAL_PILOTTPA })
+		setPilotTPA(newpilotTPA)
+		const newPilotEQA = pilotEQA.filter((pilotTPA) => pilotTPA.name !== pilot.value)
+		newPilotEQA.splice(1, 1, { name: pilot.value, EQA: INITIAL_PILOTEQA })
+		setPilotEQA(newPilotEQA)
 	}, [pilot.value])
 	useEffect(() => {
 		manageNCAreas(area.value, setNCArea, NCArea.value)
@@ -282,8 +317,8 @@ export const DebriefFlightForm = ({
 				.map((eqa) => returnZeroOrValue(eqa.EQA.PILN.value))
 				.reduce((previous, current) => previous + current)
 		}
-		setDayDuration({ value: durations.jour, validity: 2 * durations.jour === day })
-		setNightDuration({ value: durations.nuit, validity: 2 * durations.nuit === night })
+		setDayDuration({ value: durations.jour.toString(), validity: 2 * durations.jour === day, disabled: false })
+		setNightDuration({ value: durations.nuit.toString(), validity: 2 * durations.nuit === night, disabled: false })
 		setPilotEQA(
 			pilotEQA.map((eqa) => {
 				return {

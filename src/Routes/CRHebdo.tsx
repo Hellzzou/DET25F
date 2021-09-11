@@ -5,11 +5,12 @@ import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { buildWeekReport } from "../tools/buildReports"
+import { hebdoColor } from "../tools/colorManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { hebdoColor, sumHebdoFlights, sumHebdoFlightsByUnderGroups, sumHebdoFlightsByWeek } from "../tools/table"
+import { weekReport, weekReportByUnderGroups, weekReportByWeek } from "../tools/reportCalculator"
 
 export const CRHebdo = (): JSX.Element => {
-	const [underGroups, setUnderGroups] = useState<string[]>()
+	const [underGroups, setUnderGroups] = useState<string[]>(["110"])
 	const [flights, setFlights] = useState<Record<string, number>[]>()
 	useAsyncEffect(async () => {
 		const underGroups = await getFetchRequest(DB_URL + "groups/distinctUnderGroup")
@@ -54,7 +55,7 @@ export const CRHebdo = (): JSX.Element => {
 									flights.map((flight) => (
 										<td key={flights.indexOf(flight)}>{flight[underGroup].toFixed(1)}</td>
 									))}
-								<td>{!!flights && sumHebdoFlightsByUnderGroups(flights!, underGroup).toFixed(1)}</td>
+								<td>{!!flights && weekReportByUnderGroups(flights, underGroup).toFixed(1)}</td>
 							</tr>
 						))}
 				</tbody>
@@ -64,10 +65,10 @@ export const CRHebdo = (): JSX.Element => {
 						{!!flights &&
 							flights.map((flight) => (
 								<th key={flights.indexOf(flight)}>
-									{sumHebdoFlightsByWeek(flight, underGroups!).toFixed(1)}
+									{weekReportByWeek(flight, underGroups).toFixed(1)}
 								</th>
 							))}
-						<th>{!!flights && sumHebdoFlights(flights!, underGroups!).toFixed(1)}</th>
+						<th>{!!flights && weekReport(flights, underGroups).toFixed(1)}</th>
 					</tr>
 				</tfoot>
 			</table>

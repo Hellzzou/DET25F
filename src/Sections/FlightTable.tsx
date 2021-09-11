@@ -1,5 +1,5 @@
 import React from "react"
-import { returnZeroOrValue } from "../tools/tools"
+import { returnZeroOrValue } from "../tools/maths"
 import { FlightTableProps } from "../types/Sections"
 
 export const FlightTable = (props: FlightTableProps): JSX.Element => {

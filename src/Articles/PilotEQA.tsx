@@ -4,7 +4,7 @@ import { pilotEQAProps } from "../types/Articles"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { Switch } from "../BasicComponents/Switch"
 import { pilotEQA } from "../types/Objects"
-import { returnZeroOrValue } from "../tools/tools"
+import { returnZeroOrValue } from "../tools/maths"
 
 export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
@@ -96,8 +96,16 @@ export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 				})
 			}
 		})
-		props.setDayDuration({ value: props.dayDuration.value, validity: 2 * props.dayDuration.value === day })
-		props.setNightDuration({ value: props.nightDuration.value, validity: 2 * props.nightDuration.value === night })
+		props.setDayDuration({
+			value: props.dayDuration.value,
+			validity: 2 * parseFloat(props.dayDuration.value) === day,
+			disabled: false,
+		})
+		props.setNightDuration({
+			value: props.nightDuration.value,
+			validity: 2 * parseFloat(props.nightDuration.value) === night,
+			disabled: false,
+		})
 		props.setPilotEQA(
 			newControls.map((eqa) => {
 				return {
@@ -106,12 +114,12 @@ export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 						PILJ: {
 							name: "pil jour",
 							value: eqa.EQA.PILJ.value,
-							validity: 2 * props.dayDuration.value === day,
+							validity: 2 * parseFloat(props.dayDuration.value) === day,
 						},
 						PILN: {
 							name: "pil nuit",
 							value: eqa.EQA.PILN.value,
-							validity: 2 * props.nightDuration.value === night,
+							validity: 2 * parseFloat(props.nightDuration.value) === night,
 						},
 						ATTJ: { name: "att jour", value: eqa.EQA.ATTJ.value },
 						BAN: { name: "ba nuit", value: eqa.EQA.BAN.value },

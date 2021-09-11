@@ -1,19 +1,16 @@
-import { flight } from "../types/Objects"
-import { findNumberOfWeeks, getWeekNumber } from "./date"
+import { Duration, flight } from "../types/Objects"
+import { findNumberOfWeeks, getWeekNumber } from "./dateManager"
 
-export const buildQOG = (
-	yearFlights: flight[],
-	allUnderGroups: string[]
-): Record<string, { dayDuration: number; nightDuration: number }>[] => {
+export const buildQOG = (yearFlights: flight[], allUnderGroups: string[]): Record<string, Duration>[] => {
 	const emptyArray = Array.from(Array(12), () =>
-		allUnderGroups.reduce<Record<string, { dayDuration: number; nightDuration: number }>>((acc, underGroup) => {
+		allUnderGroups.reduce<Record<string, Duration>>((acc, underGroup) => {
 			if (!acc[underGroup]) acc[underGroup] = { dayDuration: 0, nightDuration: 0 }
 			return acc
 		}, {})
 	)
 	// Here we want to sort the year flights by months then by groups, keeping only the durations
 	// like { january : { group : {dayDuration, nightDuration}[]}}
-	return yearFlights.reduce<Record<string, { dayDuration: number; nightDuration: number }>[]>((acc, flight) => {
+	return yearFlights.reduce<Record<string, Duration>[]>((acc, flight) => {
 		const { group, dayDuration, nightDuration } = flight
 		const flightDate = new Date(flight.departureDate).getMonth()
 		acc[flightDate][group].dayDuration += parseFloat(dayDuration)

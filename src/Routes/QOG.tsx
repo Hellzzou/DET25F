@@ -9,10 +9,11 @@ import { QOGTable } from "../Sections/QOGTable"
 import { buildQOG } from "../tools/buildReports"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
+import { Duration } from "../types/Objects"
 
 export const QOG = (): JSX.Element => {
 	const [token, setToken] = useState(true)
-	const [QOGFlights, setQOGFlights] = useState<Record<string, { dayDuration: number; nightDuration: number }>[]>()
+	const [QOGFlights, setQOGFlights] = useState<Record<string, Duration>[]>()
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)

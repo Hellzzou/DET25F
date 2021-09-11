@@ -1,6 +1,6 @@
 import React from "react"
 import { Card } from "react-bootstrap"
-import { getAnnual, getQuadri } from "../tools/date"
+import { getAnnual, getQuadri } from "../tools/colorManager"
 import { CrewTPACardProps } from "../types/BasicComponents"
 
 export const CrewTPACard = (props: CrewTPACardProps): JSX.Element => {

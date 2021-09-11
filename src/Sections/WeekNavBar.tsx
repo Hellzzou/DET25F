@@ -1,7 +1,7 @@
 import React from "react"
 import { weekNavBarProps } from "../types/BasicComponents"
 import { Button } from "../BasicComponents/Button"
-import { getWeekNumber } from "../tools/date"
+import { getWeekNumber } from "../tools/dateManager"
 
 export const WeekNavBar = (props: weekNavBarProps): JSX.Element => {
 	return (

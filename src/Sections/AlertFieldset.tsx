@@ -56,7 +56,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.chief}
 					setControl={props.setChief}
-					options={pilots!}
+					options={pilots}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -68,7 +68,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.pilot}
 					setControl={props.setPilot}
-					options={pilots!}
+					options={pilots}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -80,7 +80,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.mecbo}
 					setControl={props.setMecbo}
-					options={mecbos!}
+					options={mecbos}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -92,7 +92,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.nav}
 					setControl={props.setNav}
-					options={navs!}
+					options={navs}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -104,7 +104,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.rdr}
 					setControl={props.setRdr}
-					options={navs!}
+					options={navs}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -116,7 +116,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.radio}
 					setControl={props.setRadio}
-					options={radios!}
+					options={radios}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -128,7 +128,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.tech}
 					setControl={props.setTech}
-					options={techs!}
+					options={techs}
 					validator={selectChoiceIsDone}
 				/>
 			</div>

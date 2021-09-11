@@ -107,10 +107,10 @@ export type crewTPAFieldsetProps = {
 	setDenaeTPA: React.Dispatch<React.SetStateAction<Array<denaeTPA>>>
 	pilotEQA: Array<pilotEQA>
 	setPilotEQA: React.Dispatch<React.SetStateAction<Array<pilotEQA>>>
-	dayDuration: { value: number; validity: boolean }
-	setDayDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
-	nightDuration: { value: number; validity: boolean }
-	setNightDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
+	dayDuration: control
+	setDayDuration: React.Dispatch<React.SetStateAction<control>>
+	nightDuration: control
+	setNightDuration: React.Dispatch<React.SetStateAction<control>>
 }
 export type NavbarTPAEQAProps = {
 	date: number

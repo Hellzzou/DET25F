@@ -1,11 +1,7 @@
 import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/dateTPA"
-import { crewMember, flight } from "../types/Objects"
+import { AllEQAs, crewMember, flight } from "../types/Objects"
 
-export const buildAllEQAs = (
-	members: Array<crewMember>,
-	fourYearsFlights: Array<flight>,
-	month: number
-): Array<any> => {
+export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array<flight>, month: number): AllEQAs => {
 	const lastYear = new Date(new Date().getFullYear() - 1, month, 1)
 	const fourMonths = new Date(new Date().getFullYear(), month - 4, 1)
 	const lastMonth = new Date(new Date().getFullYear(), month, 1)

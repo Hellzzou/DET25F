@@ -1,4 +1,5 @@
 import {
+	control,
 	crewTPA,
 	denaeDateTPA,
 	denaeTPA,
@@ -47,10 +48,10 @@ export type pilotEQAProps = {
 	pilotEQAs: Array<pilotEQA>
 	setPilotEQA: React.Dispatch<React.SetStateAction<Array<pilotEQA>>>
 	index: number
-	dayDuration: { value: number; validity: boolean }
-	setDayDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
-	nightDuration: { value: number; validity: boolean }
-	setNightDuration: React.Dispatch<React.SetStateAction<{ value: number; validity: boolean }>>
+	dayDuration: control
+	setDayDuration: React.Dispatch<React.SetStateAction<control>>
+	nightDuration: control
+	setNightDuration: React.Dispatch<React.SetStateAction<control>>
 }
 export type PilotMiniCardProps = {
 	pilot: {

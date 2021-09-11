@@ -11,6 +11,7 @@ import {
 import {
 	control,
 	controlArray,
+	crewMember,
 	crewTPA,
 	denaeTPA,
 	Group,
@@ -19,15 +20,15 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
+import { returnDayNightDuration } from "./dateManager"
 import { getFetchRequest } from "./fetch"
-import { returnDayNightDuration } from "./tools"
 
 export async function buildNewFlight(
 	hooks: Array<control>,
 	crewMembers: controlArray,
 	allGroups: Group[]
 ): Promise<unknown> {
-	const allMembers = await getFetchRequest(DB_URL + "crewMembers")
+	const allMembers: crewMember[] = await getFetchRequest(DB_URL + "crewMembers")
 	const pilotTPA: Array<pilotTPA> = []
 	const pilotEQA: Array<pilotEQA> = []
 	const mecboTPA: Array<mecboTPA> = []
@@ -40,7 +41,7 @@ export async function buildNewFlight(
 
 	crewMembers.value.forEach((member) => {
 		const onBoardFunction =
-			allMembers[allMembers.findIndex((element: any) => element.trigram === member)].onBoardFunction
+			allMembers[allMembers.findIndex((element) => element.trigram === member)].onBoardFunction
 		if (onBoardFunction === "CDA" || onBoardFunction === "pilote") {
 			pilotTPA.push({ name: member, TPA: INITIAL_PILOTTPA })
 			pilotEQA.push({ name: member, EQA: INITIAL_PILOTEQA })

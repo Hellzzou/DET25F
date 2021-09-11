@@ -9,15 +9,15 @@ import { getFetchRequest } from "../tools/fetch"
 import {
 	allocSumOfAGroup,
 	groupFilter,
+	nightReportByCol,
+	monthReportNight,
 	sumQOGFlights,
-	sumQOGFlightsByMontAndGroup,
-	sumQOGFlightsByMontAndGroupNight,
-	sumQOGFlightsNight,
-} from "../tools/table"
+	monthReportByCel,
+} from "../tools/reportCalculator"
 import { QOGTableProps } from "../types/Sections"
 
 export const QOGTable = (props: QOGTableProps): JSX.Element => {
-	const [allGroups, setAllGroups] = useState([INITIAL_GROUP])
+	const [allGroups, setAllGroups] = useState(INITIAL_GROUP)
 	const [allDistinctGroups, setAllDistinctGroups] = useState([])
 	useAsyncEffect(async () => {
 		const allGroups = await getFetchRequest(DB_URL + "groups")
@@ -69,11 +69,7 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 					<th>{allocSumOfAGroup(allGroups).toFixed(1)}</th>
 					{props.flights.map((month) => (
 						<th key={props.flights.indexOf(month)}>
-							{sumQOGFlightsByMontAndGroup(
-								props.flights,
-								allGroups,
-								props.flights.indexOf(month)
-							).toFixed(1)}
+							{monthReportByCel(props.flights, allGroups, props.flights.indexOf(month)).toFixed(1)}
 						</th>
 					))}
 					<th>{sumQOGFlights(props.flights, allGroups).toFixed(1)}</th>
@@ -86,14 +82,10 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 					<th></th>
 					{props.flights.map((month) => (
 						<th key={props.flights.indexOf(month)}>
-							{sumQOGFlightsByMontAndGroupNight(
-								props.flights,
-								allGroups,
-								props.flights.indexOf(month)
-							).toFixed(1)}
+							{nightReportByCol(props.flights, allGroups, props.flights.indexOf(month)).toFixed(1)}
 						</th>
 					))}
-					<th>{sumQOGFlightsNight(props.flights, allGroups).toFixed(1)}</th>
+					<th>{monthReportNight(props.flights, allGroups).toFixed(1)}</th>
 					<th></th>
 				</tr>
 			</tfoot>

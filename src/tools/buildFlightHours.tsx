@@ -1,5 +1,5 @@
 import { crewMember, flight } from "../types/Objects"
-import { returnZeroOrValue } from "./tools"
+import { returnZeroOrValue } from "./maths"
 
 export const crewMembersFlights = (
 	members: Array<crewMember>,

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react"
+import { tableColor } from "../tools/colorManager"
+import { allocRowSpan } from "../tools/spanManager"
 import {
-	allocRowSpan,
 	allocSumOfAGroup,
 	getUnderGroupList,
-	sumQOGFlightsByMontAndGroup,
-	sumQOGFlightsByUnderGroup,
-	sumUnderGroupList,
-	tableColor,
-} from "../tools/table"
+	monthReportByCel,
+	monthReportByUnderGRoup,
+	sameAllocSum,
+} from "../tools/reportCalculator"
 import { QOGRowProps } from "../types/Articles"
 
 export const QOGRow = (props: QOGRowProps): JSX.Element => {
@@ -31,12 +31,12 @@ export const QOGRow = (props: QOGRowProps): JSX.Element => {
 							{(month[group.underGroup].dayDuration + month[group.underGroup].nightDuration).toFixed(1)}
 						</td>
 					))}
-					<td>{sumQOGFlightsByUnderGroup(props.flights, group.underGroup).toFixed(1)}</td>
+					<td>{monthReportByUnderGRoup(props.flights, group.underGroup).toFixed(1)}</td>
 					{group.allocation !== -1 && (
 						<td rowSpan={allocRowSpan(props.groups!, props.groups.indexOf(group))}>
 							{(
 								group.allocation -
-								sumUnderGroupList(
+								sameAllocSum(
 									props.flights,
 									getUnderGroupList(props.groups!, props.groups.indexOf(group))
 								)
@@ -52,15 +52,11 @@ export const QOGRow = (props: QOGRowProps): JSX.Element => {
 				<th>{allocSumOfAGroup(props.groups).toFixed(1)}</th>
 				{props.flights.map((month) => (
 					<th key={props.flights.indexOf(month)}>
-						{sumQOGFlightsByMontAndGroup(
-							props.flights,
-							props.groups!,
-							props.flights.indexOf(month)
-						).toFixed(1)}
+						{monthReportByCel(props.flights, props.groups!, props.flights.indexOf(month)).toFixed(1)}
 					</th>
 				))}
 				<th>
-					{sumUnderGroupList(
+					{sameAllocSum(
 						props.flights,
 						props.groups.map((group) => group.underGroup)
 					).toFixed(1)}
@@ -68,7 +64,7 @@ export const QOGRow = (props: QOGRowProps): JSX.Element => {
 				<th>
 					{(
 						allocSumOfAGroup(props.groups) -
-						sumUnderGroupList(
+						sameAllocSum(
 							props.flights,
 							props.groups.map((group) => group.underGroup)
 						)

@@ -2,10 +2,7 @@
 import { INITIAL_DATE_TPAS, old } from "../Datas/dateTPA"
 import { crewMember, denaeTPA, flight, mecboTPA, pilotTPA, radioTPA } from "../types/Objects"
 
-export const buildAllTPAs = (
-	members: Array<crewMember>,
-	allFlights: Array<flight>
-): { pilotTPA: any; mecboTPA: any; radioTPA: any; denaeTPA: any } => {
+export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<flight>): any => {
 	const membersActions = allFlights
 		/**
 		 * here we want a couple flight / member to iterate, so

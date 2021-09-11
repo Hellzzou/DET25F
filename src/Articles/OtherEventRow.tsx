@@ -1,6 +1,7 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { getBetweenColSpan, getColSpan, sortEventByRow } from "../tools/date"
+import { sortEventByRow } from "../tools/buildWeekEvents"
+import { getBetweenColSpan, getColSpan } from "../tools/spanManager"
 import { otherEventProps } from "../types/BasicComponents"
 
 export const OtherEvent = (props: otherEventProps): JSX.Element => {

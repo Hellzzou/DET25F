@@ -8,7 +8,7 @@ import { MissionFieldset } from "../Sections/MissionFieldset"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import { Redirect, useHistory } from "react-router-dom"
-import { buildNewFlight } from "../tools/saveToDatabase"
+import { buildNewFlight } from "../tools/buildEvents"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { controlArray, crewMember, Group, Nights } from "../types/Objects"
@@ -16,9 +16,10 @@ import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { DB_URL } from "../Datas/datas"
 import { useEffect } from "react"
-import { manageNCAreas } from "../tools/form"
+import { manageNCAreas } from "../tools/formManager"
 import { tokenCheck } from "../tools/user"
 import { Button } from "../BasicComponents/Button"
+import { INITIAL_GROUP } from "../Datas/group"
 
 export const NewFlightForm = (): JSX.Element => {
 	const history = useHistory()
@@ -36,7 +37,7 @@ export const NewFlightForm = (): JSX.Element => {
 	const [type, setType] = useState(INITIAL_FALSE_CONTROL)
 	const [mission, setMission] = useState(INITIAL_FALSE_CONTROL)
 	const [group, setGroup] = useState(INITIAL_FALSE_CONTROL)
-	const [allGroups, setAllGroups] = useState<Group[]>()
+	const [allGroups, setAllGroups] = useState<Group[]>(INITIAL_GROUP)
 	const [belonging, setBelonging] = useState(INITIAL_FALSE_CONTROL)
 	const [area, setArea] = useState(INITIAL_FALSE_CONTROL)
 	const [NCArea, setNCArea] = useState(INITIAL_FALSE_SELECT)
@@ -87,7 +88,7 @@ export const NewFlightForm = (): JSX.Element => {
 	}
 	const returnClick = () => history.push("/activities")
 	async function addFlightClick() {
-		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups!)
+		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups)
 		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
 		if (res === "success") history.push("/activities")
 	}

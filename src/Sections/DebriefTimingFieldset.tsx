@@ -3,7 +3,7 @@ import { Input } from "../BasicComponents/input"
 import { Label } from "../BasicComponents/Label"
 import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
-import { manageCNL } from "../tools/form"
+import { manageCNL } from "../tools/formManager"
 import { selectChoiceIsDone, timeIsCorrect } from "../tools/validators"
 import { debriefTimingFieldsetProps } from "../types/Sections"
 

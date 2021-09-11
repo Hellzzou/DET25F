@@ -210,7 +210,7 @@ export type denaeDateTPA = {
 	PGPS: Date
 }
 export type allTPAs = {
-	pilotTPA: Array<Record<string, pilotDateTPA>>
+	pilotTPA: Array<{ name: string; TPA: pilotDateTPA }>
 	mecboTPA: Array<{ name: string; TPA: mecboDateTPA }>
 	radioTPA: Array<{ name: string; TPA: radioDateTPA }>
 	denaeTPA: Array<{ name: string; TPA: denaeDateTPA }>
@@ -241,4 +241,8 @@ export type Event = {
 	departureDate: string
 	arrivalDate: string
 	event: string
+}
+export type Duration = {
+	dayDuration: number
+	nightDuration: number
 }

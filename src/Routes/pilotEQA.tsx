@@ -9,11 +9,12 @@ import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllEQAs } from "../tools/buildsPilotsActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
+import { AllEQAs } from "../types/Objects"
 
 export const PilotEQA = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [dateTocompare, setDateToCompare] = useState(new Date().getMonth())
-	const [pilotEQAs, setPilotEQAs] = useState<Array<any>>([])
+	const [pilotEQAs, setPilotEQAs] = useState<AllEQAs>([])
 	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
 	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
 	useAsyncEffect(async () => {

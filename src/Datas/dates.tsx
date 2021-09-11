@@ -1,3 +1,5 @@
+import { getDateNumber, getMonthNumber } from "../tools/dateManager"
+
 export const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 export const months = [
 	"Janvier",
