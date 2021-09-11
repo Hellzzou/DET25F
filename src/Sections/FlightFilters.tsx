@@ -3,7 +3,6 @@ import useAsyncEffect from "use-async-effect"
 import { Select } from "../BasicComponents/Select"
 import { DB_URL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
-import { getName, getNumber } from "../tools/tools"
 import { selectChoiceIsDone } from "../tools/validators"
 import { crewMember, Group } from "../types/Objects"
 import { FlightFiltersProps } from "../types/Sections"
@@ -24,13 +23,13 @@ export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 		const allGroups = await getFetchRequest(DB_URL + "groups")
 		setGroups(allGroups.map((group: Group) => group.underGroup))
 		const aircraft = await getFetchRequest(DB_URL + "aircraft")
-		setAircraft(getNumber(aircraft))
+		setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
 		const types = await getFetchRequest(DB_URL + "type")
-		setType(getName(types))
+		setType(types.map((type: { name: string }) => type.name))
 		const areas = await getFetchRequest(DB_URL + "area")
-		setAreas(getName(areas))
+		setAreas(areas.map((type: { name: string }) => type.name))
 		const NCAreas = await getFetchRequest(DB_URL + "NCArea")
-		setNCAreas(getName(NCAreas))
+		setNCAreas(NCAreas.map((type: { name: string }) => type.name))
 	}, [])
 	return (
 		<>

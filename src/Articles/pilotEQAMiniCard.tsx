@@ -12,7 +12,6 @@ import { crewMember } from "../types/Objects"
 export const PilotEQAMiniCArd = (props: pilotEQAMiniCArdProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	useAsyncEffect(async () => {
-		console.log(props.pilot)
 		const members = await getFetchRequest(DB_URL + "crewMembers")
 		sertFullName(members.find((member: crewMember) => member.trigram === props.pilot.name))
 	}, [])

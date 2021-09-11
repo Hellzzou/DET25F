@@ -1,7 +1,7 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
 import { getBetweenColSpan, getColSpan } from "../tools/date"
-import { getFlightColor, printArray } from "../tools/tools"
+import { getFlightColor } from "../tools/tools"
 import { flightCellProps } from "../types/BasicComponents"
 
 export const FlightCell = (props: flightCellProps): JSX.Element => {
@@ -39,7 +39,11 @@ export const FlightCell = (props: flightCellProps): JSX.Element => {
 				</div>
 				<div className='row text-center'>
 					<div className='col-md-12'>
-						{props.event.chief + " " + props.event.pilot + " " + printArray(props.event.crewMembers)}
+						{props.event.chief +
+							" " +
+							props.event.pilot +
+							" " +
+							props.event.crewMembers.reduce((acc, value) => (acc += value + " "), "")}
 					</div>
 				</div>
 			</td>

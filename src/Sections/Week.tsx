@@ -8,14 +8,14 @@ import { OtherEvent } from "../Articles/OtherEventRow"
 import { DB_URL } from "../Datas/datas"
 import { currentMonday, days, inDays } from "../Datas/dates"
 import { getSunsets } from "../tools/date"
-import { getFetchRequest } from "../tools/fetch"
-import { getWeekEvents } from "../tools/getWeekEvents"
+import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { newAlert, newEvent, flight, Nights } from "../types/Objects"
 import { WeekNavBar } from "./WeekNavBar"
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
 import { Button } from "../BasicComponents/Button"
 import { FDVButton } from "../BasicComponents/FDVButton"
+import { buildWeekAlerts, buildWeekEvents, buildWeekFlights } from "../tools/buildWeekEvents"
 
 export const Week = (): JSX.Element => {
 	const [monday, setMonday] = useState(currentMonday)
@@ -46,12 +46,21 @@ export const Week = (): JSX.Element => {
 		history.push("/newFlight")
 	}
 	useAsyncEffect(async () => {
-		const weekFlights = await getWeekEvents(monday, monday + 7 * inDays, "flights")
-		if (typeof weekFlights !== "string") setWeekFlights(weekFlights)
-		const weekEvents = await getWeekEvents(monday, monday + 7 * inDays, "events")
-		if (typeof weekEvents !== "string") setWeekEvents(weekEvents)
-		const weekAlerts = await getWeekEvents(monday, monday + 7 * inDays, "alerts")
-		if (typeof weekAlerts !== "string") setWeekAlerts(weekAlerts)
+		const flights = await postFetchRequest(DB_URL + "flights/betweenTwoDates", {
+			start: new Date(monday),
+			end: new Date(monday + 7 * inDays),
+		})
+		const alerts = await postFetchRequest(DB_URL + "alerts/betweenTwoDates", {
+			start: new Date(monday),
+			end: new Date(monday + 7 * inDays),
+		})
+		const events = await postFetchRequest(DB_URL + "events/betweenTwoDates", {
+			start: new Date(monday),
+			end: new Date(monday + 7 * inDays),
+		})
+		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
+		if (typeof flights !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
+		if (typeof flights !== "string") setWeekEvents(buildWeekEvents(events, monday))
 		const nights = await getFetchRequest(DB_URL + "nights")
 		setNights(nights[0])
 	}, [monday])

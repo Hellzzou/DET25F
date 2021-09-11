@@ -95,6 +95,6 @@ export type CrewMemberCardProps = {
 }
 export type QOGRowProps = {
 	groups: Group[]
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[]
 	groupName: string
 }

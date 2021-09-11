@@ -1,6 +1,5 @@
 import React from "react"
 import { useState } from "react"
-import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { Legend } from "../BasicComponents/Legend"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { INITIAL_FALSE_CONTROL, INITIAL_FALSE_SELECT } from "../Datas/initialHooks"
@@ -12,13 +11,12 @@ import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/saveToDatabase"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { controlArray, Group, Nights } from "../types/Objects"
-import { getTrigrams, removeAnEntry } from "../tools/tools"
+import { controlArray, crewMember, Group, Nights } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { DB_URL } from "../Datas/datas"
 import { useEffect } from "react"
-import { manageAddableList, manageCrewMembers, manageNCAreas } from "../tools/form"
+import { manageNCAreas } from "../tools/form"
 import { tokenCheck } from "../tools/user"
 import { Button } from "../BasicComponents/Button"
 
@@ -73,13 +71,13 @@ export const NewFlightForm = (): JSX.Element => {
 			validity: arrayIsNotEmpty(crewMembers.value),
 			disabled: false,
 		})
-		setAddableCrewMembers(removeAnEntry(addableCrewMembers, addMemberSelect.value))
+		setAddableCrewMembers(addableCrewMembers.filter((member) => member !== addMemberSelect.value))
 		setDeleteMemberSelect(INITIAL_FALSE_SELECT)
 		setAddMemberSelect(INITIAL_FALSE_SELECT)
 	}
 	const deleteCrewMember = () => {
 		setCrewMembers({
-			value: removeAnEntry(crewMembers.value, deleteMemberSelect.value),
+			value: crewMembers.value.filter((member) => member !== deleteMemberSelect.value),
 			validity: arrayIsNotEmpty(crewMembers.value),
 			disabled: false,
 		})
@@ -106,18 +104,36 @@ export const NewFlightForm = (): JSX.Element => {
 			const allGroups = await getFetchRequest(DB_URL + "groups")
 			setAllGroups(allGroups)
 			setNights(nights[0])
-			setAddableCrewMembers(getTrigrams(crewMembers))
-			setCDAList(getTrigrams(CDA))
-			setPilotList(getTrigrams(pilots))
+			setAddableCrewMembers(crewMembers.map((crewMember: crewMember) => crewMember.trigram))
+			setCDAList(CDA.map((cda: crewMember) => cda.trigram))
+			setPilotList(pilots.map((pilot: crewMember) => pilot.trigram))
 		}
 	}, [])
 	useEffect(() => {
-		setAddableCrewMembers(manageAddableList(addableCrewMembers, CDAlist, chief.value))
-		manageCrewMembers(crewMembers, setCrewMembers, chief.value)
+		setAddableCrewMembers(
+			addableCrewMembers
+				.filter((member) => !CDAlist.includes(member))
+				.concat(CDAlist)
+				.filter((member) => member !== chief.value)
+		)
+		setCrewMembers({
+			value: crewMembers.value.filter((member) => member !== chief.value),
+			validity: crewMembers.validity,
+			disabled: false,
+		})
 	}, [chief.value])
 	useEffect(() => {
-		setAddableCrewMembers(manageAddableList(addableCrewMembers, pilotList, pilot.value))
-		manageCrewMembers(crewMembers, setCrewMembers, pilot.value)
+		setAddableCrewMembers(
+			addableCrewMembers
+				.filter((member) => !pilotList.includes(member))
+				.concat(pilotList)
+				.filter((member) => member !== pilot.value)
+		)
+		setCrewMembers({
+			value: crewMembers.value.filter((member) => member !== pilot.value),
+			validity: crewMembers.validity,
+			disabled: false,
+		})
 	}, [pilot.value])
 	useEffect(() => {
 		manageNCAreas(area.value, setNCArea, NCArea.value)

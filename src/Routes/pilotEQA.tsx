@@ -6,7 +6,7 @@ import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
-import { buildAllEQAs } from "../tools/buildAllEQAs"
+import { buildAllEQAs } from "../tools/buildsPilotsActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
 
@@ -28,7 +28,6 @@ export const PilotEQA = (): JSX.Element => {
 			})
 			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
 			const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
-			console.log(EQAs)
 			setPilotEQAs(EQAs)
 		}
 	}, [])

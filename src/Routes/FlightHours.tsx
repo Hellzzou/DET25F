@@ -8,7 +8,7 @@ import { CrewMembersCards } from "../Sections/CrewMembersCards"
 import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { crewMembersFlights } from "../tools/buildAllHours"
+import { crewMembersFlights } from "../tools/buildFlightHours"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/date"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
@@ -30,7 +30,6 @@ export const FlightHours = (): JSX.Element => {
 			})
 			const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
 			setCrewMembersHours(crewMembersHours)
-			console.log(crewMembersHours)
 		}
 	}, [startDate.value, endDate.value])
 	return !token ? (

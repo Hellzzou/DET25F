@@ -10,7 +10,7 @@ import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
-import { buildAllTPAs } from "../tools/buildAllTPAs"
+import { buildAllTPAs } from "../tools/buildMemberActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
 

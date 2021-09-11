@@ -11,7 +11,7 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
-import { removeAnEntry, removeATPA, returnDayNightDuration, returnZeroOrValue } from "./tools"
+import { returnDayNightDuration, returnZeroOrValue } from "./tools"
 import { selectChoiceIsDone, timeIsCorrect } from "./validators"
 
 export const fullfillFlightForm = (setters: Array<any>, flight: flight): void => {
@@ -63,11 +63,11 @@ export const removeTPA = (
 	setDenaeTPA: React.Dispatch<React.SetStateAction<Array<denaeTPA>>>,
 	setPilotEQA: React.Dispatch<React.SetStateAction<Array<pilotEQA>>>
 ): void => {
-	setPilotTPA(removeATPA(pilotTPA, member))
-	setMecboTPA(removeATPA(mecboTPA, member))
-	setRadioTPA(removeATPA(radioTPA, member))
-	setDenaeTPA(removeATPA(denaeTPA, member))
-	setPilotEQA(removeATPA(pilotEQA, member))
+	setPilotTPA(pilotTPA.filter((pilot) => pilot.name !== member))
+	setMecboTPA(mecboTPA.filter((pilot) => pilot.name !== member))
+	setRadioTPA(radioTPA.filter((pilot) => pilot.name !== member))
+	setDenaeTPA(denaeTPA.filter((pilot) => pilot.name !== member))
+	setPilotEQA(pilotEQA.filter((pilot) => pilot.name !== member))
 }
 export function addTPA(
 	member: string,
@@ -145,9 +145,9 @@ export const manageAddableList = (
 	pilotToRemove: string
 ): Array<string> => {
 	let newAddableMembers = addableMembers
-	pilots.forEach((pilot) => (newAddableMembers = removeAnEntry(newAddableMembers, pilot)))
+	pilots.forEach((pilot) => (newAddableMembers = newAddableMembers.filter((member) => member !== pilot)))
 	pilots.forEach((pilot) => newAddableMembers.push(pilot))
-	if (pilotToRemove !== "Choix...") newAddableMembers = removeAnEntry(newAddableMembers, pilotToRemove)
+	if (pilotToRemove !== "Choix...") newAddableMembers = newAddableMembers.filter((member) => member !== pilotToRemove)
 	return newAddableMembers
 }
 export const manageCrewMembers = (
@@ -158,7 +158,7 @@ export const manageCrewMembers = (
 	let newCrewMembers = crewMembers.value
 	if (pilot !== "" && typeof pilot !== "undefined" && pilot !== "Choix..." && newCrewMembers.length > 0) {
 		if (newCrewMembers.findIndex((element: string) => element === pilot) !== -1) {
-			newCrewMembers = removeAnEntry(newCrewMembers, pilot)
+			newCrewMembers = newCrewMembers.filter((member) => member !== pilot)
 		}
 		setCrewMembers({ value: newCrewMembers, validity: crewMembers.validity, disabled: false })
 	}
@@ -212,13 +212,9 @@ export const removeCrewMembers = (
 	chief: string,
 	pilot: string
 ): Array<string> => {
-	let addableCrewMembers = array
-	crewMembers.forEach((crewMember) => {
-		addableCrewMembers = removeAnEntry(addableCrewMembers, crewMember)
-	})
-	addableCrewMembers = removeAnEntry(addableCrewMembers, chief)
-	addableCrewMembers = removeAnEntry(addableCrewMembers, pilot)
-	return addableCrewMembers
+	return array.filter(
+		(crewMember) => !crewMembers.includes(crewMember) && crewMember !== chief && crewMember !== pilot
+	)
 }
 export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
 	setters[0]({ value: alert.departureDate.split("T")[0], validity: true, disabled: false })

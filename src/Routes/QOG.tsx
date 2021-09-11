@@ -6,7 +6,7 @@ import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { QOGTable } from "../Sections/QOGTable"
-import { buildQOG } from "../tools/buildQOG"
+import { buildQOG } from "../tools/buildReports"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
 

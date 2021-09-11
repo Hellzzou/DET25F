@@ -26,7 +26,7 @@ import {
 	removeTPA,
 } from "../tools/form"
 import { buildDebriefedFlight, buildNewFlight } from "../tools/saveToDatabase"
-import { getTrigrams, removeAnEntry, returnZeroOrValue } from "../tools/tools"
+import { returnZeroOrValue } from "../tools/tools"
 import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import {
@@ -157,7 +157,7 @@ export const DebriefFlightForm = ({
 			validity: arrayIsNotEmpty(crewMembers.value),
 			disabled: false,
 		})
-		setAddableCrewMembers(removeAnEntry(addableCrewMembers, addMemberSelect.value))
+		setAddableCrewMembers(addableCrewMembers.filter((crewMember) => crewMember !== addMemberSelect.value))
 		setDeleteMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		setAddMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		addTPA(
@@ -177,7 +177,7 @@ export const DebriefFlightForm = ({
 	}
 	const deleteCrewMember = () => {
 		setCrewMembers({
-			value: removeAnEntry(crewMembers.value, deleteMemberSelect.value),
+			value: crewMembers.value.filter((crewMember) => crewMember !== deleteMemberSelect.value),
 			validity: arrayIsNotEmpty(crewMembers.value),
 			disabled: false,
 		})
@@ -243,10 +243,15 @@ export const DebriefFlightForm = ({
 			const allGroups = await getFetchRequest(DB_URL + "groups")
 			setAllGroups(allGroups)
 			setAllMembers(crewMembers)
-			setCDAList(getTrigrams(CDA))
-			setPilotList(getTrigrams(pilots))
+			setCDAList(CDA.map((member: crewMember) => member.trigram))
+			setPilotList(pilots.map((member: crewMember) => member.trigram))
 			setAddableCrewMembers(
-				removeCrewMembers(getTrigrams(crewMembers), flight[0].crewMembers, flight[0].chief, flight[0].pilot)
+				removeCrewMembers(
+					crewMembers.map((member: crewMember) => member.trigram),
+					flight[0].crewMembers,
+					flight[0].chief,
+					flight[0].pilot
+				)
 			)
 		}
 	}, [])

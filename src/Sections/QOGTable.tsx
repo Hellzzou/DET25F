@@ -4,7 +4,6 @@ import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { QOGRow } from "../Articles/QOGRow"
 import { DB_URL } from "../Datas/datas"
-import { englishMonths } from "../Datas/dates"
 import { INITIAL_GROUP } from "../Datas/group"
 import { getFetchRequest } from "../tools/fetch"
 import {
@@ -68,9 +67,13 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 						Total tout groupe
 					</th>
 					<th>{allocSumOfAGroup(allGroups).toFixed(1)}</th>
-					{englishMonths.map((month) => (
-						<th key={englishMonths.indexOf(month)}>
-							{sumQOGFlightsByMontAndGroup(props.flights, allGroups, month).toFixed(1)}
+					{props.flights.map((month) => (
+						<th key={props.flights.indexOf(month)}>
+							{sumQOGFlightsByMontAndGroup(
+								props.flights,
+								allGroups,
+								props.flights.indexOf(month)
+							).toFixed(1)}
 						</th>
 					))}
 					<th>{sumQOGFlights(props.flights, allGroups).toFixed(1)}</th>
@@ -81,9 +84,13 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 						Dont nuit
 					</th>
 					<th></th>
-					{englishMonths.map((month) => (
-						<th key={englishMonths.indexOf(month)}>
-							{sumQOGFlightsByMontAndGroupNight(props.flights, allGroups, month).toFixed(1)}
+					{props.flights.map((month) => (
+						<th key={props.flights.indexOf(month)}>
+							{sumQOGFlightsByMontAndGroupNight(
+								props.flights,
+								allGroups,
+								props.flights.indexOf(month)
+							).toFixed(1)}
 						</th>
 					))}
 					<th>{sumQOGFlightsNight(props.flights, allGroups).toFixed(1)}</th>

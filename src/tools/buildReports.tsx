@@ -16,8 +16,8 @@ export const buildQOG = (
 	return yearFlights.reduce<Record<string, { dayDuration: number; nightDuration: number }>[]>((acc, flight) => {
 		const { group, dayDuration, nightDuration } = flight
 		const flightDate = new Date(flight.departureDate).getMonth()
-		acc[flightDate][group]["dayDuration"] += parseFloat(dayDuration)
-		acc[flightDate][group]["nightDuration"] += parseFloat(nightDuration)
+		acc[flightDate][group].dayDuration += parseFloat(dayDuration)
+		acc[flightDate][group].nightDuration += parseFloat(nightDuration)
 		return acc
 	}, emptyArray)
 }

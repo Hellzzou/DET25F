@@ -4,7 +4,7 @@ import useAsyncEffect from "use-async-effect"
 import { DB_URL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
-import { buildWeekReport } from "../tools/buildQOG"
+import { buildWeekReport } from "../tools/buildReports"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { hebdoColor, sumHebdoFlights, sumHebdoFlightsByUnderGroups, sumHebdoFlightsByWeek } from "../tools/table"
 

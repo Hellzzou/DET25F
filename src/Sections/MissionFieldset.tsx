@@ -7,7 +7,6 @@ import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
 import { DB_URL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
-import { getName, getNumber, getQuantity } from "../tools/tools"
 import { selectChoiceIsDone, textIsNotNull } from "../tools/validators"
 import { Group } from "../types/Objects"
 import { missionFieldsetProps } from "../types/Sections"
@@ -23,17 +22,17 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 	const [config, setConfig] = useState<Array<string>>([])
 	useAsyncEffect(async () => {
 		const fuels = await getFetchRequest(DB_URL + "fuel")
-		setFuel(getQuantity(fuels))
+		setFuel(fuels.map((fuel: { quantity: string }) => fuel.quantity))
 		const aircraft = await getFetchRequest(DB_URL + "aircraft")
-		setAircraft(getNumber(aircraft))
+		setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
 		const types = await getFetchRequest(DB_URL + "type")
-		setType(getName(types))
+		setType(types.map((type: { name: string }) => type.name))
 		const areas = await getFetchRequest(DB_URL + "area")
-		setAreas(getName(areas))
+		setAreas(areas.map((type: { name: string }) => type.name))
 		const NCAreas = await getFetchRequest(DB_URL + "NCArea")
-		setNCAreas(getName(NCAreas))
+		setNCAreas(NCAreas.map((type: { name: string }) => type.name))
 		const configs = await getFetchRequest(DB_URL + "config")
-		setConfig(getName(configs))
+		setConfig(configs.map((type: { name: string }) => type.name))
 		const allGroups = await getFetchRequest(DB_URL + "groups")
 		setGroups(allGroups.map((group: Group) => group.underGroup))
 	}, [])

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { englishMonths } from "../Datas/dates"
 import { Group } from "../types/Objects"
 
 export const tableColor = (group: string): string => {
@@ -16,7 +15,6 @@ export const groupFilter = (groups: Group[], groupName: string): Group[] => {
 	const regex = "^" + groupName
 	return groups.filter((group) => new RegExp(regex).test(group.underGroup))
 }
-
 export const allocRowSpan = (groups: Group[], index: number): number => {
 	let rowSpan = 1
 	let i = index
@@ -27,18 +25,16 @@ export const allocRowSpan = (groups: Group[], index: number): number => {
 	}
 	return rowSpan
 }
-
-export const sumFlights = (groupFlights: { dayDuration: number; nightDuration: number }[]): number =>
-	groupFlights.reduce<number>((acc, flight) => (acc = acc + flight.dayDuration + flight.nightDuration), 0)
-
-export const sumFlightsNight = (groupFlights: { dayDuration: number; nightDuration: number }[]): number =>
-	groupFlights.reduce<number>((acc, flight) => (acc = acc + flight.nightDuration), 0)
-
 export const sumQOGFlightsByUnderGroup = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	group: string
-): number => Object.entries(flights).reduce((acc, month) => (acc = acc + sumFlights(flights[month[0]][group])), 0)
-
+): number => {
+	return flights.reduce((acc, month) => {
+		const { dayDuration, nightDuration } = month[group]
+		acc += dayDuration + nightDuration
+		return acc
+	}, 0)
+}
 export const getUnderGroupList = (groups: Group[], index: number): string[] => {
 	const underGroupList = [groups[index].underGroup]
 	let i = index
@@ -49,42 +45,49 @@ export const getUnderGroupList = (groups: Group[], index: number): string[] => {
 	}
 	return underGroupList
 }
-
 export const sumUnderGroupList = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	underGroups: string[]
-): number => underGroups.reduce((acc, underGroup) => (acc = acc + sumQOGFlightsByUnderGroup(flights, underGroup)), 0)
+): number => underGroups.reduce((acc, underGroup) => (acc += sumQOGFlightsByUnderGroup(flights, underGroup)), 0)
 
 export const allocSumOfAGroup = (underGroups: Group[]): number =>
 	underGroups.reduce((acc, underGroup) => (acc = underGroup.allocation !== -1 ? acc + underGroup.allocation : acc), 0)
-
 export const sumQOGFlightsByMontAndGroup = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	underGroups: Group[],
-	month: string
-): number => underGroups.reduce((acc, underGroup) => (acc = acc + sumFlights(flights[month][underGroup.underGroup])), 0)
-
+	month: number
+): number => {
+	return underGroups.reduce((acc, { underGroup }) => {
+		const { dayDuration, nightDuration } = flights[month][underGroup]
+		acc += dayDuration + nightDuration
+		return acc
+	}, 0)
+}
 export const sumQOGFlightsByMontAndGroupNight = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	underGroups: Group[],
-	month: string
-): number =>
-	underGroups.reduce((acc, underGroup) => (acc = acc + sumFlightsNight(flights[month][underGroup.underGroup])), 0)
+	month: number
+): number => underGroups.reduce((acc, { underGroup }) => (acc += flights[month][underGroup].nightDuration), 0)
 
 export const sumQOGFlights = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	underGroups: Group[]
 ): number =>
-	englishMonths.reduce((acc, month) => (acc = acc + sumQOGFlightsByMontAndGroup(flights, underGroups, month)), 0)
+	flights.reduce(
+		(acc, month) => (acc += sumQOGFlightsByMontAndGroup(flights, underGroups, flights.indexOf(month))),
+		0
+	)
 export const sumQOGFlightsNight = (
-	flights: Record<string, Record<string, { dayDuration: number; nightDuration: number }[]>>,
+	flights: Record<string, { dayDuration: number; nightDuration: number }>[],
 	underGroups: Group[]
 ): number =>
-	englishMonths.reduce((acc, month) => (acc = acc + sumQOGFlightsByMontAndGroupNight(flights, underGroups, month)), 0)
-export const sumHebdoFlightsByUnderGroups = (flights: Record<string, number>[], underGroup: string): number => {
-	return flights.reduce((acc, week) => (acc = acc + week[underGroup]), 0)
-}
+	flights.reduce(
+		(acc, month) => (acc += sumQOGFlightsByMontAndGroupNight(flights, underGroups, flights.indexOf(month))),
+		0
+	)
+export const sumHebdoFlightsByUnderGroups = (flights: Record<string, number>[], underGroup: string): number =>
+	flights.reduce((acc, week) => (acc += week[underGroup]), 0)
 export const sumHebdoFlightsByWeek = (flight: Record<string, number>, underGroups: string[]): number =>
-	underGroups.reduce((acc, underGroup) => (acc = acc + flight[underGroup]), 0)
+	underGroups.reduce((acc, underGroup) => (acc += flight[underGroup]), 0)
 export const sumHebdoFlights = (flights: Record<string, number>[], underGroups: string[]): number =>
-	underGroups.reduce((acc, underGroup) => (acc = acc + sumHebdoFlightsByUnderGroups(flights, underGroup)), 0)
+	underGroups.reduce((acc, underGroup) => (acc += sumHebdoFlightsByUnderGroups(flights, underGroup)), 0)

@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react"
-import { englishMonths } from "../Datas/dates"
 import {
 	allocRowSpan,
 	allocSumOfAGroup,
 	getUnderGroupList,
-	sumFlights,
 	sumQOGFlightsByMontAndGroup,
 	sumQOGFlightsByUnderGroup,
 	sumUnderGroupList,
@@ -28,9 +26,9 @@ export const QOGRow = (props: QOGRowProps): JSX.Element => {
 							{group.allocation.toFixed(1)}
 						</td>
 					)}
-					{englishMonths.map((month) => (
-						<td key={englishMonths.indexOf(month)}>
-							{sumFlights(props.flights[month][group.underGroup]).toFixed(1)}
+					{props.flights.map((month) => (
+						<td key={props.flights.indexOf(month)}>
+							{(month[group.underGroup].dayDuration + month[group.underGroup].nightDuration).toFixed(1)}
 						</td>
 					))}
 					<td>{sumQOGFlightsByUnderGroup(props.flights, group.underGroup).toFixed(1)}</td>
@@ -52,9 +50,13 @@ export const QOGRow = (props: QOGRowProps): JSX.Element => {
 					Total Groupe {props.groupName}
 				</th>
 				<th>{allocSumOfAGroup(props.groups).toFixed(1)}</th>
-				{englishMonths.map((month) => (
-					<th key={englishMonths.indexOf(month)}>
-						{sumQOGFlightsByMontAndGroup(props.flights, props.groups!, month).toFixed(1)}
+				{props.flights.map((month) => (
+					<th key={props.flights.indexOf(month)}>
+						{sumQOGFlightsByMontAndGroup(
+							props.flights,
+							props.groups!,
+							props.flights.indexOf(month)
+						).toFixed(1)}
 					</th>
 				))}
 				<th>

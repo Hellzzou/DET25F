@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-import { Alert } from "../types/Objects"
 import { DB_URL } from "../Datas/datas"
 import {
 	INITIAL_CREWTPA,
@@ -20,7 +19,7 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
-import { getFetchRequest, postFetchRequest } from "./fetch"
+import { getFetchRequest } from "./fetch"
 import { returnDayNightDuration } from "./tools"
 
 export async function buildNewFlight(
