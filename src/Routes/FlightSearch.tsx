@@ -11,7 +11,7 @@ import { Navbar } from "../Sections/Navbar"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/dateManager"
 import { postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { flight } from "../types/Objects"
+import { crewMember, flight } from "../types/Objects"
 
 export const FlightSearch = (): JSX.Element => {
 	const [token, setToken] = useState(true)
@@ -33,10 +33,10 @@ export const FlightSearch = (): JSX.Element => {
 		if (token) {
 			let CDAName = "Choix..."
 			if (crew.value !== "Choix...") {
-				const CDA = await postFetchRequest(DB_URL + "crewMembers/findCDA", { crew: crew.value })
-				CDAName = CDA[0].trigram
+				const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findCDA", { crew: crew.value })
+				if (typeof CDA !== "string") CDAName = CDA[0].trigram
 			}
-			const filteredFlights = await postFetchRequest(DB_URL + "flights/filteredFlights", {
+			const filteredFlights = await postFetchRequest<flight[]>(DB_URL + "flights/filteredFlights", {
 				date: { startDate: new Date(startDate.value), endDate: new Date(endDate.value) },
 				aircraft: aircraft.value,
 				chief: CDAName,
@@ -48,7 +48,7 @@ export const FlightSearch = (): JSX.Element => {
 				done: done.value,
 				time: time.value,
 			})
-			setFlights(filteredFlights)
+			if (typeof filteredFlights !== "string") setFlights(filteredFlights)
 		}
 	}, [
 		startDate.value,

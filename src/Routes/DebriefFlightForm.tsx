@@ -31,6 +31,7 @@ import {
 	crewMember,
 	crewTPA,
 	denaeTPA,
+	flight,
 	Group,
 	mecboTPA,
 	pilotEQA,
@@ -79,6 +80,7 @@ export const DebriefFlightForm = ({
 	const [denaeTPA, setDenaeTPA] = useState<Array<denaeTPA>>([])
 	const [pilotEQA, setPilotEQA] = useState<Array<pilotEQA>>([])
 	const [allMembers, setAllMembers] = useState<Array<crewMember>>([])
+
 	const modifyHooks = [
 		departureDate,
 		departureTime,
@@ -135,17 +137,10 @@ export const DebriefFlightForm = ({
 		setBelonging,
 		setChief,
 		setPilot,
-		setCrewMembers,
 		setOnDayDuration,
 		setOnNightDuration,
 		setDone,
 		setCause,
-		setCrewTPA,
-		setPilotTPA,
-		setMecboTPA,
-		setRadioTPA,
-		setDenaeTPA,
-		setPilotEQA,
 		setDayDuration,
 		setNightDuration,
 	]
@@ -203,7 +198,7 @@ export const DebriefFlightForm = ({
 	}
 	const returnClick = () => history.push("/activities")
 	async function modifyFlightClick() {
-		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups)
+		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups, allMembers)
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
@@ -238,26 +233,42 @@ export const DebriefFlightForm = ({
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const flight = await postFetchRequest(DB_URL + "flights/getOne", { id: match.params.id })
-			fullfillFlightForm(setters, flight[0])
-			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
-			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
-			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const allGroups = await getFetchRequest(DB_URL + "groups")
-			setAllGroups(allGroups)
-			setAllMembers(crewMembers)
-			setCDAList(CDA.map((member: crewMember) => member.trigram))
-			setPilotList(pilots.map((member: crewMember) => member.trigram))
-			setAddableCrewMembers(
-				crewMembers
-					.map((member: crewMember) => member.trigram)
-					.filter(
-						(crewMember: string) =>
-							!flight[0].crewMembers.includes(crewMember) &&
-							crewMember !== flight[0].chief &&
-							crewMember !== flight[0].pilot
-					)
-			)
+			const flight = await postFetchRequest<flight[]>(DB_URL + "flights/getOne", { id: match.params.id })
+			const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+				function: "CDA",
+			})
+			const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+				function: "pilote",
+			})
+			const crewMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+			if (typeof allGroups !== "string") setAllGroups(allGroups)
+			if (typeof CDA !== "string") setCDAList(CDA.map((member: crewMember) => member.trigram))
+			if (typeof pilots !== "string") setPilotList(pilots.map((member: crewMember) => member.trigram))
+			if (typeof crewMembers !== "string" && typeof flight !== "string") {
+				fullfillFlightForm(
+					setters,
+					setCrewMembers,
+					setCrewTPA,
+					setPilotTPA,
+					setMecboTPA,
+					setRadioTPA,
+					setDenaeTPA,
+					setPilotEQA,
+					flight[0]
+				)
+				setAllMembers(crewMembers)
+				setAddableCrewMembers(
+					crewMembers
+						.map((member: crewMember) => member.trigram)
+						.filter(
+							(crewMember: string) =>
+								!flight[0].crewMembers.includes(crewMember) &&
+								crewMember !== flight[0].chief &&
+								crewMember !== flight[0].pilot
+						)
+				)
+			}
 		}
 	}, [])
 	useEffect(() => {

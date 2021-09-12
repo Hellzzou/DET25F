@@ -4,7 +4,7 @@ import { Select } from "../BasicComponents/Select"
 import { DB_URL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
 import { selectChoiceIsDone } from "../tools/validators"
-import { crewMember, Group } from "../types/Objects"
+import { Aircraft, Area, FlightType, Group, NCArea } from "../types/Objects"
 import { FlightFiltersProps } from "../types/Sections"
 
 export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
@@ -12,24 +12,22 @@ export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 	const [type, setType] = useState<Array<string>>([])
 	const [areas, setAreas] = useState<Array<string>>([])
 	const [NCAreas, setNCAreas] = useState<Array<string>>([])
-	const [crews, setCrews] = useState<Array<string>>([])
+	const crews = ["YE", "YF"]
 	const [groups, setGroups] = useState<Array<string>>([])
 	const belonging = ["DET25F", "HORS DET"]
 	const done = ["ME", "MPE TECH", "MPE MTO", "MPE OPS", "CNL TECH", "CNL MTO", "CNL OPS"]
 	const time = ["Jour", "Nuit"]
 	useAsyncEffect(async () => {
-		const allMembers = await getFetchRequest(DB_URL + "crewMembers")
-		setCrews(allMembers.map((member: crewMember) => member.crew).filter(Boolean))
-		const allGroups = await getFetchRequest(DB_URL + "groups")
-		setGroups(allGroups.map((group: Group) => group.underGroup))
-		const aircraft = await getFetchRequest(DB_URL + "aircraft")
-		setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
-		const types = await getFetchRequest(DB_URL + "type")
-		setType(types.map((type: { name: string }) => type.name))
-		const areas = await getFetchRequest(DB_URL + "area")
-		setAreas(areas.map((type: { name: string }) => type.name))
-		const NCAreas = await getFetchRequest(DB_URL + "NCArea")
-		setNCAreas(NCAreas.map((type: { name: string }) => type.name))
+		const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+		if (typeof allGroups !== "string") setGroups(allGroups.map((group: Group) => group.underGroup))
+		const aircraft = await getFetchRequest<Aircraft[]>(DB_URL + "aircraft")
+		if (typeof aircraft !== "string") setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
+		const types = await getFetchRequest<FlightType[]>(DB_URL + "type")
+		if (typeof types !== "string") setType(types.map((type: { name: string }) => type.name))
+		const areas = await getFetchRequest<Area[]>(DB_URL + "area")
+		if (typeof areas !== "string") setAreas(areas.map((type: { name: string }) => type.name))
+		const NCAreas = await getFetchRequest<NCArea[]>(DB_URL + "NCArea")
+		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map((type: { name: string }) => type.name))
 	}, [])
 	return (
 		<>

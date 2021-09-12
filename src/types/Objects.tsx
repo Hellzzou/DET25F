@@ -33,6 +33,24 @@ export type disabledControl = {
 	validity: boolean
 	disabled: boolean
 }
+export type Aircraft = {
+	number: string
+}
+export type FlightType = {
+	name: string
+}
+export type Area = {
+	name: string
+}
+export type NCArea = {
+	name: string
+}
+export type Fuel = {
+	quantity: string
+}
+export type Config = {
+	name: string
+}
 export type user = {
 	rank: string
 	name: string
@@ -44,7 +62,7 @@ export type error = {
 	error: string
 }
 export type flight = {
-	_id: string
+	_id?: string
 	departureDate: string
 	arrivalDate: string
 	aircraft: string

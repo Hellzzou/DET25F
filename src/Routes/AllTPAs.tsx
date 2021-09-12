@@ -13,14 +13,15 @@ import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllTPAs } from "../tools/buildMemberActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
+import { crewMember, denaeDateTPA, flight, mecboDateTPA, pilotDateTPA, radioDateTPA } from "../types/Objects"
 
 export const AllTPAs = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [dateTocompare, setDateToCompare] = useState(new Date().getMonth())
-	const [pilotTPA, setPilotTPA] = useState([])
-	const [mecboTPA, setMecboTPA] = useState([])
-	const [radioTPA, setRadioTPA] = useState([])
-	const [denaeTPA, setDenaeTPA] = useState([])
+	const [pilotTPA, setPilotTPA] = useState<{ name: string; TPA: pilotDateTPA }[]>([])
+	const [mecboTPA, setMecboTPA] = useState<{ name: string; TPA: mecboDateTPA }[]>([])
+	const [radioTPA, setRadioTPA] = useState<{ name: string; TPA: radioDateTPA }[]>([])
+	const [denaeTPA, setDenaeTPA] = useState<{ name: string; TPA: denaeDateTPA }[]>([])
 	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
 	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
 	useAsyncEffect(async () => {
@@ -29,16 +30,21 @@ export const AllTPAs = (): JSX.Element => {
 		setToken(token)
 		if (token) {
 			const startDate = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const allDebriefedFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: startDate,
-				endDate: endDate,
-			})
-			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
-			setPilotTPA(TPAs.pilotTPA)
-			setMecboTPA(TPAs.mecboTPA)
-			setRadioTPA(TPAs.radioTPA)
-			setDenaeTPA(TPAs.denaeTPA)
+			const allDebriefedFlights = await postFetchRequest<flight[]>(
+				DB_URL + "flights/debriefedFlightsOfLastFourYears",
+				{
+					startDate: startDate,
+					endDate: endDate,
+				}
+			)
+			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
+				const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
+				setPilotTPA(TPAs.pilotTPA)
+				setMecboTPA(TPAs.mecboTPA)
+				setRadioTPA(TPAs.radioTPA)
+				setDenaeTPA(TPAs.denaeTPA)
+			}
 		}
 	}, [])
 	return !token ? (

@@ -22,10 +22,10 @@ export const Login = (): JSX.Element => {
 	const handleLogin = () => {
 		;(async () => {
 			const findUser = await checkUser(login.value, password.value)
-			if (typeof findUser.rank !== "undefined") {
+			if (typeof findUser !== "string") {
 				sessionStorage.setItem("token", findUser.token)
 				history.push("/activities")
-			} else setLoginError(findUser.error)
+			} else setLoginError(findUser)
 		})()
 	}
 	return (

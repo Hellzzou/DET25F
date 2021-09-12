@@ -12,8 +12,11 @@ import { crewMember } from "../types/Objects"
 export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest(DB_URL + "crewMembers")
-		sertFullName(members.find((member: crewMember) => member.trigram === props.radio.name))
+		const members = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+		if (typeof members !== "string") {
+			const member = members.find((member: crewMember) => member.trigram === props.radio.name)
+			if (member) sertFullName(member)
+		}
 	}, [])
 	return (
 		<Card className='text-center'>

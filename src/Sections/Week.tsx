@@ -46,23 +46,23 @@ export const Week = (): JSX.Element => {
 		history.push("/newFlight")
 	}
 	useAsyncEffect(async () => {
-		const flights = await postFetchRequest(DB_URL + "flights/betweenTwoDates", {
+		const flights = await postFetchRequest<flight[]>(DB_URL + "flights/betweenTwoDates", {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const alerts = await postFetchRequest(DB_URL + "alerts/betweenTwoDates", {
+		const alerts = await postFetchRequest<newAlert[]>(DB_URL + "alerts/betweenTwoDates", {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const events = await postFetchRequest(DB_URL + "events/betweenTwoDates", {
+		const events = await postFetchRequest<newEvent[]>(DB_URL + "events/betweenTwoDates", {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
 		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
-		if (typeof flights !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
-		if (typeof flights !== "string") setWeekEvents(buildWeekEvents(events, monday))
-		const nights = await getFetchRequest(DB_URL + "nights")
-		setNights(nights[0])
+		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
+		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
+		const nights = await getFetchRequest<Nights[]>(DB_URL + "nights")
+		if (typeof nights !== "string") setNights(nights[0])
 	}, [monday])
 	return (
 		<>

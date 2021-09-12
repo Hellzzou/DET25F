@@ -15,6 +15,7 @@ import { fullfillAlert } from "../tools/fullfillForms"
 import { buildNewAlert } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
+import { newAlert } from "../types/Objects"
 
 export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
@@ -37,22 +38,22 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	}
 	async function modifyAlertClick() {
 		const newAlert = buildNewAlert(hooks)
-		const deleted = await postFetchRequest(DB_URL + "alerts/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(DB_URL + "alerts/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
-			const res = await postFetchRequest(DB_URL + "alerts/save", { newAlert })
+			const res = await postFetchRequest<string>(DB_URL + "alerts/save", { newAlert })
 			if (res === "success") history.push("/activities")
 		}
 	}
 	async function deleteClick() {
-		const deleted = await postFetchRequest(DB_URL + "alerts/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(DB_URL + "alerts/deleteOne", { id: match.params.id })
 		if (deleted === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const alert = await postFetchRequest(DB_URL + "alerts/findWithId", { id: match.params.id })
-			fullfillAlert(alert[0], setters)
+			const alert = await postFetchRequest<newAlert[]>(DB_URL + "alerts/findWithId", { id: match.params.id })
+			if (typeof alert !== "string") fullfillAlert(alert[0], setters)
 		}
 	}, [])
 	return !token ? (

@@ -9,7 +9,7 @@ import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllEQAs } from "../tools/buildsPilotsActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { AllEQAs } from "../types/Objects"
+import { AllEQAs, crewMember, flight } from "../types/Objects"
 
 export const PilotEQA = (): JSX.Element => {
 	const [token, setToken] = useState(true)
@@ -23,13 +23,18 @@ export const PilotEQA = (): JSX.Element => {
 		if (token) {
 			const endDate = new Date(Date.now())
 			const lastFourYears = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const lastFourYearsFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: lastFourYears,
-				endDate: endDate,
-			})
-			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
-			setPilotEQAs(EQAs)
+			const lastFourYearsFlights = await postFetchRequest<flight[]>(
+				DB_URL + "flights/debriefedFlightsOfLastFourYears",
+				{
+					startDate: lastFourYears,
+					endDate: endDate,
+				}
+			)
+			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			if (typeof allMembers !== "string" && typeof lastFourYearsFlights !== "string") {
+				const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
+				setPilotEQAs(EQAs)
+			}
 		}
 	}, [])
 	return !token ? (

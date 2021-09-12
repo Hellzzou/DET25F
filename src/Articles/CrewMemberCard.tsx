@@ -18,8 +18,11 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 		history.push(`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`)
 	}
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest(DB_URL + "crewMembers")
-		sertFullName(members.find((member: crewMember) => member.trigram === props.crewMemberName))
+		const members = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+		if (typeof members !== "string") {
+			const member = members.find((member: crewMember) => member.trigram === props.crewMemberName)
+			if (member) sertFullName(member)
+		}
 		const memberHours = crewMemberHours(props.crewMemberHours)
 		setMemberHours(memberHours)
 	}, [props.crewMemberHours])

@@ -18,18 +18,33 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 	const [radios, setRadios] = useState<Array<string>>(["Choix..."])
 	const [techs, setTechs] = useState<Array<string>>(["Choix..."])
 	useAsyncEffect(async () => {
-		const cdas = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
-		const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "pilote" })
-		const mecbos = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "MECBO" })
-		const navs = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "DENAE" })
-		const radios = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "GETBO" })
-		const techs = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "TECH" })
-		console.log(cdas, pilots, mecbos, navs, radios, techs)
-		setPilots([...cdas.map((cda: crewMember) => cda.trigram), ...pilots.map((pilot: crewMember) => pilot.trigram)])
-		setMecbos(mecbos.map((cda: crewMember) => cda.trigram))
-		setNavs(navs.map((cda: crewMember) => cda.trigram))
-		setRadios(radios.map((cda: crewMember) => cda.trigram))
-		setTechs(techs.map((cda: crewMember) => cda.trigram))
+		const cdas = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "CDA",
+		})
+		const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "pilote",
+		})
+		const mecbos = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "MECBO",
+		})
+		const navs = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "DENAE",
+		})
+		const radios = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "GETBO",
+		})
+		const techs = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			function: "TECH",
+		})
+		if (typeof cdas !== "string" && typeof pilots !== "string")
+			setPilots([
+				...cdas.map((cda: crewMember) => cda.trigram),
+				...pilots.map((pilot: crewMember) => pilot.trigram),
+			])
+		if (typeof mecbos !== "string") setMecbos(mecbos.map((cda: crewMember) => cda.trigram))
+		if (typeof navs !== "string") setNavs(navs.map((cda: crewMember) => cda.trigram))
+		if (typeof radios !== "string") setRadios(radios.map((cda: crewMember) => cda.trigram))
+		if (typeof techs !== "string") setTechs(techs.map((cda: crewMember) => cda.trigram))
 	}, [])
 	return (
 		<fieldset className='col-md-6 border border-dark rounded'>

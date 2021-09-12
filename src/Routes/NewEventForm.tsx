@@ -15,6 +15,7 @@ import { fullfillEvent } from "../tools/fullfillForms"
 import { buildNewEvent } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
+import { newEvent } from "../types/Objects"
 
 export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
 	const history = useHistory()
@@ -29,27 +30,27 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks)
-		const saved = await postFetchRequest(DB_URL + "events/save", { newEvent })
+		const saved = await postFetchRequest<string>(DB_URL + "events/save", { newEvent })
 		if (saved === "success") history.push("/activities")
 	}
 	async function modifyEventClick() {
 		const newEvent = buildNewEvent(hooks)
-		const deleted = await postFetchRequest(DB_URL + "events/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(DB_URL + "events/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
-			const res = await postFetchRequest(DB_URL + "events/save", { newEvent })
+			const res = await postFetchRequest<string>(DB_URL + "events/save", { newEvent })
 			if (res === "success") history.push("/activities")
 		}
 	}
 	async function deleteClick() {
-		const deleted = await postFetchRequest(DB_URL + "events/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(DB_URL + "events/deleteOne", { id: match.params.id })
 		if (deleted === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const event = await postFetchRequest(DB_URL + "events/findWithId", { id: match.params.id })
-			fullfillEvent(event[0], setters)
+			const event = await postFetchRequest<newEvent[]>(DB_URL + "events/findWithId", { id: match.params.id })
+			if (typeof event !== "string") fullfillEvent(event[0], setters)
 		}
 	}, [])
 	return !token ? (

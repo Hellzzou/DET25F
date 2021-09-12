@@ -49,6 +49,7 @@ export const NewFlightForm = (): JSX.Element => {
 	const [crewMembers, setCrewMembers] = useState<controlArray>({ value: [], validity: false, disabled: false })
 	const [deleteMemberSelect, setDeleteMemberSelect] = useState(INITIAL_FALSE_CONTROL)
 	const [addMemberSelect, setAddMemberSelect] = useState(INITIAL_FALSE_CONTROL)
+	const [allMembers, setAllMembers] = useState<crewMember[]>([])
 	const hooks = [
 		departureDate,
 		departureTime,
@@ -88,7 +89,7 @@ export const NewFlightForm = (): JSX.Element => {
 	}
 	const returnClick = () => history.push("/activities")
 	async function addFlightClick() {
-		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups)
+		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups, allMembers)
 		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
 		if (res === "success") history.push("/activities")
 	}
@@ -96,18 +97,23 @@ export const NewFlightForm = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const nights = await getFetchRequest(DB_URL + "nights")
-			const crewMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const CDA = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", { function: "CDA" })
-			const pilots = await postFetchRequest(DB_URL + "crewMembers/findByOnboardFunction", {
+			const nights = await getFetchRequest<Nights[]>(DB_URL + "nights")
+			const crewMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+				function: "CDA",
+			})
+			const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "pilote",
 			})
-			const allGroups = await getFetchRequest(DB_URL + "groups")
-			setAllGroups(allGroups)
-			setNights(nights[0])
-			setAddableCrewMembers(crewMembers.map((crewMember: crewMember) => crewMember.trigram))
-			setCDAList(CDA.map((cda: crewMember) => cda.trigram))
-			setPilotList(pilots.map((pilot: crewMember) => pilot.trigram))
+			const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+			if (typeof allGroups !== "string") setAllGroups(allGroups)
+			if (typeof nights !== "string") setNights(nights[0])
+			if (typeof CDA !== "string") setCDAList(CDA.map((cda: crewMember) => cda.trigram))
+			if (typeof pilots !== "string") setPilotList(pilots.map((pilot: crewMember) => pilot.trigram))
+			if (typeof crewMembers !== "string") {
+				setAddableCrewMembers(crewMembers.map((crewMember: crewMember) => crewMember.trigram))
+				setAllMembers(crewMembers)
+			}
 		}
 	}, [])
 	useEffect(() => {

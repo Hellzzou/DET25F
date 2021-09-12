@@ -12,8 +12,11 @@ import { crewMember } from "../types/Objects"
 export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest(DB_URL + "crewMembers")
-		sertFullName(members.find((member: crewMember) => member.trigram === props.denae.name))
+		const members = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+		if (typeof members !== "string") {
+			const member = members.find((member: crewMember) => member.trigram === props.denae.name)
+			if (member) sertFullName(member)
+		}
 	}, [])
 	return (
 		<Card className='text-center'>

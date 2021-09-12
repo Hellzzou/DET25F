@@ -21,14 +21,19 @@ export const MemberHoursDetail = ({
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allMembers = await getFetchRequest(DB_URL + "crewMembers")
-			const allDebriefedFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
-				startDate: new Date(match.params.startDate),
-				endDate: new Date(match.params.endDate),
-			})
-			setMember(allMembers.find((member: crewMember) => member.trigram === match.params.name))
-			const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
-			setCrewMembersHours(crewMembersHours.find((member) => member.name === match.params.name)?.flight)
+			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const allDebriefedFlights = await postFetchRequest<flight[]>(
+				DB_URL + "flights/debriefedFlightsOfLastFourYears",
+				{
+					startDate: new Date(match.params.startDate),
+					endDate: new Date(match.params.endDate),
+				}
+			)
+			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
+				setMember(allMembers.find((member: crewMember) => member.trigram === match.params.name))
+				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
+				setCrewMembersHours(crewMembersHours.find((member) => member.name === match.params.name)?.flight)
+			}
 		}
 	}, [])
 	return !token ? (

@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-import { DB_URL } from "../Datas/datas"
 import {
 	INITIAL_CREWTPA,
 	INITIAL_DENAETPA,
@@ -21,14 +20,13 @@ import {
 	radioTPA,
 } from "../types/Objects"
 import { returnDayNightDuration } from "./dateManager"
-import { getFetchRequest } from "./fetch"
 
-export async function buildNewFlight(
+export const buildNewFlight = (
 	hooks: Array<control>,
 	crewMembers: controlArray,
-	allGroups: Group[]
-): Promise<unknown> {
-	const allMembers: crewMember[] = await getFetchRequest(DB_URL + "crewMembers")
+	allGroups: Group[],
+	allMembers: crewMember[]
+): unknown => {
 	const pilotTPA: Array<pilotTPA> = []
 	const pilotEQA: Array<pilotEQA> = []
 	const mecboTPA: Array<mecboTPA> = []
@@ -80,7 +78,7 @@ export async function buildNewFlight(
 	return newFlight
 }
 export const buildDebriefedFlight = (
-	hooks: Array<any>,
+	hooks: Array<control>,
 	crewMembers: controlArray,
 	crewTPA: crewTPA,
 	pilotTPA: Array<pilotTPA>,
@@ -133,7 +131,6 @@ export const buildDebriefedFlight = (
 		pilotEQA: pilotEQA,
 		crewTPA: crewTPA,
 	}
-	console.log(debriefedFlight)
 	return debriefedFlight
 }
 

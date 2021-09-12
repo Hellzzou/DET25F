@@ -9,7 +9,7 @@ import { QOGTable } from "../Sections/QOGTable"
 import { buildQOG } from "../tools/buildReports"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { Duration } from "../types/Objects"
+import { Duration, flight } from "../types/Objects"
 
 export const QOG = (): JSX.Element => {
 	const [token, setToken] = useState(true)
@@ -18,12 +18,13 @@ export const QOG = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const underGroups = await getFetchRequest(DB_URL + "groups/distinctUnderGroup")
-			const yearFlights = await postFetchRequest(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
+			const underGroups = await getFetchRequest<string[]>(DB_URL + "groups/distinctUnderGroup")
+			const yearFlights = await postFetchRequest<flight[]>(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
 				startDate: new Date(new Date().getFullYear(), 0, 1),
 				endDate: new Date(),
 			})
-			setQOGFlights(buildQOG(yearFlights, underGroups))
+			if (typeof underGroups !== "string" && typeof yearFlights !== "string")
+				setQOGFlights(buildQOG(yearFlights, underGroups))
 		}
 	}, [])
 	return !token ? (

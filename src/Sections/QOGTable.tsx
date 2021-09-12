@@ -14,16 +14,17 @@ import {
 	sumQOGFlights,
 	monthReportByCel,
 } from "../tools/reportCalculator"
+import { Group } from "../types/Objects"
 import { QOGTableProps } from "../types/Sections"
 
 export const QOGTable = (props: QOGTableProps): JSX.Element => {
-	const [allGroups, setAllGroups] = useState(INITIAL_GROUP)
-	const [allDistinctGroups, setAllDistinctGroups] = useState([])
+	const [allGroups, setAllGroups] = useState<Group[]>(INITIAL_GROUP)
+	const [allDistinctGroups, setAllDistinctGroups] = useState<string[]>([])
 	useAsyncEffect(async () => {
-		const allGroups = await getFetchRequest(DB_URL + "groups")
-		setAllGroups(allGroups)
-		const allDistinctGroups = await getFetchRequest(DB_URL + "groups/distinct")
-		setAllDistinctGroups(allDistinctGroups)
+		const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+		if (typeof allGroups !== "string") setAllGroups(allGroups)
+		const allDistinctGroups = await getFetchRequest<string[]>(DB_URL + "groups/distinct")
+		if (typeof allDistinctGroups !== "string") setAllDistinctGroups(allDistinctGroups)
 	}, [])
 	return (
 		<table className='table table-sm text-center align-middle border border-dark'>

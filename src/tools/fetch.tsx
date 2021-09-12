@@ -1,4 +1,4 @@
-export async function postFetchRequest(url: string, body: any) {
+export async function postFetchRequest<Type>(url: string, body: unknown): Promise<Type | string> {
 	try {
 		const res = await fetch(url, {
 			method: "POST",
@@ -8,13 +8,13 @@ export async function postFetchRequest(url: string, body: any) {
 			},
 			body: JSON.stringify(body),
 		})
-		if (!res) throw new Error("PostFetchError")
+		if (!res) return "PostFetchError"
 		return await res.json()
 	} catch (error) {
-		console.log(error)
+		return "PostFetchError"
 	}
 }
-export async function getFetchRequest(url: string) {
+export async function getFetchRequest<Type>(url: string): Promise<Type | string> {
 	try {
 		const res = await fetch(url, {
 			method: "GET",
@@ -23,13 +23,13 @@ export async function getFetchRequest(url: string) {
 				Authorization: "Bearer: " + sessionStorage.getItem("token"),
 			},
 		})
-		if (!res) throw new Error("GetFetchError")
+		if (!res) return "PostFetchError"
 		return await res.json()
 	} catch (error) {
-		console.log(error)
+		return "PostFetchError"
 	}
 }
-export async function deleteFetchRequest(url: string, body: any) {
+export async function deleteFetchRequest<Type>(url: string, body: unknown): Promise<Type | string> {
 	try {
 		const res = await fetch(url, {
 			method: "DELETE",
@@ -39,13 +39,13 @@ export async function deleteFetchRequest(url: string, body: any) {
 			},
 			body: JSON.stringify(body),
 		})
-		if (!res) throw new Error("DeleteFetchError")
+		if (!res) return "PostFetchError"
 		return await res.json()
 	} catch (error) {
-		console.log(error)
+		return "PostFetchError"
 	}
 }
-export async function putFetchRequest(url: string, body: any) {
+export async function putFetchRequest<Type>(url: string, body: unknown): Promise<Type | string> {
 	try {
 		const res = await fetch(url, {
 			method: "PUT",
@@ -55,9 +55,9 @@ export async function putFetchRequest(url: string, body: any) {
 			},
 			body: JSON.stringify(body),
 		})
-		if (!res) throw new Error("PutFetchError")
+		if (!res) return "PostFetchError"
 		return await res.json()
 	} catch (error) {
-		console.log(error)
+		return "PostFetchError"
 	}
 }
