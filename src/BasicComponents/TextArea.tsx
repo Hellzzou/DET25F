@@ -2,11 +2,7 @@ import React from "react"
 import { textAreaProps } from "../types/BasicComponents"
 
 export const TextArea = (props: textAreaProps): JSX.Element => {
-	const printCrewMembers = (): string => {
-		let members = ""
-		props.control.value.forEach((member) => (members = members + " " + member))
-		return members
-	}
+	const printCrewMembers = (): string => props.control.value.reduce((acc, member) => (acc += " " + member), "")
 	return (
 		<div className={`col-md-${props.size}`}>
 			<textarea

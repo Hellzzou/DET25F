@@ -14,7 +14,7 @@ import { Navbar } from "../Sections/Navbar"
 import { controlArray, crewMember, Group, Nights } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { DB_URL } from "../Datas/datas"
+import { groupURL, memberURL, nightURL, onBoardFunctionURL, saveFlightURL } from "../Datas/datas"
 import { useEffect } from "react"
 import { manageNCAreas } from "../tools/formManager"
 import { tokenCheck } from "../tools/user"
@@ -90,38 +90,41 @@ export const NewFlightForm = (): JSX.Element => {
 	const returnClick = () => history.push("/activities")
 	async function addFlightClick() {
 		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups, allMembers)
-		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
+		const res = await postFetchRequest(saveFlightURL, { newFlight: newFlight })
 		if (res === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const nights = await getFetchRequest<Nights[]>(DB_URL + "nights")
-			const crewMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
-			const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			const nights = await getFetchRequest<Nights[]>(nightURL)
+			const crewMembers = await getFetchRequest<crewMember[]>(memberURL)
+			const CDA = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 				function: "CDA",
 			})
-			const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			const pilots = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 				function: "pilote",
 			})
-			const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+			const allGroups = await getFetchRequest<Group[]>(groupURL)
 			if (typeof allGroups !== "string") setAllGroups(allGroups)
 			if (typeof nights !== "string") setNights(nights[0])
-			if (typeof CDA !== "string") setCDAList(CDA.map((cda: crewMember) => cda.trigram))
-			if (typeof pilots !== "string") setPilotList(pilots.map((pilot: crewMember) => pilot.trigram))
+			if (typeof CDA !== "string") setCDAList(CDA.map(({ trigram }) => trigram))
+			if (typeof pilots !== "string") setPilotList(pilots.map(({ trigram }) => trigram))
 			if (typeof crewMembers !== "string") {
-				setAddableCrewMembers(crewMembers.map((crewMember: crewMember) => crewMember.trigram))
+				setAddableCrewMembers(
+					crewMembers
+						.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
+						.map(({ trigram }) => trigram)
+				)
 				setAllMembers(crewMembers)
 			}
 		}
 	}, [])
 	useEffect(() => {
 		setAddableCrewMembers(
-			addableCrewMembers
-				.filter((member) => !CDAlist.includes(member))
-				.concat(CDAlist)
-				.filter((member) => member !== chief.value)
+			[...addableCrewMembers.filter((member) => !CDAlist.includes(member)), ...CDAlist].filter(
+				(member) => member !== chief.value
+			)
 		)
 		setCrewMembers({
 			value: crewMembers.value.filter((member) => member !== chief.value),
@@ -131,10 +134,9 @@ export const NewFlightForm = (): JSX.Element => {
 	}, [chief.value])
 	useEffect(() => {
 		setAddableCrewMembers(
-			addableCrewMembers
-				.filter((member) => !pilotList.includes(member))
-				.concat(pilotList)
-				.filter((member) => member !== pilot.value)
+			[...addableCrewMembers.filter((member) => !pilotList.includes(member)), ...pilotList].filter(
+				(member) => member !== pilot.value
+			)
 		)
 		setCrewMembers({
 			value: crewMembers.value.filter((member) => member !== pilot.value),
@@ -142,16 +144,12 @@ export const NewFlightForm = (): JSX.Element => {
 			disabled: false,
 		})
 	}, [pilot.value])
-	useEffect(() => {
-		manageNCAreas(area.value, setNCArea, NCArea.value)
-	}, [area.value])
+	useEffect(() => manageNCAreas(area.value, setNCArea, NCArea.value), [area.value])
 	useAsyncEffect(async () => {
 		if (departureDate.validity) {
 			const departure = new Date(departureDate.value)
-			const jAero = nights[departure.getMonth()][departure.getDate() - 1].jour + "L"
-			const nAero = nights[departure.getMonth()][departure.getDate() - 1].nuit + "L"
-			setJAero(jAero)
-			setNAero(nAero)
+			setJAero(nights[departure.getMonth()][departure.getDate() - 1].jour + "L")
+			setNAero(nights[departure.getMonth()][departure.getDate() - 1].nuit + "L")
 		}
 	}, [departureDate.value])
 	return !token ? (

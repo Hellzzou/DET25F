@@ -4,7 +4,7 @@ import { Card } from "react-bootstrap"
 import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
-import { DB_URL } from "../Datas/datas"
+import { memberURL } from "../Datas/datas"
 import { getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
 import { PilotMiniCardProps } from "../types/Articles"
@@ -13,9 +13,9 @@ import { crewMember } from "../types/Objects"
 export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+		const members = await getFetchRequest<crewMember[]>(memberURL)
 		if (typeof members !== "string") {
-			const member = members.find((member: crewMember) => member.trigram === props.pilot.name)
+			const member = members.find(({ trigram }) => trigram === props.pilot.name)
 			if (member) sertFullName(member)
 		}
 	}, [])

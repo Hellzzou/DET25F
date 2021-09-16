@@ -5,7 +5,7 @@ import useAsyncEffect from "use-async-effect"
 import { AlertRow } from "../Articles/AlertRow"
 import { FlightRow } from "../Articles/FlightRow"
 import { OtherEvent } from "../Articles/OtherEventRow"
-import { DB_URL } from "../Datas/datas"
+import { alertDateFinderURL, eventDateFinderURL, flightDateFinderURL, nightURL } from "../Datas/datas"
 import { currentMonday, days, inDays } from "../Datas/dates"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
@@ -16,19 +16,17 @@ import moon from "../images/moon.png"
 import { Button } from "../BasicComponents/Button"
 import { FDVButton } from "../BasicComponents/FDVButton"
 import { buildWeekAlerts, buildWeekEvents, buildWeekFlights } from "../tools/buildWeekEvents"
+import { INITIAL_ALERT } from "../Datas/alert"
 
 export const Week = (): JSX.Element => {
 	const [monday, setMonday] = useState(currentMonday)
 	const [weekFlights, setWeekFlights] = useState<Array<Array<flight>>>([])
-	const [weekAlerts, setWeekAlerts] = useState<Array<Array<newAlert>>>([])
+	const [weekAlerts, setWeekAlerts] = useState<Array<newAlert>>([])
 	const [weekEvents, setWeekEvents] = useState<Array<Array<newEvent>>>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	const etat400Click = () => {
 		console.log("Etat 400")
-	}
-	const crHebdoClick = () => {
-		console.log("C/R hebdo")
 	}
 	const fdvClick = (date: Date) => {
 		console.log(date)
@@ -46,22 +44,23 @@ export const Week = (): JSX.Element => {
 		history.push("/newFlight")
 	}
 	useAsyncEffect(async () => {
-		const flights = await postFetchRequest<flight[]>(DB_URL + "flights/betweenTwoDates", {
+		const flights = await postFetchRequest<flight[]>(flightDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const alerts = await postFetchRequest<newAlert[]>(DB_URL + "alerts/betweenTwoDates", {
+		const alerts = await postFetchRequest<newAlert[]>(alertDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const events = await postFetchRequest<newEvent[]>(DB_URL + "events/betweenTwoDates", {
+		console.log(alerts)
+		const events = await postFetchRequest<newEvent[]>(eventDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
 		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
 		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
 		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
-		const nights = await getFetchRequest<Nights[]>(DB_URL + "nights")
+		const nights = await getFetchRequest<Nights[]>(nightURL)
 		if (typeof nights !== "string") setNights(nights[0])
 	}, [monday])
 	return (
@@ -141,36 +140,23 @@ export const Week = (): JSX.Element => {
 											<col width='6.8%'></col>
 										</colgroup>
 										<FlightRow
-											events={
-												typeof weekFlights !== "undefined" ? weekFlights[days.indexOf(day)] : []
-											}
+											events={weekFlights ? weekFlights[days.indexOf(day)] : []}
 											jAero={getSunsets(nights, monday, days.indexOf(day), "jour")}
 											nAero={getSunsets(nights, monday, days.indexOf(day), "nuit")}
 										/>
-										<OtherEvent
-											events={
-												typeof weekEvents !== "undefined" ? weekEvents[days.indexOf(day)] : []
-											}
-										/>
+										<OtherEvent events={weekEvents ? weekEvents[days.indexOf(day)] : []} />
 									</table>
 								</td>
 								<td className='p-0'>
-									<AlertRow
-										events={typeof weekAlerts !== "undefined" ? weekAlerts[days.indexOf(day)] : []}
-									/>
+									<AlertRow events={weekAlerts ? weekAlerts[days.indexOf(day) - 1] : INITIAL_ALERT} />
 								</td>
 							</tr>
 						))}
 					</tbody>
 				</table>
 			</div>
-			<div className='row'>
-				<div className='col-md-6 text-center'>
-					<Button size={10} buttonContent='ETAT 400' buttonColor='primary' onClick={etat400Click} />
-				</div>
-				<div className='col-md-6 text-center'>
-					<Button size={10} buttonContent='C/R HEBDO' buttonColor='primary' onClick={crHebdoClick} />
-				</div>
+			<div className='row justify-content-center'>
+				<Button size={6} buttonContent='ETAT 400' buttonColor='primary' onClick={etat400Click} />
 			</div>
 		</>
 	)

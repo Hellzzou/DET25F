@@ -153,11 +153,11 @@ export const DebriefFlightForm = ({
 		setAddableCrewMembers(addableCrewMembers.filter((crewMember) => crewMember !== addMemberSelect.value))
 		setDeleteMemberSelect({ value: "Choix...", validity: false, disabled: false })
 		setAddMemberSelect({ value: "Choix...", validity: false, disabled: false })
-		const { onBoardFunction } =
-			allMembers[allMembers.findIndex((element: crewMember) => element.trigram === addMemberSelect.value)]
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const { onBoardFunction } = allMembers.find(({ trigram }) => trigram === addMemberSelect.value)!
 		setPilotTPA(
 			["CDA", "pilote"].includes(onBoardFunction)
-				? pilotTPA.concat([{ name: addMemberSelect.value, TPA: INITIAL_PILOTTPA }])
+				? [...pilotTPA, { name: addMemberSelect.value, TPA: INITIAL_PILOTTPA }]
 				: pilotTPA
 		)
 		setMecboTPA(
@@ -260,12 +260,13 @@ export const DebriefFlightForm = ({
 				setAllMembers(crewMembers)
 				setAddableCrewMembers(
 					crewMembers
+						.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
 						.map((member: crewMember) => member.trigram)
 						.filter(
-							(crewMember: string) =>
-								!flight[0].crewMembers.includes(crewMember) &&
-								crewMember !== flight[0].chief &&
-								crewMember !== flight[0].pilot
+							(member) =>
+								!flight[0].crewMembers.includes(member) &&
+								member !== flight[0].chief &&
+								member !== flight[0].pilot
 						)
 				)
 			}

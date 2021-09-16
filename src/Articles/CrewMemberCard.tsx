@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
-import { DB_URL } from "../Datas/datas"
+import { memberURL } from "../Datas/datas"
 import { crewMemberHours } from "../tools/buildFlightHours"
 import { getFetchRequest } from "../tools/fetch"
 import { CrewMemberCardProps } from "../types/Articles"
@@ -14,13 +14,11 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	const [memberHours, setMemberHours] = useState<Record<string, number>>({})
 	const history = useHistory()
-	const detailClick = () => {
-		history.push(`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`)
-	}
+	const detailClick = () => history.push(`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`)
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+		const members = await getFetchRequest<crewMember[]>(memberURL)
 		if (typeof members !== "string") {
-			const member = members.find((member: crewMember) => member.trigram === props.crewMemberName)
+			const member = members.find(({ trigram }) => trigram === props.crewMemberName)
 			if (member) sertFullName(member)
 		}
 		const memberHours = crewMemberHours(props.crewMemberHours)

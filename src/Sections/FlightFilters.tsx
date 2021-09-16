@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { Select } from "../BasicComponents/Select"
-import { DB_URL } from "../Datas/datas"
+import { aircraftURL, areaURL, groupURL, NCAreaURL, typeURL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
 import { selectChoiceIsDone } from "../tools/validators"
 import { Aircraft, Area, FlightType, Group, NCArea } from "../types/Objects"
@@ -18,16 +18,16 @@ export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 	const done = ["ME", "MPE TECH", "MPE MTO", "MPE OPS", "CNL TECH", "CNL MTO", "CNL OPS"]
 	const time = ["Jour", "Nuit"]
 	useAsyncEffect(async () => {
-		const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
-		if (typeof allGroups !== "string") setGroups(allGroups.map((group: Group) => group.underGroup))
-		const aircraft = await getFetchRequest<Aircraft[]>(DB_URL + "aircraft")
-		if (typeof aircraft !== "string") setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
-		const types = await getFetchRequest<FlightType[]>(DB_URL + "type")
-		if (typeof types !== "string") setType(types.map((type: { name: string }) => type.name))
-		const areas = await getFetchRequest<Area[]>(DB_URL + "area")
-		if (typeof areas !== "string") setAreas(areas.map((type: { name: string }) => type.name))
-		const NCAreas = await getFetchRequest<NCArea[]>(DB_URL + "NCArea")
-		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map((type: { name: string }) => type.name))
+		const allGroups = await getFetchRequest<Group[]>(groupURL)
+		if (typeof allGroups !== "string") setGroups(allGroups.map(({ underGroup }) => underGroup))
+		const aircraft = await getFetchRequest<Aircraft[]>(aircraftURL)
+		if (typeof aircraft !== "string") setAircraft(aircraft.map(({ number }) => number))
+		const types = await getFetchRequest<FlightType[]>(typeURL)
+		if (typeof types !== "string") setType(types.map(({ name }) => name))
+		const areas = await getFetchRequest<Area[]>(areaURL)
+		if (typeof areas !== "string") setAreas(areas.map(({ name }) => name))
+		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
+		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map(({ name }) => name))
 	}, [])
 	return (
 		<>

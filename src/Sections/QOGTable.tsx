@@ -3,7 +3,7 @@ import React from "react"
 import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { QOGRow } from "../Articles/QOGRow"
-import { DB_URL } from "../Datas/datas"
+import { distinctGroupURL, groupURL } from "../Datas/datas"
 import { INITIAL_GROUP } from "../Datas/group"
 import { getFetchRequest } from "../tools/fetch"
 import {
@@ -21,9 +21,9 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 	const [allGroups, setAllGroups] = useState<Group[]>(INITIAL_GROUP)
 	const [allDistinctGroups, setAllDistinctGroups] = useState<string[]>([])
 	useAsyncEffect(async () => {
-		const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
+		const allGroups = await getFetchRequest<Group[]>(groupURL)
 		if (typeof allGroups !== "string") setAllGroups(allGroups)
-		const allDistinctGroups = await getFetchRequest<string[]>(DB_URL + "groups/distinct")
+		const allDistinctGroups = await getFetchRequest<string[]>(distinctGroupURL)
 		if (typeof allDistinctGroups !== "string") setAllDistinctGroups(allDistinctGroups)
 	}, [])
 	return (

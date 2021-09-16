@@ -3,40 +3,37 @@ import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { denaeTPAProps } from "../types/Articles"
-import { denaeTPA } from "../types/Objects"
 
 export const NavTPA = (props: denaeTPAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
-		const newControls: Array<denaeTPA> = []
-		props.denaeTPAs.forEach((denaeTPA) => {
-			if (props.denaeTPAs.indexOf(denaeTPA) !== props.index) newControls.push(denaeTPA)
+		const navTPAMod = props.denaeTPAs.map((denaeTPA) => {
+			if (denaeTPA !== props.denaeTPA) return denaeTPA
 			else {
-				newControls.push({
+				return {
 					name: denaeTPA.name,
 					TPA: {
 						PGPS: { name: denaeTPA.TPA.PGPS.name, value: !TPA.value },
 						appRDR: denaeTPA.TPA.appRDR,
 					},
-				})
+				}
 			}
 		})
-		props.setDenaeTPA(newControls)
+		props.setDenaeTPA(navTPAMod)
 	}
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newControls: Array<denaeTPA> = []
-		props.denaeTPAs.forEach((denaeTPA) => {
-			if (props.denaeTPAs.indexOf(denaeTPA) !== props.index) newControls.push(denaeTPA)
+		const navTPAMod = props.denaeTPAs.map((denaeTPA) => {
+			if (denaeTPA !== props.denaeTPA) return denaeTPA
 			else {
-				newControls.push({
+				return {
 					name: denaeTPA.name,
 					TPA: {
 						PGPS: denaeTPA.TPA.PGPS,
 						appRDR: { name: denaeTPA.TPA.appRDR.name, value: e.target.value },
 					},
-				})
+				}
 			}
 		})
-		props.setDenaeTPA(newControls)
+		props.setDenaeTPA(navTPAMod)
 	}
 	return (
 		<div className='row'>

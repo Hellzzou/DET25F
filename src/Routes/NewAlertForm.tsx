@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Legend } from "../BasicComponents/Legend"
-import { DB_URL } from "../Datas/datas"
+import { alertDeleteURL, alertIDFinderURL, saveAlertURL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { AlertFieldset } from "../Sections/AlertFieldset"
@@ -33,26 +33,26 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
 		const newAlert = buildNewAlert(hooks)
-		const saved = await postFetchRequest(DB_URL + "alerts/save", { newAlert })
+		const saved = await postFetchRequest(saveAlertURL, { newAlert })
 		if (saved === "success") history.push("/activities")
 	}
 	async function modifyAlertClick() {
 		const newAlert = buildNewAlert(hooks)
-		const deleted = await postFetchRequest<string>(DB_URL + "alerts/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
 		if (deleted === "success") {
-			const res = await postFetchRequest<string>(DB_URL + "alerts/save", { newAlert })
+			const res = await postFetchRequest<string>(saveAlertURL, { newAlert })
 			if (res === "success") history.push("/activities")
 		}
 	}
 	async function deleteClick() {
-		const deleted = await postFetchRequest<string>(DB_URL + "alerts/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
 		if (deleted === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const alert = await postFetchRequest<newAlert[]>(DB_URL + "alerts/findWithId", { id: match.params.id })
+			const alert = await postFetchRequest<newAlert[]>(alertIDFinderURL, { id: match.params.id })
 			if (typeof alert !== "string") fullfillAlert(alert[0], setters)
 		}
 	}, [])

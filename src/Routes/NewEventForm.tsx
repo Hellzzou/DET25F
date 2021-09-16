@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Legend } from "../BasicComponents/Legend"
-import { DB_URL } from "../Datas/datas"
+import { eventDelete, eventIDFinder, saveEventURL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { EventFieldset } from "../Sections/EventFieldset"
@@ -30,26 +30,26 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks)
-		const saved = await postFetchRequest<string>(DB_URL + "events/save", { newEvent })
+		const saved = await postFetchRequest<string>(saveEventURL, { newEvent })
 		if (saved === "success") history.push("/activities")
 	}
 	async function modifyEventClick() {
 		const newEvent = buildNewEvent(hooks)
-		const deleted = await postFetchRequest<string>(DB_URL + "events/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
 		if (deleted === "success") {
-			const res = await postFetchRequest<string>(DB_URL + "events/save", { newEvent })
+			const res = await postFetchRequest<string>(saveEventURL, { newEvent })
 			if (res === "success") history.push("/activities")
 		}
 	}
 	async function deleteClick() {
-		const deleted = await postFetchRequest<string>(DB_URL + "events/deleteOne", { id: match.params.id })
+		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
 		if (deleted === "success") history.push("/activities")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const event = await postFetchRequest<newEvent[]>(DB_URL + "events/findWithId", { id: match.params.id })
+			const event = await postFetchRequest<newEvent[]>(eventIDFinder, { id: match.params.id })
 			if (typeof event !== "string") fullfillEvent(event[0], setters)
 		}
 	}, [])

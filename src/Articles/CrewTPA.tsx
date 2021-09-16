@@ -4,7 +4,6 @@ import { crewTPAProps } from "../types/Articles"
 
 export const CrewTPA = (props: crewTPAProps): JSX.Element => {
 	const handleChange = (TPA: { name: string; value: boolean }) => {
-		console.log(TPA.name)
 		props.setCrewTPA({
 			TMAHD: { name: "TMA HD", value: TPA.name === "TMA HD" ? !TPA.value : props.crewTPA.TMAHD.value },
 			COOPBAT: { name: "coop BAT", value: TPA.name === "coop BAT" ? !TPA.value : props.crewTPA.COOPBAT.value },

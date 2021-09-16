@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { QOGTable } from "../Sections/QOGTable"
@@ -18,10 +18,10 @@ export const QOG = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const underGroups = await getFetchRequest<string[]>(DB_URL + "groups/distinctUnderGroup")
-			const yearFlights = await postFetchRequest<flight[]>(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
+			const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
+			const yearFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
 				startDate: new Date(new Date().getFullYear(), 0, 1),
-				endDate: new Date(),
+				endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
 			})
 			if (typeof underGroups !== "string" && typeof yearFlights !== "string")
 				setQOGFlights(buildQOG(yearFlights, underGroups))

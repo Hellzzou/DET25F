@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { DB_URL } from "../Datas/datas"
+import { CDAURL, DB_URL } from "../Datas/datas"
 import { INITIAL_FALSE_SELECT } from "../Datas/initialHooks"
 import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { FlightFilters } from "../Sections/FlightFilters"
@@ -33,7 +33,7 @@ export const FlightSearch = (): JSX.Element => {
 		if (token) {
 			let CDAName = "Choix..."
 			if (crew.value !== "Choix...") {
-				const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findCDA", { crew: crew.value })
+				const CDA = await postFetchRequest<crewMember[]>(CDAURL, { crew: crew.value })
 				if (typeof CDA !== "string") CDAName = CDA[0].trigram
 			}
 			const filteredFlights = await postFetchRequest<flight[]>(DB_URL + "flights/filteredFlights", {
@@ -48,7 +48,8 @@ export const FlightSearch = (): JSX.Element => {
 				done: done.value,
 				time: time.value,
 			})
-			if (typeof filteredFlights !== "string") setFlights(filteredFlights)
+			if (typeof filteredFlights !== "string")
+				setFlights(filteredFlights.sort((a, b) => Date.parse(a.departureDate) - Date.parse(b.departureDate)))
 		}
 	}, [
 		startDate.value,

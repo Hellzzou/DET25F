@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { PilotEQAMiniCArd } from "../Articles/pilotEQAMiniCard"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
@@ -21,16 +21,13 @@ export const PilotEQA = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const endDate = new Date(Date.now())
+			const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 			const lastFourYears = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const lastFourYearsFlights = await postFetchRequest<flight[]>(
-				DB_URL + "flights/debriefedFlightsOfLastFourYears",
-				{
-					startDate: lastFourYears,
-					endDate: endDate,
-				}
-			)
-			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const lastFourYearsFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+				startDate: lastFourYears,
+				endDate,
+			})
+			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
 			if (typeof allMembers !== "string" && typeof lastFourYearsFlights !== "string") {
 				const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
 				setPilotEQAs(EQAs)

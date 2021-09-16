@@ -3,7 +3,7 @@ import React from "react"
 import { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { CrewMembersCards } from "../Sections/CrewMembersCards"
 import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { Header } from "../Sections/Header"
@@ -23,16 +23,16 @@ export const FlightHours = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
-			const allDebriefedFlights = await postFetchRequest<flight[]>(
-				DB_URL + "flights/debriefedFlightsOfLastFourYears",
-				{
-					startDate: new Date(startDate.value),
-					endDate: new Date(endDate.value),
-				}
-			)
+			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
+			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+				startDate: new Date(startDate.value),
+				endDate: new Date(endDate.value),
+			})
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
-				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
+				const crewMembersHours = crewMembersFlights(
+					allMembers.filter(({ onBoardFunction }) => onBoardFunction !== "TECH"),
+					allDebriefedFlights
+				)
 				setCrewMembersHours(crewMembersHours)
 			}
 		}

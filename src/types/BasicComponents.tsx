@@ -42,7 +42,7 @@ export type flightRowProps = {
 	nAero: string
 }
 export type alertRowProps = {
-	events: Array<newAlert>
+	events: newAlert
 }
 export type otherEventProps = {
 	events: Array<newEvent>

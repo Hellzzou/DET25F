@@ -5,7 +5,7 @@ import { Input } from "../BasicComponents/input"
 import { Label } from "../BasicComponents/Label"
 import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
-import { DB_URL } from "../Datas/datas"
+import { onBoardFunctionURL } from "../Datas/datas"
 import { postFetchRequest } from "../tools/fetch"
 import { dateIsCorrect, selectChoiceIsDone } from "../tools/validators"
 import { crewMember } from "../types/Objects"
@@ -18,33 +18,30 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 	const [radios, setRadios] = useState<Array<string>>(["Choix..."])
 	const [techs, setTechs] = useState<Array<string>>(["Choix..."])
 	useAsyncEffect(async () => {
-		const cdas = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const cdas = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "CDA",
 		})
-		const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const pilots = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "pilote",
 		})
-		const mecbos = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const mecbos = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "MECBO",
 		})
-		const navs = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const navs = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "DENAE",
 		})
-		const radios = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const radios = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "GETBO",
 		})
-		const techs = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+		const techs = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
 			function: "TECH",
 		})
 		if (typeof cdas !== "string" && typeof pilots !== "string")
-			setPilots([
-				...cdas.map((cda: crewMember) => cda.trigram),
-				...pilots.map((pilot: crewMember) => pilot.trigram),
-			])
-		if (typeof mecbos !== "string") setMecbos(mecbos.map((cda: crewMember) => cda.trigram))
-		if (typeof navs !== "string") setNavs(navs.map((cda: crewMember) => cda.trigram))
-		if (typeof radios !== "string") setRadios(radios.map((cda: crewMember) => cda.trigram))
-		if (typeof techs !== "string") setTechs(techs.map((cda: crewMember) => cda.trigram))
+			setPilots([...cdas, ...pilots].map(({ trigram }) => trigram))
+		if (typeof mecbos !== "string") setMecbos(mecbos.map(({ trigram }) => trigram))
+		if (typeof navs !== "string") setNavs(navs.map(({ trigram }) => trigram))
+		if (typeof radios !== "string") setRadios(radios.map(({ trigram }) => trigram))
+		if (typeof techs !== "string") setTechs(techs.map(({ trigram }) => trigram))
 	}, [])
 	return (
 		<fieldset className='col-md-6 border border-dark rounded'>

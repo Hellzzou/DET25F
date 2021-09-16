@@ -2,15 +2,13 @@ import React from "react"
 import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
 import { radioTPAProps } from "../types/Articles"
-import { radioTPA } from "../types/Objects"
 
 export const RadioTPA = (props: radioTPAProps): JSX.Element => {
 	const handleChange = (TPA: { name: string; value: boolean | string }) => {
-		const newControls: Array<radioTPA> = []
-		props.radioTPAs.forEach((radioTPA) => {
-			if (props.radioTPAs.indexOf(radioTPA) !== props.index) newControls.push(radioTPA)
-			else {
-				const tempControl: radioTPA = {
+		const radioTPAMod = props.radioTPAs.map((radioTPA) => {
+			if (radioTPA !== props.radioTPA) return radioTPA
+			else
+				return {
 					name: radioTPA.name,
 					TPA: {
 						IMINT: {
@@ -19,10 +17,8 @@ export const RadioTPA = (props: radioTPAProps): JSX.Element => {
 						},
 					},
 				}
-				newControls.push(tempControl)
-			}
-			props.setRadioTPa(newControls)
 		})
+		props.setRadioTPa(radioTPAMod)
 	}
 
 	return (

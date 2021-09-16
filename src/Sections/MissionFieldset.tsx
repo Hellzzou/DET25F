@@ -5,7 +5,7 @@ import { Input } from "../BasicComponents/input"
 import { Label } from "../BasicComponents/Label"
 import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
-import { DB_URL } from "../Datas/datas"
+import { aircraftURL, areaURL, configURL, fuelURL, groupURL, NCAreaURL, typeURL } from "../Datas/datas"
 import { getFetchRequest } from "../tools/fetch"
 import { selectChoiceIsDone, textIsNotNull } from "../tools/validators"
 import { Aircraft, Area, Config, FlightType, Fuel, Group, NCArea } from "../types/Objects"
@@ -21,20 +21,20 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 	const belongings = ["DET25F", "HORS DET25F"]
 	const [config, setConfig] = useState<Array<string>>([])
 	useAsyncEffect(async () => {
-		const fuels = await getFetchRequest<Fuel[]>(DB_URL + "fuel")
-		if (typeof fuels !== "string") setFuel(fuels.map((fuel: { quantity: string }) => fuel.quantity))
-		const aircraft = await getFetchRequest<Aircraft[]>(DB_URL + "aircraft")
-		if (typeof aircraft !== "string") setAircraft(aircraft.map((aircraft: { number: string }) => aircraft.number))
-		const types = await getFetchRequest<FlightType[]>(DB_URL + "type")
-		if (typeof types !== "string") setType(types.map((type: { name: string }) => type.name))
-		const areas = await getFetchRequest<Area[]>(DB_URL + "area")
-		if (typeof areas !== "string") setAreas(areas.map((type: { name: string }) => type.name))
-		const NCAreas = await getFetchRequest<NCArea[]>(DB_URL + "NCArea")
-		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map((type: { name: string }) => type.name))
-		const configs = await getFetchRequest<Config[]>(DB_URL + "config")
-		if (typeof configs !== "string") setConfig(configs.map((type: { name: string }) => type.name))
-		const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
-		if (typeof allGroups !== "string") setGroups(allGroups.map((group: Group) => group.underGroup))
+		const fuels = await getFetchRequest<Fuel[]>(fuelURL)
+		if (typeof fuels !== "string") setFuel(fuels.map(({ quantity }) => quantity))
+		const aircraft = await getFetchRequest<Aircraft[]>(aircraftURL)
+		if (typeof aircraft !== "string") setAircraft(aircraft.map(({ number }) => number))
+		const types = await getFetchRequest<FlightType[]>(typeURL)
+		if (typeof types !== "string") setType(types.map(({ name }) => name))
+		const areas = await getFetchRequest<Area[]>(areaURL)
+		if (typeof areas !== "string") setAreas(areas.map(({ name }) => name))
+		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
+		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map(({ name }) => name))
+		const configs = await getFetchRequest<Config[]>(configURL)
+		if (typeof configs !== "string") setConfig(configs.map(({ name }) => name))
+		const allGroups = await getFetchRequest<Group[]>(groupURL)
+		if (typeof allGroups !== "string") setGroups(allGroups.map(({ underGroup }) => underGroup))
 	}, [])
 	return (
 		<fieldset className='bg-light rounded py-1'>

@@ -6,7 +6,7 @@ import { DenaeMiniCard } from "../Articles/DenaeMiniCard"
 import { MecboMiniCard } from "../Articles/MecboMiniCard"
 import { PilotMiniCard } from "../Articles/PilotMiniCard"
 import { RadioMiniCard } from "../Articles/RadioMiniCard"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
@@ -22,22 +22,21 @@ export const AllTPAs = (): JSX.Element => {
 	const [mecboTPA, setMecboTPA] = useState<{ name: string; TPA: mecboDateTPA }[]>([])
 	const [radioTPA, setRadioTPA] = useState<{ name: string; TPA: radioDateTPA }[]>([])
 	const [denaeTPA, setDenaeTPA] = useState<{ name: string; TPA: denaeDateTPA }[]>([])
+
 	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
 	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
+
 	useAsyncEffect(async () => {
-		const endDate = new Date(Date.now())
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
+			const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 			const startDate = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const allDebriefedFlights = await postFetchRequest<flight[]>(
-				DB_URL + "flights/debriefedFlightsOfLastFourYears",
-				{
-					startDate: startDate,
-					endDate: endDate,
-				}
-			)
-			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+				startDate,
+				endDate,
+			})
+			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
 				const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
 				setPilotTPA(TPAs.pilotTPA)

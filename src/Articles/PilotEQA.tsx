@@ -3,16 +3,14 @@ import { Label } from "../BasicComponents/Label"
 import { pilotEQAProps } from "../types/Articles"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { Switch } from "../BasicComponents/Switch"
-import { pilotEQA } from "../types/Objects"
 import { returnZeroOrValue } from "../tools/maths"
 
 export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
-		const newControls: Array<pilotEQA> = []
-		props.pilotEQAs.forEach((pilotEQA) => {
-			if (props.pilotEQAs.indexOf(pilotEQA) !== props.index) newControls.push(pilotEQA)
+		const pilotEQAMod = props.pilotEQAs.map((pilotEQA) => {
+			if (pilotEQA !== props.pilotEQA) return pilotEQA
 			else {
-				newControls.push({
+				return {
 					name: pilotEQA.name,
 					EQA: {
 						PILJ: pilotEQA.EQA.PILJ,
@@ -34,45 +32,50 @@ export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 								? { name: "EXT/RAL GTR", value: !TPA.value }
 								: pilotEQA.EQA.ERGTR,
 					},
-				})
+				}
 			}
 		})
-		props.setPilotEQA(newControls)
+		props.setPilotEQA(pilotEQAMod)
 	}
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, TPA: { name: string; value: string }) => {
-		const newControls: Array<pilotEQA> = []
 		let day = 0
 		let night = 0
 		if (props.pilotEQAs.length > 0) {
 			if (TPA.name === "pil jour") {
-				day = props.pilotEQAs
-					.map((eqa) => returnZeroOrValue(eqa.EQA.PILJ.value))
-					.reduce((previous, current, index) => {
-						if (index !== props.index) return previous + current
-						else return previous + 0
-					})
+				day = props.pilotEQAs.reduce((acc, pilotEQA) => {
+					if (pilotEQA !== props.pilotEQA) acc += returnZeroOrValue(pilotEQA.EQA.PILJ.value)
+					return acc
+				}, 0)
 				day += returnZeroOrValue(e.target.value)
 			} else
 				day = props.pilotEQAs
 					.map((eqa) => returnZeroOrValue(eqa.EQA.PILJ.value))
 					.reduce((previous, current) => previous + current)
 			if (TPA.name === "pil nuit") {
-				night = props.pilotEQAs
-					.map((eqa) => returnZeroOrValue(eqa.EQA.PILN.value))
-					.reduce((previous, current, index) => {
-						if (index !== props.index) return previous + current
-						else return previous + 0
-					})
+				night = props.pilotEQAs.reduce((acc, pilotEQA) => {
+					if (pilotEQA !== props.pilotEQA) acc += returnZeroOrValue(pilotEQA.EQA.PILN.value)
+					return acc
+				}, 0)
 				night += returnZeroOrValue(e.target.value)
 			} else
 				night = props.pilotEQAs
 					.map((eqa) => returnZeroOrValue(eqa.EQA.PILN.value))
 					.reduce((previous, current) => previous + current)
 		}
-		props.pilotEQAs.forEach((pilotEQA) => {
-			if (props.pilotEQAs.indexOf(pilotEQA) !== props.index) newControls.push(pilotEQA)
+		props.setDayDuration({
+			value: props.dayDuration.value,
+			validity: 2 * parseFloat(props.dayDuration.value) === day,
+			disabled: false,
+		})
+		props.setNightDuration({
+			value: props.nightDuration.value,
+			validity: 2 * parseFloat(props.nightDuration.value) === night,
+			disabled: false,
+		})
+		const pilotEQAMod = props.pilotEQAs.map((pilotEQA) => {
+			if (pilotEQA !== props.pilotEQA) return pilotEQA
 			else {
-				newControls.push({
+				return {
 					name: pilotEQA.name,
 					EQA: {
 						PILJ:
@@ -93,21 +96,11 @@ export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
 						STAND: pilotEQA.EQA.STAND,
 						ERGTR: pilotEQA.EQA.ERGTR,
 					},
-				})
+				}
 			}
 		})
-		props.setDayDuration({
-			value: props.dayDuration.value,
-			validity: 2 * parseFloat(props.dayDuration.value) === day,
-			disabled: false,
-		})
-		props.setNightDuration({
-			value: props.nightDuration.value,
-			validity: 2 * parseFloat(props.nightDuration.value) === night,
-			disabled: false,
-		})
 		props.setPilotEQA(
-			newControls.map((eqa) => {
+			pilotEQAMod.map((eqa) => {
 				return {
 					name: eqa.name,
 					EQA: {

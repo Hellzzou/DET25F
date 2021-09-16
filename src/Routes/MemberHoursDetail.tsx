@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { Redirect, RouteComponentProps } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { FlightTable } from "../Sections/FlightTable"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
@@ -21,18 +21,15 @@ export const MemberHoursDetail = ({
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
-			const allDebriefedFlights = await postFetchRequest<flight[]>(
-				DB_URL + "flights/debriefedFlightsOfLastFourYears",
-				{
-					startDate: new Date(match.params.startDate),
-					endDate: new Date(match.params.endDate),
-				}
-			)
+			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
+			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+				startDate: new Date(match.params.startDate),
+				endDate: new Date(match.params.endDate),
+			})
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
-				setMember(allMembers.find((member: crewMember) => member.trigram === match.params.name))
+				setMember(allMembers.find(({ trigram }) => trigram === match.params.name))
 				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
-				setCrewMembersHours(crewMembersHours.find((member) => member.name === match.params.name)?.flight)
+				setCrewMembersHours(crewMembersHours.find(({ name }) => name === match.params.name)?.flight)
 			}
 		}
 	}, [])

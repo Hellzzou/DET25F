@@ -1,7 +1,7 @@
 import React from "react"
 import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
-import { DB_URL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/datas"
 import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { buildWeekReport } from "../tools/buildReports"
@@ -14,8 +14,8 @@ export const CRHebdo = (): JSX.Element => {
 	const [underGroups, setUnderGroups] = useState<string[]>(["110"])
 	const [flights, setFlights] = useState<Record<string, number>[]>()
 	useAsyncEffect(async () => {
-		const underGroups = await getFetchRequest<string[]>(DB_URL + "groups/distinctUnderGroup")
-		const yearFlights = await postFetchRequest<flight[]>(DB_URL + "flights/debriefedFlightsOfLastFourYears", {
+		const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
+		const yearFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
 			startDate: new Date(new Date().getFullYear(), 0, 1),
 			endDate: new Date(),
 		})

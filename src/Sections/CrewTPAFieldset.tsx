@@ -21,7 +21,6 @@ export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
 					pilotTPA={pilot}
 					pilotTPAs={props.pilotTPA}
 					setPilotTPA={props.setPilotTPA}
-					index={props.pilotTPA.indexOf(pilot)}
 				/>
 			))}
 			{props.mecboTPA.map((mecbo) => (
@@ -30,7 +29,6 @@ export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
 					mecboTPA={mecbo}
 					mecboTPAs={props.mecboTPA}
 					setMecboTPA={props.setMecboTPA}
-					index={props.mecboTPA.indexOf(mecbo)}
 				/>
 			))}
 			{props.radioTPA.map((radio) => (
@@ -39,7 +37,6 @@ export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
 					radioTPA={radio}
 					radioTPAs={props.radioTPA}
 					setRadioTPa={props.setRadioTPa}
-					index={props.radioTPA.indexOf(radio)}
 				/>
 			))}
 			{props.denaeTPA.map((denae) => (
@@ -48,7 +45,6 @@ export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
 					denaeTPA={denae}
 					denaeTPAs={props.denaeTPA}
 					setDenaeTPA={props.setDenaeTPA}
-					index={props.denaeTPA.indexOf(denae)}
 				/>
 			))}
 			<hr className='my-1'></hr>
@@ -59,7 +55,6 @@ export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
 					pilotEQA={pilot}
 					pilotEQAs={props.pilotEQA}
 					setPilotEQA={props.setPilotEQA}
-					index={props.pilotEQA.indexOf(pilot)}
 					dayDuration={props.dayDuration}
 					setDayDuration={props.setDayDuration}
 					nightDuration={props.nightDuration}
