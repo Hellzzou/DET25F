@@ -49,37 +49,35 @@ export const AllTPAs = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<div style={{ width: "100%" }}>
+		<div className='alegreya' style={{ width: "100%" }}>
 			<Header />
 			<Navbar />
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
-			<div>
-				<div className='row mt-2'>
-					{pilotTPA.map((pilot) => (
-						<div key={pilotTPA.indexOf(pilot)} className='col-md-3'>
-							<PilotMiniCard pilot={pilot} date={dateTocompare} />
-						</div>
-					))}
-				</div>
-				<div className='row mt-2'>
-					{mecboTPA.map((mecbo) => (
-						<div key={mecboTPA.indexOf(mecbo)} className='col-md-3'>
-							<MecboMiniCard mecbo={mecbo} date={dateTocompare} />
-						</div>
-					))}
-					{radioTPA.map((radio) => (
-						<div key={radioTPA.indexOf(radio)} className='col-md-3'>
-							<RadioMiniCard radio={radio} date={dateTocompare} />
-						</div>
-					))}
-				</div>
-				<div className='row mt-2'>
-					{denaeTPA.map((denae) => (
-						<div key={denaeTPA.indexOf(denae)} className='col-md-3'>
-							<DenaeMiniCard denae={denae} date={dateTocompare} />
-						</div>
-					))}
-				</div>
+			<div className='row mt-2 m-0'>
+				{pilotTPA.map((pilot) => (
+					<div key={pilotTPA.indexOf(pilot)} className='col-md-3'>
+						<PilotMiniCard pilot={pilot} date={dateTocompare} />
+					</div>
+				))}
+			</div>
+			<div className='row mt-2 m-0'>
+				{mecboTPA.map((mecbo) => (
+					<div key={mecboTPA.indexOf(mecbo)} className='col-md-3'>
+						<MecboMiniCard mecbo={mecbo} date={dateTocompare} />
+					</div>
+				))}
+				{radioTPA.map((radio) => (
+					<div key={radioTPA.indexOf(radio)} className='col-md-3'>
+						<RadioMiniCard radio={radio} date={dateTocompare} />
+					</div>
+				))}
+			</div>
+			<div className='row mt-2 m-0'>
+				{denaeTPA.map((denae) => (
+					<div key={denaeTPA.indexOf(denae)} className='col-md-3'>
+						<DenaeMiniCard denae={denae} date={dateTocompare} />
+					</div>
+				))}
 			</div>
 		</div>
 	)

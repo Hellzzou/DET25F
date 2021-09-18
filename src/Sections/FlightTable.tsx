@@ -4,8 +4,8 @@ import { FlightTableProps } from "../types/Sections"
 
 export const FlightTable = (props: FlightTableProps): JSX.Element => {
 	return (
-		<table className='table table-sm table-striped text-center'>
-			<thead className='table-light fs-5 table-bordered'>
+		<table className='table table-sm table-primary table-striped text-center'>
+			<thead className='table-light card-body-color border border-secondary fs-5 table-bordered'>
 				<th scope='col'>Date</th>
 				<th>Avion</th>
 				<th>CDA</th>

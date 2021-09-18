@@ -8,7 +8,7 @@ import moon from "../images/moon.png"
 
 export const TimingFieldset = (props: timingFieldsetProps): JSX.Element => {
 	return (
-		<fieldset className='bg-light rounded py-1'>
+		<fieldset className='card-body-color rounded py-1'>
 			<legend className='row text-center'>
 				<div className='text-success col-md-4'>
 					<img src={sun} className='d-inline mx-1 align-middle' />

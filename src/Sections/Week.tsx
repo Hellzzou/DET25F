@@ -52,7 +52,6 @@ export const Week = (): JSX.Element => {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		console.log(alerts)
 		const events = await postFetchRequest<newEvent[]>(eventDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
@@ -73,7 +72,7 @@ export const Week = (): JSX.Element => {
 					newEventClick={newEventClick}
 					firstDay={monday}
 				/>
-				<table className='col-md-12 table table-secondary table-sm table-striped align-middle caption-top my-1'>
+				<table className='col-md-12 table table-secondary table-sm align-middle my-1'>
 					<colgroup>
 						<col width='11%'></col>
 						<col width='82%'></col>

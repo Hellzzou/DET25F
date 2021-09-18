@@ -17,7 +17,7 @@ export const ManageDB = (): JSX.Element => {
 	const onCrewMemberClick = () => history.push("/crewMembers")
 	const onUserClick = () => history.push("/users")
 	return (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<div className='row m-2'>
@@ -98,6 +98,6 @@ export const ManageDB = (): JSX.Element => {
 					/>
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }

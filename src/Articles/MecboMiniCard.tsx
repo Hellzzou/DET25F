@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { Card } from "react-bootstrap"
 import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
@@ -19,58 +18,43 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 		}
 	}, [])
 	return (
-		<Card className='text-center'>
-			<Card.Header className='p-1'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</Card.Header>
-			<Card.Body className='p-2'>
+		<div className='card m-1'>
+			<div className='card-body card-body-color py-2'>
+				<h5 className='card-title text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+				<hr className='m-2'></hr>
 				<div className='row'>
 					<div className='col-md-6'>
 						<CrewTPACard member={props.mecbo} date={props.date} />
 					</div>
 					<div className='col-md-6'>
-						<Card.Title>TPA Individuel</Card.Title>
+						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
 						<div className='row'>
 							<div className='col-md-6 text-start'>LCS: </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.mecbo.TPA.LCS,
-									props.date
-								)}`}>
+							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.LCS, props.date)}`}>
 								{props.mecbo.TPA.LCS.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
 							<div className='col-md-6 text-start'>Photos : </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.mecbo.TPA.PH[0],
-									props.date
-								)}`}>
+							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.PH[0], props.date)}`}>
 								{props.mecbo.TPA.PH[0].toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
 							<div className='col-md-6 text-start'>Photos : </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.mecbo.TPA.PH[1],
-									props.date
-								)}`}>
+							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.PH[1], props.date)}`}>
 								{props.mecbo.TPA.PH[1].toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
 							<div className='col-md-6 text-start'>Trappe : </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getAnnual(
-									props.mecbo.TPA.TRP,
-									props.date
-								)}`}>
+							<div className={`col-md-6 text-end  text-${getAnnual(props.mecbo.TPA.TRP, props.date)}`}>
 								{props.mecbo.TPA.TRP.toLocaleDateString()}
 							</div>
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card>
+			</div>
+		</div>
 	)
 }

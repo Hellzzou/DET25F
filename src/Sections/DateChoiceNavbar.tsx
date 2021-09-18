@@ -6,8 +6,8 @@ import { DateChoiceNavbarProps } from "../types/Sections"
 
 export const DateChoiceNavbar = (props: DateChoiceNavbarProps): JSX.Element => {
 	return (
-		<div className='form-group row m-1 justify-content-center border border-dark p-1 rounded'>
-			<Label size={2} title='Date de début :' />
+		<div className='form-group row mx-1 justify-content-center card-body-color p-1 rounded'>
+			<Label size={1} title='Date de début :' />
 			<Input
 				size={2}
 				backgroundColor='dark'
@@ -19,7 +19,7 @@ export const DateChoiceNavbar = (props: DateChoiceNavbarProps): JSX.Element => {
 				setControl={props.setStartDate}
 				validator={dateIsCorrect}
 			/>
-			<Label size={2} title='Date de fin :' />
+			<Label size={1} title='Date de fin :' />
 			<Input
 				size={2}
 				backgroundColor='dark'

@@ -29,7 +29,7 @@ export const Login = (): JSX.Element => {
 		})()
 	}
 	return (
-		<>
+		<div className='alegreya'>
 			<form action='#' className='row justify-content-center align-items-center bg-image' style={divStyle}>
 				<div className='col-md-5'>
 					<fieldset className='border border-dark text-dark rounded py-4 bg-light'>
@@ -79,6 +79,6 @@ export const Login = (): JSX.Element => {
 					</fieldset>
 				</div>
 			</form>
-		</>
+		</div>
 	)
 }

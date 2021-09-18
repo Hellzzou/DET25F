@@ -37,13 +37,13 @@ export const PilotEQA = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<div>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
 			<div className='row'>
 				{pilotEQAs.map((pilot) => (
-					<div key={pilotEQAs.indexOf(pilot)} className='col-md-3 mt-2'>
+					<div key={pilotEQAs.indexOf(pilot)} className='col-md-3 mt-2 m-0'>
 						<PilotEQAMiniCArd pilot={pilot} date={dateTocompare} />
 					</div>
 				))}

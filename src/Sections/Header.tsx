@@ -7,15 +7,19 @@ export const Header = (): JSX.Element => {
 	const history = useHistory()
 	const disconnect = () => history.push("/")
 	return (
-		<div className='m-1 p-2 bg-dark text-white row rounded'>
+		<div className='pt-2 px-2 bg-dark text-white row'>
 			<div className='col-md-4 text-start'>
 				<img src={plane} className='d-inline mx-1 align-bottom' />
-				<h4 className='d-inline mx-3 align-bottom'>Activités DET 25F</h4>
 			</div>
 			<div className='col-md-4 text-center align-bottom'>
-				<h4>PM PIEDNOEL Grégory</h4>
+				<h4 className='d-inline mx-3 align-bottom'>Activités DET 25F</h4>
 			</div>
-			<OutlinedButton size={4} buttonColor='warning' buttonContent='Déconnexion' onClick={disconnect} />
+			<div className='row col-md-2 d-inline text-center align-bottom'>
+				<h4 className='d-inline'>PM PIEDNOEL Grégory</h4>
+			</div>
+			<div className='row col-md-2 d-inline text-center align-bottom'>
+				<OutlinedButton size={12} buttonColor='warning' buttonContent='Déconnexion' onClick={disconnect} />
+			</div>
 		</div>
 	)
 }

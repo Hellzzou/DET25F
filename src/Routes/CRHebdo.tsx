@@ -26,7 +26,7 @@ export const CRHebdo = (): JSX.Element => {
 		}
 	}, [])
 	return (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<table className='table table-sm'>
@@ -75,6 +75,6 @@ export const CRHebdo = (): JSX.Element => {
 					</tr>
 				</tfoot>
 			</table>
-		</>
+		</div>
 	)
 }

@@ -16,7 +16,7 @@ export const Activities = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<div>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<Week />

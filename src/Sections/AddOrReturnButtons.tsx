@@ -8,7 +8,7 @@ export const AddOrReturnButtons = (props: addOrReturnButtonsProps): JSX.Element 
 			<div className='col-md-6 row justify-content-center'>
 				<Button
 					size={3}
-					buttonColor='success'
+					buttonColor='primary'
 					buttonContent={props.addContent}
 					onClick={props.addClick}
 					disabled={!props.validity}

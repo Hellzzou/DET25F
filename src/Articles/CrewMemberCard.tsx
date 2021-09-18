@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { Card } from "react-bootstrap"
 import { useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
@@ -25,34 +24,33 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 		setMemberHours(memberHours)
 	}, [props.crewMemberHours])
 	return (
-		<Card className='text-center'>
-			<Card.Header className='p-1'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</Card.Header>
-			<Card.Body className='p-2'>
+		<div className='card m-1'>
+			<div className='card-body card-body-color py-2'>
+				<h5 className='card-title text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+				<hr className='m-2'></hr>
 				<div className='row'>
-					<Card.Title>Heures de vol</Card.Title>
+					<h6 className='card-subtitle mb-2 text-muted text-center'>Heures de vol</h6>
 					<div className='row'>
 						<div className='col-md-6 text-start'>Jour : </div>
-						<div className={"col-md-6 text-end fw-bold"}>
+						<div className={"col-md-6 text-end"}>
 							{memberHours["day"] ? memberHours["day"].toFixed(1) : "0.0"}
 						</div>
 					</div>
 					<div className='row'>
 						<div className='col-md-6 text-start'>Nuit : </div>
-						<div className={"col-md-6 text-end fw-bold"}>
+						<div className={"col-md-6 text-end"}>
 							{memberHours["night"] ? memberHours["night"].toFixed(1) : "0.0"}
 						</div>
 					</div>
 					<div className='row'>
 						<div className='col-md-6 text-start'>Total : </div>
-						<div className={"col-md-6 text-end fw-bold"}>
+						<div className={"col-md-6 text-end"}>
 							{memberHours["total"] ? memberHours["total"].toFixed(1) : "0.0"}
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-			<Card.Footer>
-				<Button size={10} buttonColor='primary' buttonContent='Détails' onClick={detailClick} />
-			</Card.Footer>
-		</Card>
+			</div>
+			<Button size={12} buttonColor='primary' buttonContent='Détails' onClick={detailClick} />
+		</div>
 	)
 }

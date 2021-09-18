@@ -36,11 +36,11 @@ export const MemberHoursDetail = ({
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<h4 className='text-center my-3'>{`Heures du ${member?.rank} ${member?.firstName} ${member?.surName}`}</h4>
 			<FlightTable flights={crewMembersHours!} />
-		</>
+		</div>
 	)
 }

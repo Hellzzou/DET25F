@@ -1,0 +1,33 @@
+$custom-colors: (
+	"orange": rgb(241, 152, 63),
+);
+.bg-simar {
+	background-color: rgb(206, 85, 85);
+}
+.bg-normalFlight {
+	background-color: rgb(94, 144, 219);
+}
+.bg-alert {
+	background-color: rgb(109, 187, 144);
+}
+.bg-event {
+	background-color: rgb(219, 183, 84);
+}
+.bg-lighter {
+	background-color: rgb(216, 216, 216);
+}
+.card-title-color {
+	background-color: rgb(151, 171, 185);
+}
+.card-body-color {
+	background-color: rgb(191, 215, 231);
+}
+.alegreya {
+	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+$primary: rgb(88, 160, 231);
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+$theme-colors: map-merge($theme-colors, $custom-colors);
+@import "../node_modules/bootstrap/scss/bootstrap";

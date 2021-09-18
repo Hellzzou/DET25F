@@ -22,7 +22,7 @@ export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.El
 		)
 	}, [props.done.value])
 	return (
-		<fieldset className='bg-warning rounded py-1'>
+		<fieldset className=' card-body-color rounded py-1'>
 			<Legend title='Debriefing' />
 			<div className='form-group row m-1'>
 				<Label size={4} title='Effectuée/Cause :' />

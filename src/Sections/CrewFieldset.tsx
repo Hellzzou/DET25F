@@ -10,7 +10,7 @@ import { crewFieldsetProps } from "../types/Sections"
 
 export const CrewFieldset = (props: crewFieldsetProps): JSX.Element => {
 	return (
-		<fieldset className='bg-light rounded p-1'>
+		<fieldset className=' card-body-color rounded p-1'>
 			<Legend title='Equipage' />
 			<div className='form-group row m-1'>
 				<Label size={4} title='CDA/pilote :' />

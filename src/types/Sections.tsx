@@ -147,6 +147,10 @@ export type FlightFiltersProps = {
 	setDone: React.Dispatch<React.SetStateAction<control>>
 	time: control
 	setTime: React.Dispatch<React.SetStateAction<control>>
+	startDate: control
+	setStartDate: React.Dispatch<React.SetStateAction<control>>
+	endDate: control
+	setEndDate: React.Dispatch<React.SetStateAction<control>>
 }
 export type FlightTableProps = {
 	flights: Array<flight>

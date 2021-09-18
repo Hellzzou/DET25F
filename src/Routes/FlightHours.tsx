@@ -40,7 +40,7 @@ export const FlightHours = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<DateChoiceNavbar
@@ -54,6 +54,6 @@ export const FlightHours = (): JSX.Element => {
 				startDate={startDate.value}
 				endDate={endDate.value}
 			/>
-		</>
+		</div>
 	)
 }

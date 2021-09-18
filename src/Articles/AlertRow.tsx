@@ -8,7 +8,7 @@ export const AlertRow = (props: alertRowProps): JSX.Element => {
 	return (
 		<div onClick={alertClick}>
 			{typeof props.events !== "undefined" && typeof props.events !== "undefined" && (
-				<div className='text-center bg-success rounded'>
+				<div className='text-center bg-alert rounded'>
 					<div className='row'>
 						<div className='col-md-6'>{props.events.chief}</div>
 						<div className='col-md-6'>{props.events.pilot}</div>

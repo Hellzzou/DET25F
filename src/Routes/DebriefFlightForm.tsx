@@ -355,13 +355,13 @@ export const DebriefFlightForm = ({
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<form className='bg-white rounded text-dark row m-1' style={{ width: "100%" }}>
 				<div className='row'>
-					<div className='col-md-6 justify-content-center border border-dark rounded p-0'>
-						<div className='col-md-12'>
+					<div className='col-md-6 justify-content-center rounded p-0'>
+						<div className='col-md-12 mb-1'>
 							<TimingFieldset
 								startDate={departureDate}
 								setStartDate={setDepartureDate}
@@ -375,7 +375,7 @@ export const DebriefFlightForm = ({
 								nAero={match.params.nAero}
 							/>
 						</div>
-						<div className='col-md-12'>
+						<div className='col-md-12 mb-1'>
 							<MissionFieldset
 								aircraft={aircraft}
 								setAircraft={setAircraft}
@@ -397,7 +397,7 @@ export const DebriefFlightForm = ({
 								setBelonging={setBelonging}
 							/>
 						</div>
-						<div className='col-md-12'>
+						<div className='col-md-12 mb-1'>
 							<CrewFieldset
 								chief={chief}
 								setChief={setChief}
@@ -474,8 +474,8 @@ export const DebriefFlightForm = ({
 				<div className='col-md-1'></div>
 				<Button size={2} buttonColor='danger' buttonContent='Supprimer' onClick={deleteFlight} />
 				<div className='col-md-1'></div>
-				<Button size={2} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
+				<Button size={2} buttonColor='orange' buttonContent='Annuler' onClick={returnClick} />
 			</div>
-		</>
+		</div>
 	)
 }

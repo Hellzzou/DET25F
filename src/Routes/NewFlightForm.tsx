@@ -155,7 +155,7 @@ export const NewFlightForm = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<NewEventNavBar />
@@ -221,7 +221,7 @@ export const NewFlightForm = (): JSX.Element => {
 				<div className='col-md-6 row justify-content-center'>
 					<Button
 						size={4}
-						buttonColor='success'
+						buttonColor='primary'
 						buttonContent='Ajouter'
 						onClick={addFlightClick}
 						disabled={
@@ -246,6 +246,6 @@ export const NewFlightForm = (): JSX.Element => {
 					<Button size={4} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }

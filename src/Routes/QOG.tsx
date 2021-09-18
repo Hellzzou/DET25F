@@ -30,10 +30,10 @@ export const QOG = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			{QOGFlights && <QOGTable flights={QOGFlights!} />}
-		</>
+		</div>
 	)
 }

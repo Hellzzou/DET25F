@@ -37,7 +37,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 		if (typeof allGroups !== "string") setGroups(allGroups.map(({ underGroup }) => underGroup))
 	}, [])
 	return (
-		<fieldset className='bg-light rounded py-1'>
+		<fieldset className=' card-body-color rounded py-1'>
 			<Legend title='Mission' />
 			<div className='row form-group m-1'>
 				<Label title='Avion/pleins/config :' size={4} />

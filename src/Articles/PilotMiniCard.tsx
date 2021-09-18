@@ -1,6 +1,5 @@
 import React from "react"
 import { useState } from "react"
-import { Card } from "react-bootstrap"
 import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
@@ -20,48 +19,37 @@ export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 		}
 	}, [])
 	return (
-		<Card className='text-center'>
-			<Card.Header className='p-1'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</Card.Header>
-			<Card.Body className='p-2'>
+		<div className='card m-1'>
+			<div className='card-body card-body-color py-2'>
+				<h5 className='card-title text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+				<hr className='m-2'></hr>
 				<div className='row'>
-					<div className='col-md-6'>
+					<div className='p-1 col-md-6'>
 						<CrewTPACard member={props.pilot} date={props.date} />
 					</div>
 					<div className='col-md-6'>
-						<Card.Title>TPA Individuel</Card.Title>
+						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
 						<div className='row'>
-							<div className='col-md-6 text-start'>ATT PC: </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.pilot.TPA.ATTPC,
-									props.date
-								)}`}>
+							<div className='col-md-5 text-start'>ATT PC: </div>
+							<div className={`col-md-7 text-end text-${getQuadri(props.pilot.TPA.ATTPC, props.date)}`}>
 								{props.pilot.TPA.ATTPC.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>IFR : </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.pilot.TPA.IFR,
-									props.date
-								)}`}>
+							<div className='col-md-5 text-start'>IFR : </div>
+							<div className={`col-md-7 text-end  text-${getQuadri(props.pilot.TPA.IFR, props.date)}`}>
 								{props.pilot.TPA.IFR.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>LCS : </div>
-							<div
-								className={`col-md-6 text-end fw-bold text-${getQuadri(
-									props.pilot.TPA.LCS,
-									props.date
-								)}`}>
+							<div className='col-md-5 text-start'>LCS : </div>
+							<div className={`col-md-7 text-end  text-${getQuadri(props.pilot.TPA.LCS, props.date)}`}>
 								{props.pilot.TPA.LCS.toLocaleDateString()}
 							</div>
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card>
+			</div>
+		</div>
 	)
 }

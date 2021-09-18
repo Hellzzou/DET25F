@@ -44,7 +44,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 		if (typeof techs !== "string") setTechs(techs.map(({ trigram }) => trigram))
 	}, [])
 	return (
-		<fieldset className='col-md-6 border border-dark rounded'>
+		<fieldset className='p-2 col-md-6  card-body-color rounded'>
 			<Legend title='Alerte' />
 			<div className='row form-group m-1'>
 				<Label title='Date :' size={4} />

@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { CDAURL, DB_URL } from "../Datas/datas"
 import { INITIAL_FALSE_SELECT } from "../Datas/initialHooks"
-import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { FlightFilters } from "../Sections/FlightFilters"
 import { FlightTable } from "../Sections/FlightTable"
 import { Header } from "../Sections/Header"
@@ -67,15 +66,9 @@ export const FlightSearch = (): JSX.Element => {
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
-			<DateChoiceNavbar
-				startDate={startDate}
-				setStartDate={setStartDate}
-				endDate={endDate}
-				setEndDate={setEnDate}
-			/>
 			<FlightFilters
 				aircraft={aircraft}
 				setAircraft={setAircraft}
@@ -95,8 +88,12 @@ export const FlightSearch = (): JSX.Element => {
 				setDone={setDone}
 				time={time}
 				setTime={setTime}
+				startDate={startDate}
+				setStartDate={setStartDate}
+				endDate={endDate}
+				setEndDate={setEnDate}
 			/>
 			<FlightTable flights={flights} />
-		</>
+		</div>
 	)
 }

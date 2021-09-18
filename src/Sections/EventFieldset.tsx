@@ -7,7 +7,7 @@ import { eventFieldsetProps } from "../types/Sections"
 
 export const EventFieldset = (props: eventFieldsetProps): JSX.Element => {
 	return (
-		<fieldset className='border border-dark rounded'>
+		<fieldset className=' card-body-color rounded'>
 			<Legend title='Evènement' />
 			<div className='row form-group m-1'>
 				<Label title='Intitulé :' size={4} />

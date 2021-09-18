@@ -6,6 +6,7 @@ import { getFetchRequest } from "../tools/fetch"
 import { selectChoiceIsDone } from "../tools/validators"
 import { Aircraft, Area, FlightType, Group, NCArea } from "../types/Objects"
 import { FlightFiltersProps } from "../types/Sections"
+import { DateChoiceNavbar } from "./DateChoiceNavbar"
 
 export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 	const [aircraft, setAircraft] = useState<Array<string>>([])
@@ -31,7 +32,15 @@ export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 	}, [])
 	return (
 		<>
-			<div className='border rounded border-dark p-2 mx-1'>
+			<div className='card-body-color rounded p-2 m-1'>
+				<div className='text-center fw-bold fs-3 py-0'>Ajuster les filtres pour la recherche</div>
+				<hr className='m-1'></hr>
+				<DateChoiceNavbar
+					startDate={props.startDate}
+					setStartDate={props.setStartDate}
+					endDate={props.endDate}
+					setEndDate={props.setEndDate}
+				/>
 				<div className='row'>
 					<div className='col-md-1 fw-bold text-center'>Avion</div>
 					<div className='col-md-1 fw-bold text-center'>Equipage</div>

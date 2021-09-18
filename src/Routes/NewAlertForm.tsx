@@ -59,7 +59,7 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	return !token ? (
 		<Redirect to='/' />
 	) : (
-		<>
+		<div className='alegreya'>
 			<Header />
 			<Navbar />
 			<NewEventNavBar />
@@ -94,6 +94,6 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 				disableDelete={match.params.id === "newOne"}
 				returnClick={returnClick}
 			/>
-		</>
+		</div>
 	)
 }
