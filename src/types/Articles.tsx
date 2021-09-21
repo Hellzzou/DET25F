@@ -13,6 +13,7 @@ import {
 	pilotTPA,
 	radioDateTPA,
 	radioTPA,
+	user,
 } from "./Objects"
 
 export type pilotTPAProps = {
@@ -93,4 +94,12 @@ export type QOGRowProps = {
 	groups: Group[]
 	flights: Record<string, { dayDuration: number; nightDuration: number }>[]
 	groupName: string
+}
+export type NewUserModalProps = {
+	show: boolean
+	setShow: React.Dispatch<React.SetStateAction<boolean>>
+	onHide: () => void
+	onShow: () => void
+	users: user[]
+	setUsers: React.Dispatch<React.SetStateAction<user[]>>
 }

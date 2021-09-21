@@ -5,7 +5,7 @@ import { NavButtonProps } from "../types/BasicComponents"
 export const NavButton = (props: NavButtonProps): JSX.Element => {
 	return (
 		<Link className='text-decoration-none' to={props.link}>
-			<span className='mx-5 fs-5 text-uppercase bg-dark alegreya'>{props.content}</span>
+			<span className='mx-3 fs-5 text-uppercase bg-dark alegreya'>{props.content}</span>
 		</Link>
 	)
 }

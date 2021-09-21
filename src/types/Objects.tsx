@@ -52,11 +52,14 @@ export type Config = {
 	name: string
 }
 export type user = {
+	_id?: string
 	rank: string
 	name: string
-	function: string
-	token: string
-	error: string
+	responsability: string
+	email: string
+	login?: string
+	token?: string
+	password: string
 }
 export type error = {
 	error: string

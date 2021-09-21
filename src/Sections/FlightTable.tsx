@@ -1,8 +1,28 @@
-import React from "react"
+import React, { useState } from "react"
+import { useHistory } from "react-router"
+import useAsyncEffect from "use-async-effect"
+import { nightURL } from "../Datas/datas"
+import { getSunsets } from "../tools/dateManager"
+import { getFetchRequest } from "../tools/fetch"
 import { returnZeroOrValue } from "../tools/maths"
+import { flight, Nights } from "../types/Objects"
 import { FlightTableProps } from "../types/Sections"
 
 export const FlightTable = (props: FlightTableProps): JSX.Element => {
+	const [nights, setNights] = useState<Nights>([[]])
+	const history = useHistory()
+	const onFlightClick = (flight: flight) =>
+		history.push(
+			`/debriefFlight/${flight._id}/${getSunsets(nights, Date.parse(flight.departureDate), "jour")}/${getSunsets(
+				nights,
+				Date.parse(flight.departureDate),
+				"nuit"
+			)}`
+		)
+	useAsyncEffect(async () => {
+		const nights = await getFetchRequest<Nights[]>(nightURL)
+		if (typeof nights !== "string") setNights(nights[0])
+	})
 	return (
 		<table className='table table-sm table-primary table-striped text-center'>
 			<thead className='table-light card-body-color border border-secondary fs-5 table-bordered'>
@@ -19,7 +39,7 @@ export const FlightTable = (props: FlightTableProps): JSX.Element => {
 			<tbody>
 				{props.flights &&
 					props.flights.map((flight) => (
-						<tr key={props.flights.indexOf(flight)}>
+						<tr key={props.flights.indexOf(flight)} onClick={() => onFlightClick(flight)}>
 							<td>{new Date(flight.departureDate).toLocaleDateString()}</td>
 							<td>{flight.aircraft}</td>
 							<td>{flight.chief}</td>

@@ -7,7 +7,7 @@ export const OutlinedButton = (props: ButtonProps): JSX.Element => {
 			<button
 				type='button'
 				className={`col-md-${props.size} btn btn-outline-${props.buttonColor}`}
-				onClick={() => props.onClick}
+				onClick={props.onClick}
 				disabled={props.disabled}
 				data-bs-toggle='button'>
 				{props.buttonContent}

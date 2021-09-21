@@ -1,6 +1,5 @@
 import React from "react"
 import { Week } from "../Sections/Week"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { tokenCheck } from "../tools/user"
 import { Redirect } from "react-router-dom"
@@ -17,7 +16,6 @@ export const Activities = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<Week />
 		</div>

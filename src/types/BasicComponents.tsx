@@ -1,3 +1,4 @@
+import React from "react"
 import {
 	control,
 	controlArray,
@@ -75,6 +76,14 @@ export type selectProps = {
 	setControl: React.Dispatch<React.SetStateAction<control>>
 	options: Array<string>
 	validator: (arg0: string) => boolean
+}
+export type SimpleSelectProps = {
+	size: number
+	backgroundColor: string
+	textColor: string
+	value: string
+	options: Array<string>
+	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 export type textAreaProps = {
 	size: number

@@ -106,7 +106,7 @@ export const Week = (): JSX.Element => {
 													<img src={sun} className='d-inline mx-1 align-bottom' />
 												</div>
 												<div className='col-md-8'>
-													{getSunsets(nights, monday, days.indexOf(day), "jour")}
+													{getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
 												</div>
 											</div>
 											<div className='row'>
@@ -114,7 +114,7 @@ export const Week = (): JSX.Element => {
 													<img src={moon} className='d-inline mx-1 align-bottom' />
 												</div>
 												<div className='col-md-8'>
-													{getSunsets(nights, monday, days.indexOf(day), "nuit")}
+													{getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
 												</div>
 											</div>
 										</div>
@@ -140,8 +140,8 @@ export const Week = (): JSX.Element => {
 										</colgroup>
 										<FlightRow
 											events={weekFlights ? weekFlights[days.indexOf(day)] : []}
-											jAero={getSunsets(nights, monday, days.indexOf(day), "jour")}
-											nAero={getSunsets(nights, monday, days.indexOf(day), "nuit")}
+											jAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
+											nAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
 										/>
 										<OtherEvent events={weekEvents ? weekEvents[days.indexOf(day)] : []} />
 									</table>

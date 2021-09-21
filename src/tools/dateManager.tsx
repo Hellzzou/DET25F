@@ -1,4 +1,3 @@
-import { inDays } from "../Datas/dates"
 import { Nights } from "../types/Objects"
 
 export const getWeekNumber = (date: number): number => {
@@ -12,8 +11,8 @@ export const findNumberOfWeeks = (): number => {
 	for (i; i <= 7; i++) if (new Date(new Date().getFullYear(), 0, 31 - i).getDay() === 0) break
 	return getWeekNumber(Date.parse(new Date(new Date().getFullYear(), 11, 31 - i).toDateString()))
 }
-export const getSunsets = (nights: Nights, monday: number, date: number, type: string): string => {
-	const thisDate = new Date(monday + date * inDays)
+export const getSunsets = (nights: Nights, date: number, type: string): string => {
+	const thisDate = new Date(date)
 	if (typeof nights[0][0] !== "undefined")
 		return type === "jour"
 			? nights[thisDate.getMonth()][thisDate.getDate() - 1].jour + "L"

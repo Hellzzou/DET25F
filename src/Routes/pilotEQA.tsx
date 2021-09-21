@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { PilotEQAMiniCArd } from "../Articles/pilotEQAMiniCard"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllEQAs } from "../tools/buildsPilotsActions"
@@ -38,7 +37,6 @@ export const PilotEQA = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
 			<div className='row'>

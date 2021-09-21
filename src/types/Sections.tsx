@@ -162,5 +162,5 @@ export type DBCardProps = {
 	title: string
 	infos: string
 	warning: string
-	onClick: () => void
+	url: string
 }

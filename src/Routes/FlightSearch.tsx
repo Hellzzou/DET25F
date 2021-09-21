@@ -5,7 +5,6 @@ import { CDAURL, DB_URL } from "../Datas/datas"
 import { INITIAL_FALSE_SELECT } from "../Datas/initialHooks"
 import { FlightFilters } from "../Sections/FlightFilters"
 import { FlightTable } from "../Sections/FlightTable"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/dateManager"
 import { postFetchRequest } from "../tools/fetch"
@@ -67,7 +66,6 @@ export const FlightSearch = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<FlightFilters
 				aircraft={aircraft}

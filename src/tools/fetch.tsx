@@ -23,10 +23,10 @@ export async function getFetchRequest<Type>(url: string): Promise<Type | string>
 				Authorization: "Bearer: " + sessionStorage.getItem("token"),
 			},
 		})
-		if (!res) return "PostFetchError"
+		if (!res) return "getFetchError"
 		return await res.json()
 	} catch (error) {
-		return "PostFetchError"
+		return "getFetchError"
 	}
 }
 export async function deleteFetchRequest<Type>(url: string, body: unknown): Promise<Type | string> {

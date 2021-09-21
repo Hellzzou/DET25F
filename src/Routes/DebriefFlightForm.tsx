@@ -15,7 +15,6 @@ import {
 import { CrewFieldset } from "../Sections/CrewFieldset"
 import { CrewTPAFieldset } from "../Sections/CrewTPAFieldset"
 import { DebriefTimingFieldset } from "../Sections/DebriefTimingFieldset"
-import { Header } from "../Sections/Header"
 import { MissionFieldset } from "../Sections/MissionFieldset"
 import { Navbar } from "../Sections/Navbar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
@@ -356,7 +355,6 @@ export const DebriefFlightForm = ({
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<form className='bg-white rounded text-dark row m-1' style={{ width: "100%" }}>
 				<div className='row'>
@@ -466,7 +464,7 @@ export const DebriefFlightForm = ({
 				<div className='col-md-1'></div>
 				<Button
 					size={2}
-					buttonColor='success'
+					buttonColor='primary'
 					buttonContent='Debriefer'
 					onClick={addFlightClick}
 					disabled={!formValidity(hooks)}
@@ -474,7 +472,7 @@ export const DebriefFlightForm = ({
 				<div className='col-md-1'></div>
 				<Button size={2} buttonColor='danger' buttonContent='Supprimer' onClick={deleteFlight} />
 				<div className='col-md-1'></div>
-				<Button size={2} buttonColor='orange' buttonContent='Annuler' onClick={returnClick} />
+				<Button size={2} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
 			</div>
 		</div>
 	)

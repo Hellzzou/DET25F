@@ -14,6 +14,15 @@ import { FlightSearch } from "./Routes/FlightSearch"
 import { QOG } from "./Routes/QOG"
 import { CRHebdo } from "./Routes/CRHebdo"
 import { ManageDB } from "./Routes/ManageDB"
+import { AircraftManager } from "./Articles/aircraftsManager"
+import { FuelManager } from "./Articles/FuelManager"
+import { AreasManager } from "./Articles/AreasManager"
+import { ConfigsManager } from "./Articles/ConfigsManager"
+import { NCAreasManager } from "./Articles/NCAreasManager"
+import { TypesManager } from "./Articles/TypesManager"
+import { GroupsManager } from "./Articles/GroupsManager"
+import { membersManager } from "./Articles/MembersManager"
+import { UsersManager } from "./Articles/UsersManager"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -33,6 +42,15 @@ export const App = (): React.ReactElement => {
 				<Route path='/QOG' component={QOG} />
 				<Route path='/crHebdo' component={CRHebdo} />
 				<Route path='/manageDB' component={ManageDB} />
+				<Route path='/aircrafts' component={AircraftManager} />
+				<Route path='/fuels' component={FuelManager} />
+				<Route path='/areas' component={AreasManager} />
+				<Route path='/configs' component={ConfigsManager} />
+				<Route path='/NCAreas' component={NCAreasManager} />
+				<Route path='/types' component={TypesManager} />
+				<Route path='/groups' component={GroupsManager} />
+				<Route path='/crewMembers' component={membersManager} />
+				<Route path='/users' component={UsersManager} />
 			</Switch>
 		</BrowserRouter>
 	)

@@ -1,7 +1,6 @@
 import React, { useState } from "react"
-import { useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { Button } from "../BasicComponents/Button"
+import { Link } from "react-router-dom"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
 import { memberURL } from "../Datas/datas"
 import { crewMemberHours } from "../tools/buildFlightHours"
@@ -12,8 +11,6 @@ import { crewMember } from "../types/Objects"
 export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
 	const [memberHours, setMemberHours] = useState<Record<string, number>>({})
-	const history = useHistory()
-	const detailClick = () => history.push(`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`)
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<crewMember[]>(memberURL)
 		if (typeof members !== "string") {
@@ -50,7 +47,11 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 					</div>
 				</div>
 			</div>
-			<Button size={12} buttonColor='primary' buttonContent='Détails' onClick={detailClick} />
+			<Link
+				to={`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`}
+				className='text-decoration-none card-body-color text-center'>
+				<span>Détails</span>
+			</Link>
 		</div>
 	)
 }

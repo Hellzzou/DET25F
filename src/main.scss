@@ -1,29 +1,26 @@
 $custom-colors: (
-	"orange": rgb(241, 152, 63),
+	"mutedWarning": rgb(211, 212, 110),
 );
 .bg-simar {
 	background-color: rgb(206, 85, 85);
 }
 .bg-normalFlight {
-	background-color: rgb(94, 144, 219);
+	background-color: rgb(166, 112, 216);
 }
 .bg-alert {
 	background-color: rgb(109, 187, 144);
 }
 .bg-event {
-	background-color: rgb(219, 183, 84);
-}
-.bg-lighter {
-	background-color: rgb(216, 216, 216);
-}
-.card-title-color {
-	background-color: rgb(151, 171, 185);
+	background-color: rgb(219, 188, 84);
 }
 .card-body-color {
-	background-color: rgb(191, 215, 231);
+	background-color: rgb(220, 224, 228);
 }
 .alegreya {
 	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+.mutedWarning {
+	color: rgb(233, 198, 133);
 }
 $primary: rgb(88, 160, 231);
 @import "../node_modules/bootstrap/scss/functions";

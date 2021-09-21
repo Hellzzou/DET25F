@@ -6,7 +6,6 @@ import useAsyncEffect from "use-async-effect"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { CrewMembersCards } from "../Sections/CrewMembersCards"
 import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { crewMembersFlights } from "../tools/buildFlightHours"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/dateManager"
@@ -41,7 +40,6 @@ export const FlightHours = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<DateChoiceNavbar
 				startDate={startDate}

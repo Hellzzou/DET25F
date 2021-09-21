@@ -9,7 +9,6 @@ import { TimingFieldset } from "../Sections/TimingFieldset"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/buildEvents"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { controlArray, crewMember, Group, Nights } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
@@ -156,7 +155,6 @@ export const NewFlightForm = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<NewEventNavBar />
 			<form className='bg-white rounded text-dark row justify-content-center' style={{ width: "100%" }}>

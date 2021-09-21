@@ -23,7 +23,8 @@ export const Login = (): JSX.Element => {
 		;(async () => {
 			const findUser = await checkUser(login.value, password.value)
 			if (typeof findUser !== "string") {
-				sessionStorage.setItem("token", findUser.token)
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				sessionStorage.setItem("token", findUser.token!)
 				history.push("/activities")
 			} else setLoginError(findUser)
 		})()

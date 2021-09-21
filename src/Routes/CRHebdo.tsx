@@ -2,7 +2,6 @@ import React from "react"
 import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/datas"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { buildWeekReport } from "../tools/buildReports"
 import { hebdoColor } from "../tools/colorManager"
@@ -27,7 +26,6 @@ export const CRHebdo = (): JSX.Element => {
 	}, [])
 	return (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<table className='table table-sm'>
 				<thead className='table-secondary'>

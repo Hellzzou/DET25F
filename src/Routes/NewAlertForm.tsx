@@ -7,7 +7,6 @@ import { alertDeleteURL, alertIDFinderURL, saveAlertURL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { AlertFieldset } from "../Sections/AlertFieldset"
-import { Header } from "../Sections/Header"
 import { Navbar } from "../Sections/Navbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { postFetchRequest } from "../tools/fetch"
@@ -60,7 +59,6 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Header />
 			<Navbar />
 			<NewEventNavBar />
 			<form className='bg-white m-1 rounded text-dark row'>
