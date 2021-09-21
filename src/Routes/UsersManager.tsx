@@ -6,10 +6,10 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { getAllUserURL, getOneUserURL, signupURL, userDeleteURL, userURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest, putFetchRequest } from "../tools/fetch"
 import { user } from "../types/Objects"
-import { NewUserModal } from "./NewUserModal"
+import { NewUserModal } from "../Articles/NewUserModal"
 
 export const UsersManager = (): JSX.Element => {
 	const history = useHistory()
@@ -74,7 +74,7 @@ export const UsersManager = (): JSX.Element => {
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
 				info='Les informations de cet utilsateur ont bien été modifiée'

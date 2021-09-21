@@ -8,3 +8,11 @@ export const INITIAL_CREWMEMBER = {
 	tel: "",
 	registration: "",
 }
+export const INITIAL_USER = {
+	rank: "",
+	name: "",
+	email: "",
+	login: "",
+	responsability: "",
+	password: "",
+}

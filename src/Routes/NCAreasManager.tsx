@@ -5,51 +5,51 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { typeURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { NCAreaURL } from "../Datas/datas"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { FlightType } from "../types/Objects"
+import { NCArea } from "../types/Objects"
 
-export const TypesManager = (): JSX.Element => {
+export const NCAreasManager = (): JSX.Element => {
 	const history = useHistory()
 	const [show, setShow] = useState(false)
-	const [types, setTypes] = useState<{ name: string; value: string }[]>([])
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, typesTarget: { name: string; value: string }) => {
-		const typesMod = types.map((type) => {
-			if (type !== typesTarget) return type
+	const [NCAreas, setNCAreas] = useState<{ name: string; value: string }[]>([])
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, NCAreaTarget: { name: string; value: string }) => {
+		const NCAreasMod = NCAreas.map((NCArea) => {
+			if (NCArea !== NCAreaTarget) return NCArea
 			else return { name: e.target.name, value: e.target.value }
 		})
-		setTypes(typesMod)
+		setNCAreas(NCAreasMod)
 	}
-	const Delete = (TypesTarget: { name: string; value: string }) =>
-		setTypes(types.filter((type) => type !== TypesTarget))
-	const addNew = () => setTypes([...types, { name: "", value: "" }])
-	const allNonNull = () => types.reduce((acc, type) => type.value !== "", true)
+	const Delete = (NCAreaTarget: { name: string; value: string }) =>
+		setNCAreas(NCAreas.filter((NCArea) => NCArea !== NCAreaTarget))
+	const addNew = () => setNCAreas([...NCAreas, { name: "", value: "" }])
+	const allNonNull = () => NCAreas.reduce((acc, NCArea) => NCArea.value !== "", true)
 	const saveAll = async () => {
-		const deleted = await deleteFetchRequest(typeURL, {})
+		const deleted = await deleteFetchRequest(NCAreaURL, {})
 		if (deleted === "deleted") {
-			types.map(async (type) => {
-				await postFetchRequest(typeURL, { type: { name: type.value } })
+			NCAreas.map(async (NCArea) => {
+				await postFetchRequest(NCAreaURL, { NCArea: { name: NCArea.value } })
 			})
 		}
 		setShow(true)
 	}
 	useAsyncEffect(async () => {
-		const types = await getFetchRequest<FlightType[]>(typeURL)
-		if (typeof types !== "string") {
-			setTypes(
-				types.map((type) => {
-					return { name: type.name, value: type.name }
+		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
+		if (typeof NCAreas !== "string") {
+			setNCAreas(
+				NCAreas.map((NCArea) => {
+					return { name: NCArea.name, value: NCArea.name }
 				})
 			)
 		}
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
-				info='La liste des types de vol a bien été sauvegardée'
+				info='La liste des zones en ZEE a bien été sauvegardée'
 				show={show}
 				onClose={() => setShow(false)}
 			/>
@@ -60,38 +60,38 @@ export const TypesManager = (): JSX.Element => {
 						- Vous pouvez modifier la liste apparaissant sur cette page tant que vous ne cliquez pas sur
 						&apos;Enregistrer la liste&apos;, la base de donnée ne sera pas modifiée.
 					</div>
-					<div>- Pour enregistrer la liste des types de vol, ils doivent tous avoir un nom.</div>
+					<div>- Pour enregistrer la liste des zones en ZEE, elles doivent toutes avoir un nom.</div>
 				</div>
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded'>
 					<div className='row'>
-						<h4 className='col-md-8 text-center'>Liste des types de vol</h4>
+						<h4 className='col-md-8 text-center'>Liste des zones en ZEE</h4>
 						<Button
 							size={3}
 							buttonColor='primary'
-							buttonContent='Ajouter un nouveau type'
+							buttonContent='Ajouter une nouvelle zone'
 							onClick={() => addNew()}
 						/>
 					</div>
-					{types &&
-						types.map((type) => (
-							<div key={types.indexOf(type)} className='row my-2'>
-								<Label title='Type de vol : ' size={4} />
+					{NCAreas &&
+						NCAreas.map((NCArea) => (
+							<div key={NCAreas.indexOf(NCArea)} className='row my-2'>
+								<Label title='Nom de la zone : ' size={4} />
 								<UnvalidateInput
 									size={3}
 									backgroundColor='dark'
 									textColor='white'
 									type='number'
-									control={type}
-									handleChange={(e) => handleChange(e, type)}
+									control={NCArea}
+									handleChange={(e) => handleChange(e, NCArea)}
 								/>
 								<div className='col-md-1'></div>
 								<Button
 									size={3}
 									buttonColor='danger'
-									buttonContent='Supprimer ce type'
-									onClick={() => Delete(type)}
+									buttonContent='Supprimer cette zone'
+									onClick={() => Delete(NCArea)}
 								/>
 							</div>
 						))}

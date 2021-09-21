@@ -74,9 +74,7 @@ export const Login = (): JSX.Element => {
 								onClick={handleLogin}
 							/>
 						</div>
-						<div className='justify-content-center row mt-3 text-danger fw-bold'>
-							<span className='col-md-5'>{loginError}</span>
-						</div>
+						<div className='text-center mt-3 text-danger fw-bold'>{loginError}</div>
 					</fieldset>
 				</div>
 			</form>

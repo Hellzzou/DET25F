@@ -6,7 +6,7 @@ import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { areaURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { Area } from "../types/Objects"
 
@@ -46,7 +46,7 @@ export const AreasManager = (): JSX.Element => {
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
 				info='La liste des zones a bien été sauvegardée'

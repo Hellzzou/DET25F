@@ -1,12 +1,12 @@
 import React from "react"
 import { DBInfos } from "../Datas/DbInfos"
 import { DBCard } from "../Sections/DBCard"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 
 export const ManageDB = (): JSX.Element => {
 	return (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<div className='row m-2'>
 				<div className='col-md-4'>
 					<DBCard

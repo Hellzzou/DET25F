@@ -5,51 +5,51 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { fuelURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { configURL } from "../Datas/datas"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { Fuel } from "../types/Objects"
+import { Config } from "../types/Objects"
 
-export const FuelManager = (): JSX.Element => {
+export const ConfigsManager = (): JSX.Element => {
 	const history = useHistory()
 	const [show, setShow] = useState(false)
-	const [fuels, setFuels] = useState<{ name: string; value: string }[]>([])
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, fuelTarget: { name: string; value: string }) => {
-		const fuelsMod = fuels.map((fuel) => {
-			if (fuel !== fuelTarget) return fuel
+	const [configs, setConfigs] = useState<{ name: string; value: string }[]>([])
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, configTarget: { name: string; value: string }) => {
+		const configsMod = configs.map((config) => {
+			if (config !== configTarget) return config
 			else return { name: e.target.name, value: e.target.value }
 		})
-		setFuels(fuelsMod)
+		setConfigs(configsMod)
 	}
-	const Delete = (fuelTarget: { name: string; value: string }) =>
-		setFuels(fuels.filter((fuel) => fuel !== fuelTarget))
-	const addNew = () => setFuels([...fuels, { name: "", value: "" }])
-	const allNonNull = () => fuels.reduce((acc, fuel) => fuel.value !== "", true)
+	const Delete = (configTarget: { name: string; value: string }) =>
+		setConfigs(configs.filter((config) => config !== configTarget))
+	const addNew = () => setConfigs([...configs, { name: "", value: "" }])
+	const allNonNull = () => configs.reduce((acc, config) => config.value !== "", true)
 	const saveAll = async () => {
-		const deleted = await deleteFetchRequest(fuelURL, {})
+		const deleted = await deleteFetchRequest(configURL, {})
 		if (deleted === "deleted") {
-			fuels.map(async (fuel) => {
-				await postFetchRequest(fuelURL, { fuel: { quantity: fuel.value } })
+			configs.map(async (config) => {
+				await postFetchRequest(configURL, { config: { name: config.value } })
 			})
 		}
 		setShow(true)
 	}
 	useAsyncEffect(async () => {
-		const fuels = await getFetchRequest<Fuel[]>(fuelURL)
-		if (typeof fuels !== "string") {
-			setFuels(
-				fuels.map((fuel) => {
-					return { name: fuel.quantity, value: fuel.quantity }
+		const configs = await getFetchRequest<Config[]>(configURL)
+		if (typeof configs !== "string") {
+			setConfigs(
+				configs.map((config) => {
+					return { name: config.name, value: config.name }
 				})
 			)
 		}
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
-				info='La liste des quantité a bien été sauvegardée'
+				info='La liste des configurations a bien été sauvegardée'
 				show={show}
 				onClose={() => setShow(false)}
 			/>
@@ -60,38 +60,38 @@ export const FuelManager = (): JSX.Element => {
 						- Vous pouvez modifier la liste apparaissant sur cette page tant que vous ne cliquez pas sur
 						&apos;Enregistrer la liste&apos;, la base de donnée ne sera pas modifiée.
 					</div>
-					<div>- Pour enregistrer la liste des quantités, elles doivent toutes être remplies.</div>
+					<div>- Pour enregistrer la liste des configurations, elles doivent toutes avoir un nom.</div>
 				</div>
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded'>
 					<div className='row'>
-						<h4 className='col-md-8 text-center'>Liste des quantités embarquables</h4>
+						<h4 className='col-md-8 text-center'>Liste des configurations avion</h4>
 						<Button
 							size={3}
 							buttonColor='primary'
-							buttonContent='Ajouter une nouvelle quantité'
+							buttonContent='Ajouter une nouvelle config'
 							onClick={() => addNew()}
 						/>
 					</div>
-					{fuels &&
-						fuels.map((fuel) => (
-							<div key={fuels.indexOf(fuel)} className='row my-2'>
-								<Label title='Quantité embarquable : ' size={4} />
+					{configs &&
+						configs.map((config) => (
+							<div key={configs.indexOf(config)} className='row my-2'>
+								<Label title='Nom de la la configuration : ' size={4} />
 								<UnvalidateInput
 									size={3}
 									backgroundColor='dark'
 									textColor='white'
 									type='number'
-									control={fuel}
-									handleChange={(e) => handleChange(e, fuel)}
+									control={config}
+									handleChange={(e) => handleChange(e, config)}
 								/>
 								<div className='col-md-1'></div>
 								<Button
 									size={3}
 									buttonColor='danger'
-									buttonContent='Supprimer cette quantité'
-									onClick={() => Delete(fuel)}
+									buttonContent='Supprimer cette config'
+									onClick={() => Delete(config)}
 								/>
 							</div>
 						))}

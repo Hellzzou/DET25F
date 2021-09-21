@@ -6,7 +6,7 @@ import { eventDelete, eventIDFinder, saveEventURL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { EventFieldset } from "../Sections/EventFieldset"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { postFetchRequest } from "../tools/fetch"
@@ -55,7 +55,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<NewEventNavBar />
 			<form className='bg-white m-1 rounded text-dark row justify-content-center'>
 				<Legend title='Nouveau évènement' />

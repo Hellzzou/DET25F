@@ -16,7 +16,7 @@ import { CrewFieldset } from "../Sections/CrewFieldset"
 import { CrewTPAFieldset } from "../Sections/CrewTPAFieldset"
 import { DebriefTimingFieldset } from "../Sections/DebriefTimingFieldset"
 import { MissionFieldset } from "../Sections/MissionFieldset"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { manageDuration, manageNCAreas } from "../tools/formManager"
@@ -354,7 +354,7 @@ export const DebriefFlightForm = ({
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<form className='bg-white rounded text-dark row m-1' style={{ width: "100%" }}>
 				<div className='row'>
 					<div className='col-md-6 justify-content-center rounded p-0'>

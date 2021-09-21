@@ -104,3 +104,10 @@ export type NewUserModalProps = {
 	setUsers: React.Dispatch<React.SetStateAction<user[]>>
 	setAddUserShow: React.Dispatch<React.SetStateAction<boolean>>
 }
+export type passwordChangeModalProps = {
+	show: boolean
+	setShow: React.Dispatch<React.SetStateAction<boolean>>
+	onHide: () => void
+	onShow: () => void
+	setAddUserShow: React.Dispatch<React.SetStateAction<boolean>>
+}

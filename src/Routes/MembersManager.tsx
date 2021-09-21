@@ -8,7 +8,7 @@ import { SimpleSelect } from "../BasicComponents/SimpleSelect"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { memberURL, saveMemberURL } from "../Datas/datas"
 import { crews, groundFunction, ranks, specialities } from "../Datas/members"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { crewMember } from "../types/Objects"
 
@@ -97,7 +97,7 @@ export const membersManager = (): JSX.Element => {
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
 				info='La liste des membres a bien été sauvegardée'

@@ -1,11 +1,11 @@
 import React from "react"
 import { Week } from "../Sections/Week"
-import { Navbar } from "../Sections/Navbar"
 import { tokenCheck } from "../tools/user"
 import { Redirect, RouteComponentProps } from "react-router-dom"
 import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { AlertToast } from "../BasicComponents/AlertToast"
+import { MainNavBar } from "../Sections/MainNavbar"
 
 export const Activities = ({ match }: RouteComponentProps<{ toast: string }>): JSX.Element => {
 	const [token, setToken] = useState(true)
@@ -37,7 +37,7 @@ export const Activities = ({ match }: RouteComponentProps<{ toast: string }>): J
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
 				info='Le vol a bien été crée'

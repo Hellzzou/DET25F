@@ -5,51 +5,51 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { configURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { typeURL } from "../Datas/datas"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { Config } from "../types/Objects"
+import { FlightType } from "../types/Objects"
 
-export const ConfigsManager = (): JSX.Element => {
+export const TypesManager = (): JSX.Element => {
 	const history = useHistory()
 	const [show, setShow] = useState(false)
-	const [configs, setConfigs] = useState<{ name: string; value: string }[]>([])
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, configTarget: { name: string; value: string }) => {
-		const configsMod = configs.map((config) => {
-			if (config !== configTarget) return config
+	const [types, setTypes] = useState<{ name: string; value: string }[]>([])
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, typesTarget: { name: string; value: string }) => {
+		const typesMod = types.map((type) => {
+			if (type !== typesTarget) return type
 			else return { name: e.target.name, value: e.target.value }
 		})
-		setConfigs(configsMod)
+		setTypes(typesMod)
 	}
-	const Delete = (configTarget: { name: string; value: string }) =>
-		setConfigs(configs.filter((config) => config !== configTarget))
-	const addNew = () => setConfigs([...configs, { name: "", value: "" }])
-	const allNonNull = () => configs.reduce((acc, config) => config.value !== "", true)
+	const Delete = (TypesTarget: { name: string; value: string }) =>
+		setTypes(types.filter((type) => type !== TypesTarget))
+	const addNew = () => setTypes([...types, { name: "", value: "" }])
+	const allNonNull = () => types.reduce((acc, type) => type.value !== "", true)
 	const saveAll = async () => {
-		const deleted = await deleteFetchRequest(configURL, {})
+		const deleted = await deleteFetchRequest(typeURL, {})
 		if (deleted === "deleted") {
-			configs.map(async (config) => {
-				await postFetchRequest(configURL, { config: { name: config.value } })
+			types.map(async (type) => {
+				await postFetchRequest(typeURL, { type: { name: type.value } })
 			})
 		}
 		setShow(true)
 	}
 	useAsyncEffect(async () => {
-		const configs = await getFetchRequest<Config[]>(configURL)
-		if (typeof configs !== "string") {
-			setConfigs(
-				configs.map((config) => {
-					return { name: config.name, value: config.name }
+		const types = await getFetchRequest<FlightType[]>(typeURL)
+		if (typeof types !== "string") {
+			setTypes(
+				types.map((type) => {
+					return { name: type.name, value: type.name }
 				})
 			)
 		}
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
-				info='La liste des configurations a bien été sauvegardée'
+				info='La liste des types de vol a bien été sauvegardée'
 				show={show}
 				onClose={() => setShow(false)}
 			/>
@@ -60,38 +60,38 @@ export const ConfigsManager = (): JSX.Element => {
 						- Vous pouvez modifier la liste apparaissant sur cette page tant que vous ne cliquez pas sur
 						&apos;Enregistrer la liste&apos;, la base de donnée ne sera pas modifiée.
 					</div>
-					<div>- Pour enregistrer la liste des configurations, elles doivent toutes avoir un nom.</div>
+					<div>- Pour enregistrer la liste des types de vol, ils doivent tous avoir un nom.</div>
 				</div>
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded'>
 					<div className='row'>
-						<h4 className='col-md-8 text-center'>Liste des configurations avion</h4>
+						<h4 className='col-md-8 text-center'>Liste des types de vol</h4>
 						<Button
 							size={3}
 							buttonColor='primary'
-							buttonContent='Ajouter une nouvelle config'
+							buttonContent='Ajouter un nouveau type'
 							onClick={() => addNew()}
 						/>
 					</div>
-					{configs &&
-						configs.map((config) => (
-							<div key={configs.indexOf(config)} className='row my-2'>
-								<Label title='Nom de la la configuration : ' size={4} />
+					{types &&
+						types.map((type) => (
+							<div key={types.indexOf(type)} className='row my-2'>
+								<Label title='Type de vol : ' size={4} />
 								<UnvalidateInput
 									size={3}
 									backgroundColor='dark'
 									textColor='white'
 									type='number'
-									control={config}
-									handleChange={(e) => handleChange(e, config)}
+									control={type}
+									handleChange={(e) => handleChange(e, type)}
 								/>
 								<div className='col-md-1'></div>
 								<Button
 									size={3}
 									buttonColor='danger'
-									buttonContent='Supprimer cette config'
-									onClick={() => Delete(config)}
+									buttonContent='Supprimer ce type'
+									onClick={() => Delete(type)}
 								/>
 							</div>
 						))}

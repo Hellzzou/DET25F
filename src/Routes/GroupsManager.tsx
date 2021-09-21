@@ -5,7 +5,7 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { groupURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { Group } from "../types/Objects"
 
@@ -60,7 +60,7 @@ export const GroupsManager = (): JSX.Element => {
 	}, [])
 	return (
 		<>
-			<Navbar />
+			<MainNavBar />
 			<AlertToast
 				color='primary'
 				info='La liste des groupes a bien été sauvegardée'

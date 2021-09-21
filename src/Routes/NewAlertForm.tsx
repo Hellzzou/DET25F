@@ -7,7 +7,6 @@ import { alertDeleteURL, alertIDFinderURL, saveAlertURL } from "../Datas/datas"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { AlertFieldset } from "../Sections/AlertFieldset"
-import { Navbar } from "../Sections/Navbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { postFetchRequest } from "../tools/fetch"
 import { fullfillAlert } from "../tools/fullfillForms"
@@ -15,6 +14,7 @@ import { buildNewAlert } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
 import { newAlert } from "../types/Objects"
+import { MainNavBar } from "../Sections/MainNavbar"
 
 export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
@@ -58,7 +58,7 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<NewEventNavBar />
 			<form className='bg-white m-1 rounded text-dark row'>
 				<Legend title='Nouveau alerte' />

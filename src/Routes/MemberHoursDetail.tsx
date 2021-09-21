@@ -4,7 +4,7 @@ import { Redirect, RouteComponentProps } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
 import { FlightTable } from "../Sections/FlightTable"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { crewMembersFlights } from "../tools/buildFlightHours"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
@@ -36,7 +36,7 @@ export const MemberHoursDetail = ({
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			<h4 className='text-center my-3'>{`Heures du ${member?.rank} ${member?.firstName} ${member?.surName}`}</h4>
 			<FlightTable flights={crewMembersHours!} />
 		</div>

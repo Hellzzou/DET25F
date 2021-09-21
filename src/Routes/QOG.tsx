@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { QOGTable } from "../Sections/QOGTable"
 import { buildQOG } from "../tools/buildReports"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
@@ -30,7 +30,7 @@ export const QOG = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya'>
-			<Navbar />
+			<MainNavBar />
 			{QOGFlights && <QOGTable flights={QOGFlights!} />}
 		</div>
 	)

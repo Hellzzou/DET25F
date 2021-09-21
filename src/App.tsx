@@ -14,15 +14,16 @@ import { FlightSearch } from "./Routes/FlightSearch"
 import { QOG } from "./Routes/QOG"
 import { CRHebdo } from "./Routes/CRHebdo"
 import { ManageDB } from "./Routes/ManageDB"
-import { AircraftManager } from "./Articles/AircraftsManager"
-import { FuelManager } from "./Articles/FuelManager"
-import { AreasManager } from "./Articles/AreasManager"
-import { ConfigsManager } from "./Articles/ConfigsManager"
-import { NCAreasManager } from "./Articles/NCAreasManager"
-import { TypesManager } from "./Articles/TypesManager"
-import { GroupsManager } from "./Articles/GroupsManager"
-import { membersManager } from "./Articles/MembersManager"
-import { UsersManager } from "./Articles/UsersManager"
+import { AircraftManager } from "./Routes/AircraftsManager"
+import { FuelManager } from "./Routes/FuelManager"
+import { AreasManager } from "./Routes/AreasManager"
+import { ConfigsManager } from "./Routes/ConfigsManager"
+import { NCAreasManager } from "./Routes/NCAreasManager"
+import { TypesManager } from "./Routes/TypesManager"
+import { GroupsManager } from "./Routes/GroupsManager"
+import { membersManager } from "./Routes/MembersManager"
+import { UsersManager } from "./Routes/UsersManager"
+import { MyAccount } from "./Routes/MyAccount"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -51,6 +52,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/groups' component={GroupsManager} />
 				<Route path='/crewMembers' component={membersManager} />
 				<Route path='/users' component={UsersManager} />
+				<Route path='/myAccount' component={MyAccount} />
 			</Switch>
 		</BrowserRouter>
 	)

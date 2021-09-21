@@ -7,7 +7,7 @@ import { MecboMiniCard } from "../Articles/MecboMiniCard"
 import { PilotMiniCard } from "../Articles/PilotMiniCard"
 import { RadioMiniCard } from "../Articles/RadioMiniCard"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
-import { Navbar } from "../Sections/Navbar"
+import { MainNavBar } from "../Sections/MainNavbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllTPAs } from "../tools/buildMemberActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
@@ -49,7 +49,7 @@ export const AllTPAs = (): JSX.Element => {
 		<Redirect to='/' />
 	) : (
 		<div className='alegreya' style={{ width: "100%" }}>
-			<Navbar />
+			<MainNavBar />
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
 			<div className='row mt-2 m-0'>
 				{pilotTPA.map((pilot) => (
