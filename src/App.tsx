@@ -29,7 +29,7 @@ export const App = (): React.ReactElement => {
 		<BrowserRouter>
 			<Switch>
 				<Route path='/' exact component={Login} />
-				<Route path='/activities' component={Activities} />
+				<Route path='/activities/:toast' component={Activities} />
 				<Route path='/newFlight' component={NewFlightForm} />
 				<Route path='/newEvent/:id' component={NewEventForm} />
 				<Route path='/newAlert/:id' component={NewAlertForm} />

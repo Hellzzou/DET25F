@@ -86,11 +86,10 @@ export const NewFlightForm = (): JSX.Element => {
 		setDeleteMemberSelect(INITIAL_FALSE_SELECT)
 		setAddMemberSelect(INITIAL_FALSE_SELECT)
 	}
-	const returnClick = () => history.push("/activities")
 	async function addFlightClick() {
 		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups, allMembers)
 		const res = await postFetchRequest(saveFlightURL, { newFlight: newFlight })
-		if (res === "success") history.push("/activities")
+		if (res === "success") history.push("/activities/newFlight")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -241,7 +240,12 @@ export const NewFlightForm = (): JSX.Element => {
 						}
 					/>
 					<div className='col-md-1'></div>
-					<Button size={4} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
+					<Button
+						size={4}
+						buttonColor='danger'
+						buttonContent='Annuler'
+						onClick={() => history.push("/activities/null")}
+					/>
 				</div>
 			</div>
 		</div>

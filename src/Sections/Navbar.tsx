@@ -20,7 +20,7 @@ export const Navbar = (): JSX.Element => {
 					<img src={plane} className='d-inline mx-1 align-bottom' />
 					<div className='d-inline fs-5 mx-3 text-white'>Activités DET 25F</div>
 					<div className='navbar-nav'>
-						<NavButton content='Planchette' link='/activities' />
+						<NavButton content='Planchette' link='/activities/null' />
 						<NavButton content='TPA' link='/AllTPAs' />
 						<NavButton content='EQA' link='/pilotEQA' />
 						<NavButton content='HDV' link='/flightHours' />

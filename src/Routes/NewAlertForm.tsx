@@ -29,23 +29,22 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const setters = [setDepartureDate, setChief, setPilot, setMecbo, setNav, setRdr, setRadio, setTech]
-	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
 		const newAlert = buildNewAlert(hooks)
 		const saved = await postFetchRequest(saveAlertURL, { newAlert })
-		if (saved === "success") history.push("/activities")
+		if (saved === "success") history.push("/activities/newAlert")
 	}
 	async function modifyAlertClick() {
 		const newAlert = buildNewAlert(hooks)
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveAlertURL, { newAlert })
-			if (res === "success") history.push("/activities")
+			if (res === "success") history.push("/activities/modifyAlert")
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
-		if (deleted === "success") history.push("/activities")
+		if (deleted === "success") history.push("/activities/deleteAlert")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -90,7 +89,7 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 				addClick={match.params.id !== "newOne" ? modifyAlertClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={returnClick}
+				returnClick={() => history.push("/activities/null")}
 			/>
 		</div>
 	)

@@ -26,23 +26,22 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const [event, setEvent] = useState(INITIAL_FALSE_CONTROL)
 	const hooks = [departureDate, departureTime, arrivalDate, arrivalTime, event]
 	const setters = [setDepartureDate, setDepartureTime, setArrivalDate, setArrivalTime, setEvent]
-	const returnClick = () => history.push("/activities")
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks)
 		const saved = await postFetchRequest<string>(saveEventURL, { newEvent })
-		if (saved === "success") history.push("/activities")
+		if (saved === "success") history.push("/activities/newEvent")
 	}
 	async function modifyEventClick() {
 		const newEvent = buildNewEvent(hooks)
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveEventURL, { newEvent })
-			if (res === "success") history.push("/activities")
+			if (res === "success") history.push("/activities/modifyEvent")
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
-		if (deleted === "success") history.push("/activities")
+		if (deleted === "success") history.push("/activities/deleteEvent")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -82,7 +81,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 				addClick={match.params.id !== "newOne" ? modifyEventClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={returnClick}
+				returnClick={() => history.push("/activities/null")}
 			/>
 		</div>
 	)

@@ -195,13 +195,12 @@ export const DebriefFlightForm = ({
 		setDenaeTPA(denaeTPA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
 		setPilotEQA(pilotEQA.filter((pilot) => pilot.name !== deleteMemberSelect.value))
 	}
-	const returnClick = () => history.push("/activities")
 	async function modifyFlightClick() {
 		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups, allMembers)
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
-			if (res === "success") history.push("/activities")
+			if (res === "success") history.push("/activities/modifyFlight")
 		}
 	}
 	async function addFlightClick() {
@@ -221,12 +220,12 @@ export const DebriefFlightForm = ({
 		const saved = await postFetchRequest(DB_URL + "flights/save", { newFlight: debriefedFlight })
 		if (saved === "success") {
 			const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-			if (deleted === "success") history.push("/activities")
+			if (deleted === "success") history.push("/activities/debriefFlight")
 		}
 	}
 	async function deleteFlight() {
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-		if (deleted === "success") history.push("/activities")
+		if (deleted === "success") history.push("/activities/deleteFlight")
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -472,7 +471,12 @@ export const DebriefFlightForm = ({
 				<div className='col-md-1'></div>
 				<Button size={2} buttonColor='danger' buttonContent='Supprimer' onClick={deleteFlight} />
 				<div className='col-md-1'></div>
-				<Button size={2} buttonColor='danger' buttonContent='Annuler' onClick={returnClick} />
+				<Button
+					size={2}
+					buttonColor='danger'
+					buttonContent='Annuler'
+					onClick={() => history.push("/activities/null")}
+				/>
 			</div>
 		</div>
 	)
