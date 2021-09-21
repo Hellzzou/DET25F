@@ -120,3 +120,9 @@ export type CrewTPACardProps = {
 	}
 	date: number
 }
+export type AlertToastProps = {
+	color: string
+	info: string
+	show: boolean
+	onClose: () => void
+}

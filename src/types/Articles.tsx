@@ -102,4 +102,5 @@ export type NewUserModalProps = {
 	onShow: () => void
 	users: user[]
 	setUsers: React.Dispatch<React.SetStateAction<user[]>>
+	setAddUserShow: React.Dispatch<React.SetStateAction<boolean>>
 }

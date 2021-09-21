@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
@@ -9,6 +11,8 @@ import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/
 import { FlightType } from "../types/Objects"
 
 export const TypesManager = (): JSX.Element => {
+	const history = useHistory()
+	const [show, setShow] = useState(false)
 	const [types, setTypes] = useState<{ name: string; value: string }[]>([])
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, typesTarget: { name: string; value: string }) => {
 		const typesMod = types.map((type) => {
@@ -28,6 +32,7 @@ export const TypesManager = (): JSX.Element => {
 				await postFetchRequest(typeURL, { type: { name: type.value } })
 			})
 		}
+		setShow(true)
 	}
 	useAsyncEffect(async () => {
 		const types = await getFetchRequest<FlightType[]>(typeURL)
@@ -42,6 +47,12 @@ export const TypesManager = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
+			<AlertToast
+				color='primary'
+				info='La liste des types de vol a bien été sauvegardée'
+				show={show}
+				onClose={() => setShow(false)}
+			/>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded text-start'>
 					<h5 className='text-decoration-underline m-1'>Informations : </h5>
@@ -54,7 +65,15 @@ export const TypesManager = (): JSX.Element => {
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded'>
-					<h4 className='text-center'>Liste des types de vol</h4>
+					<div className='row'>
+						<h4 className='col-md-8 text-center'>Liste des types de vol</h4>
+						<Button
+							size={3}
+							buttonColor='primary'
+							buttonContent='Ajouter un nouveau type'
+							onClick={() => addNew()}
+						/>
+					</div>
 					{types &&
 						types.map((type) => (
 							<div key={types.indexOf(type)} className='row my-2'>
@@ -82,16 +101,16 @@ export const TypesManager = (): JSX.Element => {
 				<Button
 					size={2}
 					buttonColor='primary'
-					buttonContent='Ajouter un nouveau type'
-					onClick={() => addNew()}
+					buttonContent='Enregistrer la liste'
+					onClick={() => saveAll()}
+					disabled={!allNonNull()}
 				/>
 				<div className='col-md-1'></div>
 				<Button
 					size={2}
-					buttonColor='primary'
-					buttonContent='Enregistrer la liste'
-					onClick={() => saveAll()}
-					disabled={!allNonNull()}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/manageDB")}
 				/>
 			</div>
 		</>

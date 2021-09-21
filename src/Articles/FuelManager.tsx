@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { Label } from "../BasicComponents/Label"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
@@ -9,6 +11,8 @@ import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/
 import { Fuel } from "../types/Objects"
 
 export const FuelManager = (): JSX.Element => {
+	const history = useHistory()
+	const [show, setShow] = useState(false)
 	const [fuels, setFuels] = useState<{ name: string; value: string }[]>([])
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, fuelTarget: { name: string; value: string }) => {
 		const fuelsMod = fuels.map((fuel) => {
@@ -28,6 +32,7 @@ export const FuelManager = (): JSX.Element => {
 				await postFetchRequest(fuelURL, { fuel: { quantity: fuel.value } })
 			})
 		}
+		setShow(true)
 	}
 	useAsyncEffect(async () => {
 		const fuels = await getFetchRequest<Fuel[]>(fuelURL)
@@ -42,6 +47,12 @@ export const FuelManager = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
+			<AlertToast
+				color='primary'
+				info='La liste des quantité a bien été sauvegardée'
+				show={show}
+				onClose={() => setShow(false)}
+			/>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded text-start'>
 					<h5 className='text-decoration-underline m-1'>Informations : </h5>
@@ -54,7 +65,15 @@ export const FuelManager = (): JSX.Element => {
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-6 card-body-color rounded'>
-					<h4 className='text-center'>Liste des quantités embarquables</h4>
+					<div className='row'>
+						<h4 className='col-md-8 text-center'>Liste des quantités embarquables</h4>
+						<Button
+							size={3}
+							buttonColor='primary'
+							buttonContent='Ajouter une nouvelle quantité'
+							onClick={() => addNew()}
+						/>
+					</div>
 					{fuels &&
 						fuels.map((fuel) => (
 							<div key={fuels.indexOf(fuel)} className='row my-2'>
@@ -82,16 +101,16 @@ export const FuelManager = (): JSX.Element => {
 				<Button
 					size={2}
 					buttonColor='primary'
-					buttonContent='Ajouter une nouvelle quantité'
-					onClick={() => addNew()}
+					buttonContent='Enregistrer la liste'
+					onClick={() => saveAll()}
+					disabled={!allNonNull()}
 				/>
 				<div className='col-md-1'></div>
 				<Button
 					size={2}
-					buttonColor='primary'
-					buttonContent='Enregistrer la liste'
-					onClick={() => saveAll()}
-					disabled={!allNonNull()}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/manageDB")}
 				/>
 			</div>
 		</>

@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { groupURL } from "../Datas/datas"
@@ -8,6 +10,8 @@ import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/
 import { Group } from "../types/Objects"
 
 export const GroupsManager = (): JSX.Element => {
+	const history = useHistory()
+	const [show, setShow] = useState(false)
 	const [groups, setGroups] = useState<Group[]>([])
 	const Delete = (groupTarget: Group) => setGroups(groups.filter((group) => group !== groupTarget))
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, groupTarget: Group, prop: string) => {
@@ -47,6 +51,7 @@ export const GroupsManager = (): JSX.Element => {
 					group: { group: group.group, underGroup, description, manager, client, allocation },
 				})
 			})
+			setShow(true)
 		}
 	}
 	useAsyncEffect(async () => {
@@ -56,6 +61,12 @@ export const GroupsManager = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
+			<AlertToast
+				color='primary'
+				info='La liste des groupes a bien été sauvegardée'
+				show={show}
+				onClose={() => setShow(false)}
+			/>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-11 card-body-color rounded text-start'>
 					<h5 className='text-decoration-underline m-1'>Informations : </h5>
@@ -77,7 +88,15 @@ export const GroupsManager = (): JSX.Element => {
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-11 card-body-color rounded'>
-					<h4 className='text-center'>Liste des groupes de vol</h4>
+					<div className='row'>
+						<h4 className='col-md-10 text-center'>Liste des groupes de vol</h4>
+						<Button
+							size={2}
+							buttonColor='primary'
+							buttonContent='Ajouter un nouveau groupe'
+							onClick={() => addNew()}
+						/>
+					</div>
 					<div className='row'>
 						<div className='col-md-1 text-center'>Groupes</div>
 						<div className='col-md-1 text-center'>Sous-groupes</div>
@@ -151,16 +170,16 @@ export const GroupsManager = (): JSX.Element => {
 				<Button
 					size={2}
 					buttonColor='primary'
-					buttonContent='Ajouter un nouveau groupe'
-					onClick={() => addNew()}
+					buttonContent='Enregistrer la liste'
+					onClick={() => saveAll()}
+					disabled={!allNonNull()}
 				/>
 				<div className='col-md-1'></div>
 				<Button
 					size={2}
-					buttonColor='primary'
-					buttonContent='Enregistrer la liste'
-					onClick={() => saveAll()}
-					disabled={!allNonNull()}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/manageDB")}
 				/>
 			</div>
 		</>

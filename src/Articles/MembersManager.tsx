@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
+import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { SimpleSelect } from "../BasicComponents/SimpleSelect"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
@@ -11,6 +13,8 @@ import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/
 import { crewMember } from "../types/Objects"
 
 export const membersManager = (): JSX.Element => {
+	const history = useHistory()
+	const [show, setShow] = useState(false)
 	const [members, setMembers] = useState<crewMember[]>([])
 	const Delete = (memberTarget: crewMember) => setMembers(members.filter((member) => member !== memberTarget))
 	const handleChange = (
@@ -84,6 +88,7 @@ export const membersManager = (): JSX.Element => {
 					},
 				})
 			})
+			setShow(true)
 		}
 	}
 	useAsyncEffect(async () => {
@@ -93,6 +98,12 @@ export const membersManager = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
+			<AlertToast
+				color='primary'
+				info='La liste des membres a bien été sauvegardée'
+				show={show}
+				onClose={() => setShow(false)}
+			/>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-11 card-body-color rounded text-start'>
 					<h5 className='text-decoration-underline m-1'>Informations : </h5>
@@ -109,7 +120,15 @@ export const membersManager = (): JSX.Element => {
 			</div>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-11 card-body-color rounded'>
-					<h4 className='text-center'>Liste des membres de la flotille</h4>
+					<div className='row'>
+						<h4 className='col-md-10 text-center'>Liste des membres de la flotille</h4>
+						<Button
+							size={2}
+							buttonColor='primary'
+							buttonContent='Ajouter un nouveau membre'
+							onClick={() => addNew()}
+						/>
+					</div>
 					<div className='row'>
 						<div className='col-md-1 text-center'>Grade *</div>
 						<div className='col-md-1 text-center'>Prénom *</div>
@@ -210,16 +229,16 @@ export const membersManager = (): JSX.Element => {
 				<Button
 					size={2}
 					buttonColor='primary'
-					buttonContent='Ajouter un nouveau membre'
-					onClick={() => addNew()}
+					buttonContent='Enregistrer la liste'
+					onClick={() => saveAll()}
+					disabled={!allNonNull()}
 				/>
 				<div className='col-md-1'></div>
 				<Button
 					size={2}
-					buttonColor='primary'
-					buttonContent='Enregistrer la liste'
-					onClick={() => saveAll()}
-					disabled={!allNonNull()}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/manageDB")}
 				/>
 			</div>
 		</>

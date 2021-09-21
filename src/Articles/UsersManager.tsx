@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
+import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { getAllUserURL, getOneUserURL, signupURL, userDeleteURL, userURL } from "../Datas/datas"
@@ -10,6 +12,11 @@ import { user } from "../types/Objects"
 import { NewUserModal } from "./NewUserModal"
 
 export const UsersManager = (): JSX.Element => {
+	const history = useHistory()
+	const [modifyUserShow, setModifyUserShow] = useState(false)
+	const [reinitUserShow, setReinitUserShow] = useState(false)
+	const [deleteUserShow, setDeleteUserShow] = useState(false)
+	const [addUserShow, setAddUserShow] = useState(false)
 	const [show, setShow] = useState(false)
 	const [users, setUsers] = useState<user[]>([])
 	const [currentUser, setCurrentUser] = useState<user>()
@@ -17,7 +24,10 @@ export const UsersManager = (): JSX.Element => {
 	const handleShow = () => setShow(true)
 	const Delete = async (userTarget: user) => {
 		const deleted = await deleteFetchRequest(userDeleteURL, { name: userTarget.name })
-		if (deleted === "success") setUsers(users.filter((user) => user !== userTarget))
+		if (deleted === "success") {
+			setUsers(users.filter((user) => user !== userTarget))
+			setDeleteUserShow(true)
+		}
 	}
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, userTarget: user, prop: string) => {
 		const usersMod = users.map((user) => {
@@ -38,11 +48,14 @@ export const UsersManager = (): JSX.Element => {
 	const allowDelete = (user: user) => (currentUser?.email === user.email ? true : false)
 	const allNonNull = (user: user) =>
 		user.rank !== "" && user.name !== "" && user.responsability !== "" && user.email !== ""
-	const modifyUser = async (user: user) => await putFetchRequest(userURL, user)
+	const modifyUser = async (user: user) => {
+		const modify = await putFetchRequest(userURL, user)
+		if (modify === "success") setModifyUserShow(true)
+	}
 	const reinitLogins = async (user: user) => {
 		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.name })
-		if (deleted === "success")
-			await postFetchRequest(signupURL, {
+		if (deleted === "success") {
+			const signup = await postFetchRequest(signupURL, {
 				rank: user.rank,
 				name: user.name,
 				responsability: user.responsability,
@@ -50,6 +63,8 @@ export const UsersManager = (): JSX.Element => {
 				login: user.email,
 				password: "Azerty01!",
 			})
+			if (signup === "Utilisateur crée") setReinitUserShow(true)
+		}
 	}
 	useAsyncEffect(async () => {
 		const users = await getFetchRequest<user[]>(getAllUserURL)
@@ -60,6 +75,30 @@ export const UsersManager = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
+			<AlertToast
+				color='primary'
+				info='Les informations de cet utilsateur ont bien été modifiée'
+				show={modifyUserShow}
+				onClose={() => setModifyUserShow(false)}
+			/>
+			<AlertToast
+				color='danger'
+				info='les accès de cet utilisateur ont bien été réinitialisés'
+				show={reinitUserShow}
+				onClose={() => setReinitUserShow(false)}
+			/>
+			<AlertToast
+				color='danger'
+				info="L'utilisateur a été supprimé de la base de données"
+				show={deleteUserShow}
+				onClose={() => setDeleteUserShow(false)}
+			/>
+			<AlertToast
+				color='primary'
+				info="L'utilisateur a bien été crée"
+				show={addUserShow}
+				onClose={() => setAddUserShow(false)}
+			/>
 			<NewUserModal
 				show={show}
 				setShow={setShow}
@@ -67,6 +106,7 @@ export const UsersManager = (): JSX.Element => {
 				onShow={handleShow}
 				users={users}
 				setUsers={setUsers}
+				setAddUserShow={setAddUserShow}
 			/>
 			<div className='row justify-content-center m-2'>
 				<div className='col-md-12 card-body-color rounded text-start'>
@@ -171,10 +211,17 @@ export const UsersManager = (): JSX.Element => {
 			</div>
 			<div className='row justify-content-center'>
 				<Button
-					size={3}
+					size={2}
 					buttonColor={"primary"}
 					buttonContent={"Ajouter un nouvel utilisateur"}
 					onClick={() => handleShow()}
+				/>
+				<div className='col-md-1'></div>
+				<Button
+					size={2}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/manageDB")}
 				/>
 			</div>
 		</>

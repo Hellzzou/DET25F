@@ -47,6 +47,7 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 			setResponsability("")
 			setEmail("")
 			handleClose()
+			props.setAddUserShow(true)
 		}
 	}
 	return (
