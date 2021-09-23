@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
-import { Redirect } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
+import { Button } from "../BasicComponents/Button"
 import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/datas"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { QOGTable } from "../Sections/QOGTable"
@@ -11,6 +12,7 @@ import { tokenCheck } from "../tools/user"
 import { Duration, flight } from "../types/Objects"
 
 export const QOG = (): JSX.Element => {
+	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const [QOGFlights, setQOGFlights] = useState<Record<string, Duration>[]>()
 	useAsyncEffect(async () => {
@@ -32,6 +34,14 @@ export const QOG = (): JSX.Element => {
 		<div className='alegreya'>
 			<MainNavBar />
 			{QOGFlights && <QOGTable flights={QOGFlights!} />}
+			<div className='row justify-content-center'>
+				<Button
+					size={3}
+					buttonColor='primary'
+					buttonContent='Statistiques'
+					onClick={() => history.push("/stats")}
+				/>
+			</div>
 		</div>
 	)
 }

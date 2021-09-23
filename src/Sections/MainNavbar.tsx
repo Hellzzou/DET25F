@@ -15,7 +15,7 @@ export const MainNavBar = (): JSX.Element => {
 		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (
-		<Navbar bg='dark' className='mb-1 px-2' variant='dark'>
+		<Navbar bg='dark' className='px-2' variant='dark'>
 			<img src={plane} className='d-inline ms-2' />
 			<div className='d-inline mx-3 text-white'>Activités DET 25F</div>
 			<Navbar.Toggle aria-controls='navbarScroll' />
@@ -41,6 +41,9 @@ export const MainNavBar = (): JSX.Element => {
 					</Nav.Link>
 					<Nav.Link className='text-primary mx-2' href='/crHebdo'>
 						C/R Hebdo
+					</Nav.Link>
+					<Nav.Link className='text-primary mx-2' href='/stats'>
+						Statistiques
 					</Nav.Link>
 					<Nav.Link
 						className='text-primary mx-2'

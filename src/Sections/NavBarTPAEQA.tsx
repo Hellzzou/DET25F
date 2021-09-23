@@ -5,7 +5,7 @@ import { NavbarTPAEQAProps } from "../types/Sections"
 
 export const NavBarTPAEQA = (props: NavbarTPAEQAProps): JSX.Element => {
 	return (
-		<div className='row justify-content-center'>
+		<div className='mt-2 row justify-content-center'>
 			<Button size={4} buttonColor='primary' buttonContent={months[new Date().getMonth()]} onClick={props.prev} />
 			<div className='text-center fs-4 fw-bold col-md-2'>{months[props.date]}</div>
 			<Button

@@ -24,6 +24,7 @@ import { GroupsManager } from "./Routes/GroupsManager"
 import { membersManager } from "./Routes/MembersManager"
 import { UsersManager } from "./Routes/UsersManager"
 import { MyAccount } from "./Routes/MyAccount"
+import { Stats } from "./Routes/Stats"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -53,6 +54,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/crewMembers' component={membersManager} />
 				<Route path='/users' component={UsersManager} />
 				<Route path='/myAccount' component={MyAccount} />
+				<Route path='/stats' component={Stats} />
 			</Switch>
 		</BrowserRouter>
 	)

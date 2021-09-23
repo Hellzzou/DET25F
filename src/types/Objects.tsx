@@ -271,3 +271,12 @@ export type Duration = {
 	dayDuration: number
 	nightDuration: number
 }
+export type ChartDatas = {
+	labels: string[]
+	datasets: {
+		label: string
+		data: number[]
+		backgroundColor: string
+		borderColor: string
+	}[]
+}
