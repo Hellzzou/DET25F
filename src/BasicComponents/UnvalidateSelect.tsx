@@ -12,7 +12,7 @@ export const UnvalidateSelect = (props: selectProps): JSX.Element => {
 	return (
 		<div className={`col-md-${props.size}`}>
 			<select
-				className={`form-select bg-${props.backgroundColor} text-${props.textColor} `}
+				className={`form-select bg-${props.backgroundColor} text-${props.textColor} text-center `}
 				onChange={handleSelectChange}
 				value={props.control.value}
 				disabled={typeof props.control.disabled !== "undefined" ? props.control.disabled : false}>

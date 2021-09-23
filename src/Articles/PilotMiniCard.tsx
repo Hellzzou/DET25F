@@ -4,6 +4,7 @@ import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
 import { memberURL } from "../Datas/datas"
+import { buildPilotPurcentage } from "../tools/buildMemberActions"
 import { getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
 import { PilotMiniCardProps } from "../types/Articles"
@@ -11,17 +12,26 @@ import { crewMember } from "../types/Objects"
 
 export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<crewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.pilot.name)
 			if (member) sertFullName(member)
 		}
+		const purcentage = buildPilotPurcentage(props.pilot.TPA, props.date)
+		setPurcentage({
+			value: purcentage + " %",
+			color: purcentage < 66 ? (purcentage < 50 ? "danger" : "warning") : "success",
+		})
 	}, [])
 	return (
 		<div className='card m-1'>
 			<div className='card-body card-body-color py-2'>
-				<h5 className='card-title text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+				<div className='row my-0'>
+					<h5 className='col-md-9 text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+					<h5 className={`col-md-3 text-${purcentage.color} text-center py-0`}>{`${purcentage.value}`}</h5>
+				</div>
 				<hr className='m-2'></hr>
 				<div className='row'>
 					<div className='p-1 col-md-6'>

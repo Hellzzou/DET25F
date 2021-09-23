@@ -14,7 +14,7 @@ export const Select = (props: selectProps): JSX.Element => {
 			<select
 				className={`form-select bg-${props.backgroundColor} 
                     text-${props.textColor} 
-                    ${props.control.validity ? "is-valid" : "is-invalid"}`}
+                    ${props.control.validity ? "is-valid" : "is-invalid"} text-center`}
 				onChange={handleSelectChange}
 				value={props.control.value}
 				disabled={typeof props.control.disabled !== "undefined" ? props.control.disabled : false}>

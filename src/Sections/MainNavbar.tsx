@@ -5,16 +5,17 @@ import { getOneUserURL } from "../Datas/datas"
 import plane from "../images/whiteAircraft.png"
 import { getFetchRequest } from "../tools/fetch"
 import { user } from "../types/Objects"
-import { Navbar, Nav } from "react-bootstrap"
+import { Navbar, Nav, NavDropdown } from "react-bootstrap"
+import { INITIAL_USER } from "../Datas/crewMember"
 
 export const MainNavBar = (): JSX.Element => {
-	const [user, setUser] = useState("")
+	const [user, setUser] = useState<user>(INITIAL_USER)
 	useAsyncEffect(async () => {
 		const user = await getFetchRequest<user>(getOneUserURL)
-		if (typeof user !== "string") setUser(user.rank + " " + user.name)
+		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (
-		<Navbar bg='dark' className='mb-1'>
+		<Navbar bg='dark' className='mb-1 px-2' variant='dark'>
 			<img src={plane} className='d-inline ms-2' />
 			<div className='d-inline mx-3 text-white'>Activités DET 25F</div>
 			<Navbar.Toggle aria-controls='navbarScroll' />
@@ -41,19 +42,30 @@ export const MainNavBar = (): JSX.Element => {
 					<Nav.Link className='text-primary mx-2' href='/crHebdo'>
 						C/R Hebdo
 					</Nav.Link>
-					<Nav.Link className='text-primary mx-2' href='/manageDB'>
+					<Nav.Link
+						className='text-primary mx-2'
+						href='/manageDB'
+						disabled={user.responsability === "Utilisateur"}>
 						Gérer la DB
 					</Nav.Link>
 				</Nav>
 			</Navbar.Collapse>
 			<div className='justify-content-end'>
-				<div className='text-white d-inline mx-2'>{user}</div>
-				<Link to='/myAccount' className='text-primary text-decoration-none mx-2'>
-					mon compte
-				</Link>
-				<Link to='/' className='text-warning text-decoration-none text-end mx-2'>
-					déconnexion
-				</Link>
+				<Nav className='text-white'>
+					<NavDropdown id='' title={user.rank + " " + user.name} menuVariant='dark'>
+						<NavDropdown.Item>
+							<Link to='/myAccount' className='text-primary text-decoration-none mx-2'>
+								mon compte
+							</Link>
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item>
+							<Link to='/' className='text-warning text-decoration-none text-end mx-2'>
+								déconnexion
+							</Link>
+						</NavDropdown.Item>
+					</NavDropdown>
+				</Nav>
 			</div>
 		</Navbar>
 	)

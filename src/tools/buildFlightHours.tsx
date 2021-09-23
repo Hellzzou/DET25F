@@ -40,8 +40,8 @@ export const crewMemberHours = (allHours: flight[]): Record<string, number> => {
 		if (!acc["night"]) acc["night"] = 0
 		if (!acc["total"]) acc["total"] = 0
 		acc["day"] += returnZeroOrValue(flight.dayDuration)
-		acc["night"] += returnZeroOrValue(flight.dayDuration)
-		acc["total"] += returnZeroOrValue(flight.dayDuration)
+		acc["night"] += returnZeroOrValue(flight.nightDuration)
+		acc["total"] += returnZeroOrValue(flight.dayDuration) + returnZeroOrValue(flight.nightDuration)
 		return acc
 	}, {})
 }

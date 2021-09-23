@@ -16,7 +16,10 @@ export const INITIAL_MECBOTPA = {
 	TRP: { name: "Trappe manu", value: false },
 }
 
-export const INITIAL_RADIOTPA = { IMINT: { name: "dossier IMINT", value: false } }
+export const INITIAL_RADIOTPA = {
+	IMINT: { name: "dossier IMINT", value: false },
+	entCodage: { name: "Codage", value: "" },
+}
 export const INITIAL_DENAETPA = {
 	PGPS: { name: "panne GPS", value: false },
 	appRDR: { name: "app RDR", value: "" },

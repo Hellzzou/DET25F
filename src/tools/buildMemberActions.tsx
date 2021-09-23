@@ -19,6 +19,7 @@ import {
 	radioDateTPA,
 	radioTPA,
 } from "../types/Objects"
+import { getAnnual, getQuadri } from "./colorManager"
 
 export const buildAllPilotsTPA = (
 	membersActions: Record<string, Record<string, Date[]>>,
@@ -95,6 +96,7 @@ export const buildAllRadiosTPA = (
 				if (type === "TMAHD" || type === "PH" || type === "IMINT")
 					return [type, [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2)]
 				if (type === "appRDR") return [type, [...sortedDates.slice(0, 6), ...Array(6).fill(old)].slice(0, 6)]
+				if (type === "entCodage") return [type, [...sortedDates.slice(0, 4), ...Array(4).fill(old)].slice(0, 4)]
 				return [type, sortedDates[0]]
 			})
 			return {
@@ -197,4 +199,54 @@ export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<fligh
 		radioTPA: buildAllRadiosTPA(membersActions, members),
 		denaeTPA: buildAllDeanesTPA(membersActions, members),
 	}
+}
+export const buildPilotPurcentage = (pilotTPA: pilotDateTPA, dateToCompare: number): number => {
+	let purcentage = [pilotTPA.ATTPC, pilotTPA.IFR, pilotTPA.LCS, pilotTPA.DITCHING, pilotTPA.SIMAR].reduce(
+		(acc, TPA) => {
+			if (getQuadri(TPA, dateToCompare) === "success") acc += 1
+			return acc
+		},
+		0
+	)
+	purcentage += [...pilotTPA.TMAHD, pilotTPA.COOPBAT, pilotTPA.SAR].reduce((acc, TPA) => {
+		if (getAnnual(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	return Math.ceil((purcentage / 9) * 100)
+}
+export const buildMecboPurcentage = (mecboTPA: mecboDateTPA, dateToCompare: number): number => {
+	let purcentage = [...mecboTPA.PH, mecboTPA.LCS, mecboTPA.DITCHING, mecboTPA.SIMAR].reduce((acc, TPA) => {
+		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	purcentage += [...mecboTPA.TMAHD, mecboTPA.COOPBAT, mecboTPA.SAR, mecboTPA.TRP].reduce((acc, TPA) => {
+		if (getAnnual(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	return Math.ceil((purcentage / 10) * 100)
+}
+export const buildDenaePurcentage = (denaeTPA: denaeDateTPA, dateToCompare: number): number => {
+	let purcentage = [...denaeTPA.appRDR, denaeTPA.PGPS, denaeTPA.DITCHING, denaeTPA.SIMAR].reduce((acc, TPA) => {
+		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	purcentage += [...denaeTPA.TMAHD, denaeTPA.COOPBAT, denaeTPA.SAR].reduce((acc, TPA) => {
+		if (getAnnual(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	return Math.ceil((purcentage / 13) * 100)
+}
+export const buildRadioPurcentage = (radioTPA: radioDateTPA, dateToCompare: number): number => {
+	let purcentage = [...radioTPA.IMINT, ...radioTPA.entCodage, radioTPA.DITCHING, radioTPA.SIMAR].reduce(
+		(acc, TPA) => {
+			if (getQuadri(TPA, dateToCompare) === "success") acc += 1
+			return acc
+		},
+		0
+	)
+	purcentage += [...radioTPA.TMAHD, radioTPA.COOPBAT, radioTPA.SAR].reduce((acc, TPA) => {
+		if (getAnnual(TPA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	return Math.ceil((purcentage / 12) * 100)
 }

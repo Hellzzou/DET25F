@@ -10,6 +10,8 @@ import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest, putFetchRequest } from "../tools/fetch"
 import { user } from "../types/Objects"
 import { NewUserModal } from "../Articles/NewUserModal"
+import { SimpleSelect } from "../BasicComponents/SimpleSelect"
+import { access, ranks } from "../Datas/members"
 
 export const UsersManager = (): JSX.Element => {
 	const history = useHistory()
@@ -29,7 +31,11 @@ export const UsersManager = (): JSX.Element => {
 			setDeleteUserShow(true)
 		}
 	}
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, userTarget: user, prop: string) => {
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
+		userTarget: user,
+		prop: string
+	) => {
 		const usersMod = users.map((user) => {
 			if (user !== userTarget) return user
 			else
@@ -146,13 +152,13 @@ export const UsersManager = (): JSX.Element => {
 					{users &&
 						users.map((user) => (
 							<div key={users.indexOf(user)} className='row my-1'>
-								<UnvalidateInput
+								<SimpleSelect
 									size={1}
 									backgroundColor='dark'
 									textColor='white'
-									type='number'
-									control={{ name: user.rank, value: user.rank }}
 									handleChange={(e) => handleChange(e, user, "rank")}
+									value={user.rank}
+									options={ranks}
 								/>
 								<UnvalidateInput
 									size={2}
@@ -162,13 +168,13 @@ export const UsersManager = (): JSX.Element => {
 									control={{ name: user.name, value: user.name }}
 									handleChange={(e) => handleChange(e, user, "name")}
 								/>
-								<UnvalidateInput
+								<SimpleSelect
 									size={1}
 									backgroundColor='dark'
 									textColor='white'
-									type='number'
-									control={{ name: user.responsability, value: user.responsability }}
 									handleChange={(e) => handleChange(e, user, "responsability")}
+									value={user.responsability}
+									options={access}
 								/>
 								<UnvalidateInput
 									size={2}

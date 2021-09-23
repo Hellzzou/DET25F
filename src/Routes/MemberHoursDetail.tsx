@@ -14,7 +14,7 @@ export const MemberHoursDetail = ({
 	match,
 }: RouteComponentProps<{ name: string; startDate: string; endDate: string }>): JSX.Element => {
 	const [token, setToken] = useState(true)
-	const [crewMembersHours, setCrewMembersHours] = useState<flight[]>()
+	const [crewMembersHours, setCrewMembersHours] = useState<flight[]>([])
 	const [member, setMember] = useState<crewMember>()
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -27,8 +27,10 @@ export const MemberHoursDetail = ({
 			})
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
 				setMember(allMembers.find(({ trigram }) => trigram === match.params.name))
-				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights)
-				setCrewMembersHours(crewMembersHours.find(({ name }) => name === match.params.name)?.flight)
+				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights).find(
+					({ name }) => name === match.params.name
+				)?.flight
+				if (typeof crewMembersHours !== "undefined") setCrewMembersHours(crewMembersHours)
 			}
 		}
 	}, [])

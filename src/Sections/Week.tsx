@@ -155,7 +155,7 @@ export const Week = (): JSX.Element => {
 				</table>
 			</div>
 			<div className='row justify-content-center'>
-				<Button size={6} buttonContent='ETAT 400' buttonColor='primary' onClick={etat400Click} />
+				<Button size={2} buttonContent='ETAT 400' buttonColor='primary' onClick={etat400Click} />
 			</div>
 		</>
 	)

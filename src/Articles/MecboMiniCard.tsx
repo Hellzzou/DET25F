@@ -3,6 +3,7 @@ import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
 import { memberURL } from "../Datas/datas"
+import { buildMecboPurcentage } from "../tools/buildMemberActions"
 import { getAnnual, getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
 import { MecboMiniCardProps } from "../types/Articles"
@@ -10,17 +11,26 @@ import { crewMember } from "../types/Objects"
 
 export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<crewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.mecbo.name)
 			if (member) sertFullName(member)
 		}
+		const purcentage = buildMecboPurcentage(props.mecbo.TPA, props.date)
+		setPurcentage({
+			value: purcentage + " %",
+			color: purcentage < 66 ? (purcentage < 50 ? "danger" : "warning") : "success",
+		})
 	}, [])
 	return (
 		<div className='card m-1'>
 			<div className='card-body card-body-color py-2'>
-				<h5 className='card-title text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+				<div className='row my-0'>
+					<h5 className='col-md-9 text-center py-0'>{`${fullName.rank} ${fullName.firstName} ${fullName.surName}`}</h5>
+					<h5 className={`col-md-3 text-${purcentage.color} text-center py-0`}>{`${purcentage.value}`}</h5>
+				</div>
 				<hr className='m-2'></hr>
 				<div className='row'>
 					<div className='col-md-6'>

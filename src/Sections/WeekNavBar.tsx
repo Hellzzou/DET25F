@@ -1,18 +1,38 @@
 import React from "react"
 import { weekNavBarProps } from "../types/BasicComponents"
-import { Button } from "../BasicComponents/Button"
 import { getWeekNumber } from "../tools/dateManager"
+import { Nav } from "react-bootstrap"
 
 export const WeekNavBar = (props: weekNavBarProps): JSX.Element => {
 	return (
 		<div className='row m-1 my-0 justify-content-center'>
-			<Button size={2} buttonContent='Semaine précédente' buttonColor='primary' onClick={props.previousClick} />
+			<Nav.Link className='col-md-2'>
+				<div
+					className='text-primary border border-primary text-center rounded py-2'
+					onClick={props.previousClick}>
+					Semaine précédente
+				</div>
+			</Nav.Link>
 			<div className='col-md-1'></div>
-			<Button size={2} buttonContent='Nouvel évènement' buttonColor='primary' onClick={props.newEventClick} />
+			<Nav.Link className='col-md-2'>
+				<div
+					className='text-dark bg-primary border border-primary text-center rounded py-2'
+					onClick={props.newEventClick}>
+					Nouvel évènement
+				</div>
+			</Nav.Link>
 			<div className='col-md-2 text-center fw-bold fs-4'>{`Semaine ${getWeekNumber(props.firstDay)}`}</div>
-			<Button size={2} buttonContent='Cette semaine' buttonColor='primary' onClick={props.nowClick} />
+			<Nav.Link className='col-md-2 text-end'>
+				<div className='text-primary border border-primary text-center rounded py-2' onClick={props.nowClick}>
+					Semaine actuelle
+				</div>
+			</Nav.Link>
 			<div className='col-md-1'></div>
-			<Button size={2} buttonContent='Semaine suivante' buttonColor='primary' onClick={props.nextClick} />
+			<Nav.Link className='col-md-2 text-end'>
+				<div className='text-primary border border-primary text-center rounded py-2' onClick={props.nextClick}>
+					Semaine suivante
+				</div>
+			</Nav.Link>
 		</div>
 	)
 }

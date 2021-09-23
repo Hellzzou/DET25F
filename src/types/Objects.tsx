@@ -153,7 +153,10 @@ export type mecboTPA = {
 }
 export type radioTPA = {
 	name: string
-	TPA: { IMINT: { name: string; value: boolean } }
+	TPA: {
+		IMINT: { name: string; value: boolean }
+		entCodage: { name: string; value: string }
+	}
 }
 export type denaeTPA = {
 	name: string
@@ -220,6 +223,7 @@ export type radioDateTPA = {
 	DITCHING: Date
 	SIMAR: Date
 	IMINT: Array<Date>
+	entCodage: Array<Date>
 }
 export type denaeDateTPA = {
 	TMAHD: Array<Date>

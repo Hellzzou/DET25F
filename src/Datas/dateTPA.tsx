@@ -31,6 +31,7 @@ export const INITIAL_RADIO_DATE_TPA = {
 	DITCHING: old,
 	SIMAR: old,
 	IMINT: [old, old],
+	entCodage: [old, old, old, old],
 }
 export const INITIAL_DENAE_DATE_TPA = {
 	TMAHD: [old, old],

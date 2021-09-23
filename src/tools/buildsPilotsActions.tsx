@@ -1,5 +1,7 @@
 import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/dateTPA"
-import { AllEQAs, crewMember, flight } from "../types/Objects"
+import { EQADurations } from "../Datas/EQADurations"
+import { AllEQAs, crewMember, flight, PilotDateEQA } from "../types/Objects"
+import { getDone, getDurationsValidity, getMonthly, getQuadri } from "./colorManager"
 
 export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array<flight>, month: number): AllEQAs => {
 	const lastYear = new Date(new Date().getFullYear() - 1, month, 1)
@@ -91,4 +93,23 @@ export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array
 		.map((m) => ({ name: m.trigram, EQA: INITIAL_PILOT_DATE_EQA }))
 
 	return [...allEQAs, ...missingMembers]
+}
+export const buildPilotEQAPurcentage = (pilotEQA: PilotDateEQA, dateToCompare: number): number => {
+	let purcentage = [
+		...pilotEQA.ATTJ,
+		pilotEQA.ATTN1,
+		pilotEQA.ATTN,
+		pilotEQA.AMVPADV,
+		pilotEQA.AMVM,
+		pilotEQA.AMVN,
+	].reduce((acc, EQA) => {
+		if (getMonthly(EQA, dateToCompare) === "success") acc += 1
+		return acc
+	}, 0)
+	purcentage += getDurationsValidity(pilotEQA.BAN, EQADurations.BAN) === "success" ? 1 : 0
+	purcentage += getDurationsValidity(pilotEQA.fourMonths, EQADurations.fourMonths) === "success" ? 1 : 0
+	purcentage += getDurationsValidity(pilotEQA.fourMonthsNight, EQADurations.fourMonthsNight) === "success" ? 1 : 0
+	purcentage += getQuadri(pilotEQA.STAND, dateToCompare) === "success" ? 1 : 0
+	purcentage += getDone(pilotEQA.ERGTR) === "success" ? 1 : 0
+	return Math.ceil((purcentage / 12) * 100)
 }

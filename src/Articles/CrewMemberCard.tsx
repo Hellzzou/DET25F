@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
-import { Link } from "react-router-dom"
 import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
 import { memberURL } from "../Datas/datas"
 import { crewMemberHours } from "../tools/buildFlightHours"
 import { getFetchRequest } from "../tools/fetch"
 import { CrewMemberCardProps } from "../types/Articles"
 import { crewMember } from "../types/Objects"
+import { Nav } from "react-bootstrap"
 
 export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
@@ -18,6 +18,7 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 			if (member) sertFullName(member)
 		}
 		const memberHours = crewMemberHours(props.crewMemberHours)
+		console.log(memberHours)
 		setMemberHours(memberHours)
 	}, [props.crewMemberHours])
 	return (
@@ -47,11 +48,12 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 					</div>
 				</div>
 			</div>
-			<Link
-				to={`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`}
-				className='text-decoration-none card-body-color text-center'>
-				<span>Détails</span>
-			</Link>
+			<Nav.Link
+				className='text-primary card-body-color text-center'
+				href={`/memberDetails/${props.crewMemberName}/${props.startDate}/${props.endDate}`}
+				disabled={!memberHours["total"]}>
+				Détails
+			</Nav.Link>
 		</div>
 	)
 }
