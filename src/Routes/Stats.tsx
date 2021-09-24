@@ -4,10 +4,10 @@ import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { INITIAL_ENDDATE_CONTROL } from "../tools/dateManager"
 import { Line, Bar } from "react-chartjs-2"
-import { ChartDatas, flight, Group, newAlert } from "../types/Objects"
+import { ChartDatas, crewMember, flight, Group, newAlert } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { alertDateFinderURL, DebriefedflightDateFinderURL, groupURL } from "../Datas/urls"
+import { alertDateFinderURL, DebriefedflightDateFinderURL, groupURL, memberURL } from "../Datas/urls"
 import { buildAlertByMember, buildConsoChart, buildRepartition } from "../tools/buildStats"
 import { groupFilter } from "../tools/reportCalculator"
 import { INITIAL_CHART_DATA } from "../Datas/initialObjects"
@@ -42,11 +42,12 @@ export const Stats = (): JSX.Element => {
 		setChart("bar")
 	}
 	const alertByMember = async () => {
+		const members = await getFetchRequest<crewMember[]>(memberURL)
 		const alerts = await postFetchRequest<newAlert[]>(alertDateFinderURL, {
 			start: startDate.value,
 			end: endDate.value,
 		})
-		if (typeof alerts !== "string") setData(buildAlertByMember(alerts))
+		if (typeof alerts !== "string" && typeof members !== "string") setData(buildAlertByMember(alerts, members))
 		setChart("bar")
 	}
 	useAsyncEffect(async () => {

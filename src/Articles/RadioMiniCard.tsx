@@ -40,14 +40,14 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 					<div className='col-md-6'>
 						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
 						<div className='row'>
-							<div className='col-md-6 text-start'>IMINT: </div>
+							<div className='col-md-6 text-start'>IMINT:</div>
 							<div
 								className={`col-md-6 text-end text-${getQuadri(props.radio.TPA.IMINT[0], props.date)}`}>
 								{props.radio.TPA.IMINT[0].toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>IMINT : </div>
+							<div className='col-md-6 text-start'>IMINT:</div>
 							<div
 								className={`col-md-6 text-end text-${getQuadri(props.radio.TPA.IMINT[1], props.date)}`}>
 								{props.radio.TPA.IMINT[1].toLocaleDateString()}
@@ -56,7 +56,7 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 						{props.radio.TPA.entCodage.map((entCodage) => (
 							<TPALine
 								key={props.radio.TPA.entCodage.indexOf(entCodage)}
-								title='Codage : '
+								title='Codage:'
 								color={getQuadri(entCodage, props.date)}
 								value={entCodage.toLocaleDateString()}
 							/>

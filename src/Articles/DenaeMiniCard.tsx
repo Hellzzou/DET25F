@@ -42,13 +42,13 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 						{props.denae.TPA.appRDR.map((appRDR) => (
 							<TPALine
 								key={props.denae.TPA.appRDR.indexOf(appRDR)}
-								title='APP RDR: '
+								title='APP RDR:'
 								color={getQuadri(appRDR, props.date)}
 								value={appRDR.toLocaleDateString()}
 							/>
 						))}
 						<TPALine
-							title='P GPS : '
+							title='P GPS:'
 							color={getQuadri(props.denae.TPA.PGPS, props.date)}
 							value={props.denae.TPA.PGPS.toLocaleDateString()}
 						/>

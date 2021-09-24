@@ -40,19 +40,19 @@ export const PilotMiniCard = (props: PilotMiniCardProps): JSX.Element => {
 					<div className='col-md-6'>
 						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
 						<div className='row'>
-							<div className='col-md-5 text-start'>ATT PC: </div>
+							<div className='col-md-5 text-start'>ATT PC:</div>
 							<div className={`col-md-7 text-end text-${getQuadri(props.pilot.TPA.ATTPC, props.date)}`}>
 								{props.pilot.TPA.ATTPC.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-5 text-start'>IFR : </div>
+							<div className='col-md-5 text-start'>IFR:</div>
 							<div className={`col-md-7 text-end  text-${getQuadri(props.pilot.TPA.IFR, props.date)}`}>
 								{props.pilot.TPA.IFR.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-5 text-start'>LCS : </div>
+							<div className='col-md-5 text-start'>LCS:</div>
 							<div className={`col-md-7 text-end  text-${getQuadri(props.pilot.TPA.LCS, props.date)}`}>
 								{props.pilot.TPA.LCS.toLocaleDateString()}
 							</div>

@@ -1,5 +1,5 @@
 import { months } from "../Datas/constants"
-import { ChartDatas, flight, Group, newAlert } from "../types/Objects"
+import { ChartDatas, crewMember, flight, Group, newAlert } from "../types/Objects"
 
 export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas => {
 	const allocation = groups.reduce((acc, group) => {
@@ -59,15 +59,12 @@ export const buildRepartition = (flights: flight[], prop: "area" | "NCArea" | "g
 		],
 	}
 }
-export const buildAlertByMember = (alerts: newAlert[]): ChartDatas => {
+export const buildAlertByMember = (alerts: newAlert[], members: crewMember[]): ChartDatas => {
+	const init = members.reduce<Record<string, number>>((acc, { trigram }) => {
+		acc[trigram] = 0
+		return acc
+	}, {})
 	const datas = alerts.reduce<Record<string, number>>((acc, alert) => {
-		if (!acc[alert.chief]) acc[alert.chief] = 0
-		if (!acc[alert.pilot]) acc[alert.pilot] = 0
-		if (!acc[alert.mecbo]) acc[alert.mecbo] = 0
-		if (!acc[alert.radio]) acc[alert.radio] = 0
-		if (!acc[alert.rdr]) acc[alert.rdr] = 0
-		if (!acc[alert.nav]) acc[alert.nav] = 0
-		if (!acc[alert.tech]) acc[alert.tech] = 0
 		acc[alert.chief] += 1
 		acc[alert.pilot] += 1
 		acc[alert.mecbo] += 1
@@ -76,7 +73,7 @@ export const buildAlertByMember = (alerts: newAlert[]): ChartDatas => {
 		acc[alert.nav] += 1
 		acc[alert.tech] += 1
 		return acc
-	}, {})
+	}, init)
 	return {
 		labels: Object.entries(datas).map(([group]) => group),
 		datasets: [

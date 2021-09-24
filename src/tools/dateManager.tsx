@@ -13,7 +13,7 @@ export const findNumberOfWeeks = (): number => {
 }
 export const getSunsets = (nights: Nights, date: number, type: string): string => {
 	const thisDate = new Date(date)
-	if (typeof nights[0][0] !== "undefined")
+	if (nights[0][0])
 		return type === "jour"
 			? nights[thisDate.getMonth()][thisDate.getDate() - 1].jour + "L"
 			: nights[thisDate.getMonth()][thisDate.getDate() - 1].nuit + "L"

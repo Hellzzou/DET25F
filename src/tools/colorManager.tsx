@@ -12,12 +12,9 @@ export const getQuadri = (date: Date, dateToCompare: number): string => {
 	const lastMonth = new Date(new Date().getFullYear(), dateToCompare - 3, 1)
 	return date < fourMonths ? "danger" : date < lastMonth ? "warning" : "success"
 }
-export const getMonthly = (date: Date, dateToCompare: number): string => {
-	return date.getMonth() === dateToCompare ? "success" : "danger"
-}
-export const getDone = (date: Date): string => {
-	return date !== old ? "success" : "danger"
-}
+export const getMonthly = (date: Date, dateToCompare: number): string =>
+	date.getMonth() === dateToCompare ? "success" : "danger"
+export const getDone = (date: Date): string => (date !== old ? "success" : "danger")
 export const getDurationsValidity = (duration: number, durationToCompare: number): string => {
 	if (duration < durationToCompare - durationToCompare / 4) return "danger"
 	if (duration < durationToCompare) return "warning"

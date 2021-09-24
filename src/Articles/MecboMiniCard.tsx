@@ -39,25 +39,25 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 					<div className='col-md-6'>
 						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
 						<div className='row'>
-							<div className='col-md-6 text-start'>LCS: </div>
+							<div className='col-md-6 text-start'>LCS:</div>
 							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.LCS, props.date)}`}>
 								{props.mecbo.TPA.LCS.toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>Photos : </div>
+							<div className='col-md-6 text-start'>Photos:</div>
 							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.PH[0], props.date)}`}>
 								{props.mecbo.TPA.PH[0].toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>Photos : </div>
+							<div className='col-md-6 text-start'>Photos:</div>
 							<div className={`col-md-6 text-end  text-${getQuadri(props.mecbo.TPA.PH[1], props.date)}`}>
 								{props.mecbo.TPA.PH[1].toLocaleDateString()}
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-6 text-start'>Trappe : </div>
+							<div className='col-md-6 text-start'>Trappe:</div>
 							<div className={`col-md-6 text-end  text-${getAnnual(props.mecbo.TPA.TRP, props.date)}`}>
 								{props.mecbo.TPA.TRP.toLocaleDateString()}
 							</div>

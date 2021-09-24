@@ -53,26 +53,26 @@ export const AllTPAs = (): JSX.Element => {
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
 			<div className='row mt-2 m-0'>
 				{pilotTPA.map((pilot) => (
-					<div key={pilotTPA.indexOf(pilot)} className='col-md-3'>
+					<div key={pilotTPA.indexOf(pilot)} className='col-lg-4 col-xl-3'>
 						<PilotMiniCard pilot={pilot} date={dateTocompare} />
 					</div>
 				))}
 			</div>
 			<div className='row mt-2 m-0'>
 				{mecboTPA.map((mecbo) => (
-					<div key={mecboTPA.indexOf(mecbo)} className='col-md-3'>
+					<div key={mecboTPA.indexOf(mecbo)} className='col-lg-4 col-xl-3'>
 						<MecboMiniCard mecbo={mecbo} date={dateTocompare} />
 					</div>
 				))}
 				{radioTPA.map((radio) => (
-					<div key={radioTPA.indexOf(radio)} className='col-md-3'>
+					<div key={radioTPA.indexOf(radio)} className='col-lg-4 col-xl-3'>
 						<RadioMiniCard radio={radio} date={dateTocompare} />
 					</div>
 				))}
 			</div>
 			<div className='row mt-2 m-0'>
 				{denaeTPA.map((denae) => (
-					<div key={denaeTPA.indexOf(denae)} className='col-md-3'>
+					<div key={denaeTPA.indexOf(denae)} className='col-lg-4 col-xl-3'>
 						<DenaeMiniCard denae={denae} date={dateTocompare} />
 					</div>
 				))}

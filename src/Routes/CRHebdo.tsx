@@ -46,19 +46,18 @@ export const CRHebdo = (): JSX.Element => {
 					</tr>
 				</thead>
 				<tbody>
-					{!!underGroups &&
-						underGroups.map((underGroup) => (
-							<tr
-								key={underGroups?.indexOf(underGroup)}
-								className={`text-center table-${hebdoColor(underGroup)}`}>
-								<td>{underGroup}</td>
-								{!!flights &&
-									flights.map((flight) => (
-										<td key={flights.indexOf(flight)}>{flight[underGroup].toFixed(1)}</td>
-									))}
-								<td>{!!flights && weekReportByUnderGroups(flights, underGroup).toFixed(1)}</td>
-							</tr>
-						))}
+					{underGroups.map((underGroup) => (
+						<tr
+							key={underGroups?.indexOf(underGroup)}
+							className={`text-center table-${hebdoColor(underGroup)}`}>
+							<td>{underGroup}</td>
+							{!!flights &&
+								flights.map((flight) => (
+									<td key={flights.indexOf(flight)}>{flight[underGroup].toFixed(1)}</td>
+								))}
+							<td>{!!flights && weekReportByUnderGroups(flights, underGroup).toFixed(1)}</td>
+						</tr>
+					))}
 				</tbody>
 				<tfoot className='table-secondary'>
 					<tr className='text-center'>
