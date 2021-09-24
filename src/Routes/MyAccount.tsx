@@ -11,10 +11,10 @@ import { getOneUserURL, userURL } from "../Datas/urls"
 import { ranks } from "../Datas/constants"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { getFetchRequest, putFetchRequest } from "../tools/fetch"
-import { user } from "../types/Objects"
+import { User } from "../types/Objects"
 
 export const MyAccount = (): JSX.Element => {
-	const [user, setUser] = useState<user>(INITIAL_USER)
+	const [user, setUser] = useState<User>(INITIAL_USER)
 	const [modifyUserShow, setModifyUserShow] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 	const [passwordChangeShow, setPasswordChangeShow] = useState(false)
@@ -40,7 +40,7 @@ export const MyAccount = (): JSX.Element => {
 		setModalShow(true)
 	}
 	useAsyncEffect(async () => {
-		const user = await getFetchRequest<user>(getOneUserURL)
+		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (

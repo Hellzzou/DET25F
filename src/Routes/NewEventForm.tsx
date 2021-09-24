@@ -14,7 +14,7 @@ import { fullfillEvent } from "../tools/fullfillForms"
 import { buildNewEvent } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
-import { newEvent } from "../types/Objects"
+import { Event } from "../types/Objects"
 
 export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
 	const history = useHistory()
@@ -47,7 +47,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const event = await postFetchRequest<newEvent[]>(eventIDFinder, { id: match.params.id })
+			const event = await postFetchRequest<Event[]>(eventIDFinder, { id: match.params.id })
 			if (typeof event !== "string") fullfillEvent(event[0], setters)
 		}
 	}, [])

@@ -8,30 +8,30 @@ import {
 	INITIAL_RADIOTPA,
 } from "../Datas/initialObjects"
 import {
-	control,
-	controlArray,
-	crewMember,
-	crewTPA,
-	denaeTPA,
+	Control,
+	ControlArray,
+	CrewMember,
+	CrewTPA,
+	DenaeTPA,
 	Group,
-	mecboTPA,
-	pilotEQA,
-	pilotTPA,
-	radioTPA,
+	MecboTPA,
+	PilotEQA,
+	PilotTPA,
+	RadioTPA,
 } from "../types/Objects"
 import { returnDayNightDuration } from "./dateManager"
 
 export const buildNewFlight = (
-	hooks: Array<control>,
-	crewMembers: controlArray,
+	hooks: Array<Control>,
+	crewMembers: ControlArray,
 	allGroups: Group[],
-	allMembers: crewMember[]
+	allMembers: CrewMember[]
 ): unknown => {
-	const pilotTPA: Array<pilotTPA> = []
-	const pilotEQA: Array<pilotEQA> = []
-	const mecboTPA: Array<mecboTPA> = []
-	const radioTPA: Array<radioTPA> = []
-	const denaeTPA: Array<denaeTPA> = []
+	const pilotTPA: Array<PilotTPA> = []
+	const pilotEQA: Array<PilotEQA> = []
+	const mecboTPA: Array<MecboTPA> = []
+	const radioTPA: Array<RadioTPA> = []
+	const denaeTPA: Array<DenaeTPA> = []
 	pilotTPA.push({ name: hooks[13].value, TPA: INITIAL_PILOTTPA })
 	pilotTPA.push({ name: hooks[14].value, TPA: INITIAL_PILOTTPA })
 	pilotEQA.push({ name: hooks[13].value, EQA: INITIAL_PILOTEQA })
@@ -78,14 +78,14 @@ export const buildNewFlight = (
 	return newFlight
 }
 export const buildDebriefedFlight = (
-	hooks: Array<control>,
-	crewMembers: controlArray,
-	crewTPA: crewTPA,
-	pilotTPA: Array<pilotTPA>,
-	mecboTPA: Array<mecboTPA>,
-	radioTPA: Array<radioTPA>,
-	denaeTPA: Array<denaeTPA>,
-	pilotEQA: Array<pilotEQA>,
+	hooks: Array<Control>,
+	crewMembers: ControlArray,
+	crewTPA: CrewTPA,
+	pilotTPA: Array<PilotTPA>,
+	mecboTPA: Array<MecboTPA>,
+	radioTPA: Array<RadioTPA>,
+	denaeTPA: Array<DenaeTPA>,
+	pilotEQA: Array<PilotEQA>,
 	jAero: string,
 	nAero: string,
 	allGroups: Group[]
@@ -134,14 +134,14 @@ export const buildDebriefedFlight = (
 	return debriefedFlight
 }
 
-export const buildNewEvent = (hooks: Array<control>): unknown => {
+export const buildNewEvent = (hooks: Array<Control>): unknown => {
 	return {
 		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value) + 11 * 3600000),
 		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value) + 11 * 3600000),
 		event: hooks[4].value,
 	}
 }
-export const buildNewAlert = (hooks: Array<control>): unknown => {
+export const buildNewAlert = (hooks: Array<Control>): unknown => {
 	return {
 		departureDate: new Date(Date.parse(hooks[0].value + " " + "00:00") + 11 * 3600000),
 		chief: hooks[1].value,

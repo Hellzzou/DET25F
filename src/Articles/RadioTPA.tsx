@@ -2,9 +2,9 @@ import React from "react"
 import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { radioTPAProps } from "../types/Articles"
+import { RadioTPAProps } from "../types/Articles"
 
-export const RadioTPA = (props: radioTPAProps): JSX.Element => {
+export const RadioTPA = (props: RadioTPAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean | string }) => {
 		const radioTPAMod = props.radioTPAs.map((radioTPA) => {
 			if (radioTPA !== props.radioTPA) return radioTPA

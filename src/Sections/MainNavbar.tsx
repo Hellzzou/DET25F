@@ -4,14 +4,14 @@ import useAsyncEffect from "use-async-effect"
 import { getOneUserURL } from "../Datas/urls"
 import plane from "../images/whiteAircraft.png"
 import { getFetchRequest } from "../tools/fetch"
-import { user } from "../types/Objects"
+import { User } from "../types/Objects"
 import { Navbar, Nav, NavDropdown } from "react-bootstrap"
 import { INITIAL_USER } from "../Datas/initialObjects"
 
 export const MainNavBar = (): JSX.Element => {
-	const [user, setUser] = useState<user>(INITIAL_USER)
+	const [user, setUser] = useState<User>(INITIAL_USER)
 	useAsyncEffect(async () => {
-		const user = await getFetchRequest<user>(getOneUserURL)
+		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (

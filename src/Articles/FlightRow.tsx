@@ -1,8 +1,8 @@
 import React from "react"
-import { flightRowProps } from "../types/BasicComponents"
+import { FlightRowProps } from "../types/BasicComponents"
 import { FlightCell } from "../BasicComponents/FlightCell"
 
-export const FlightRow = (props: flightRowProps): JSX.Element => {
+export const FlightRow = (props: FlightRowProps): JSX.Element => {
 	return (
 		<tbody>
 			<tr>

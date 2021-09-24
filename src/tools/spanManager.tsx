@@ -1,7 +1,7 @@
-import { flight, Group, newEvent } from "../types/Objects"
+import { Flight, Group, Event } from "../types/Objects"
 import { returnHoursInInteger } from "./dateManager"
 
-export const getBetweenColSpan = (event: flight | newEvent, events: Array<flight | newEvent>): number => {
+export const getBetweenColSpan = (event: Flight | Event, events: Array<Flight | Event>): number => {
 	if (events.indexOf(event) !== 0) {
 		return (
 			returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]) -
@@ -19,7 +19,7 @@ export const getBetweenColSpan = (event: flight | newEvent, events: Array<flight
 		)
 	return returnHoursInInteger(event.departureDate.split("T")[1].split(":")[0]) - 6
 }
-export const getColSpan = (event: flight | newEvent): number => {
+export const getColSpan = (event: Flight | Event): number => {
 	return Math.max(new Date(event.arrivalDate).getUTCHours() - new Date(event.departureDate).getUTCHours(), 3)
 }
 export const allocRowSpan = (groups: Group[], index: number): number => {

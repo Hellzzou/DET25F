@@ -8,13 +8,13 @@ import { buildRadioPurcentage } from "../tools/buildMemberActions"
 import { getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
 import { RadioMiniCardProps } from "../types/Articles"
-import { crewMember } from "../types/Objects"
+import { CrewMember } from "../types/Objects"
 
 export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
-	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+	const [fullName, sertFullName] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.radio.name)
 			if (member) sertFullName(member)

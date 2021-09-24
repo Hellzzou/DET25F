@@ -1,11 +1,11 @@
 import React from "react"
 import { Label } from "../BasicComponents/Label"
-import { pilotEQAProps } from "../types/Articles"
+import { PilotEQAProps } from "../types/Articles"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { Switch } from "../BasicComponents/Switch"
 import { returnZeroOrValue } from "../tools/maths"
 
-export const PilotEQA = (props: pilotEQAProps): JSX.Element => {
+export const PilotEQA = (props: PilotEQAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
 		const pilotEQAMod = props.pilotEQAs.map((pilotEQA) => {
 			if (pilotEQA !== props.pilotEQA) return pilotEQA

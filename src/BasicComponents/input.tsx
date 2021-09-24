@@ -1,7 +1,7 @@
 import React from "react"
-import { inputProps } from "../types/BasicComponents"
+import { InputProps } from "../types/BasicComponents"
 
-export const Input = (props: inputProps): JSX.Element => {
+export const Input = (props: InputProps): JSX.Element => {
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		props.setControl({
 			value: e.target.value,

@@ -4,13 +4,13 @@ import useAsyncEffect from "use-async-effect"
 import { INITIAL_USER } from "../Datas/initialObjects"
 import { getOneUserURL } from "../Datas/urls"
 import { getFetchRequest } from "../tools/fetch"
-import { user } from "../types/Objects"
+import { User } from "../types/Objects"
 import { DBCardProps } from "../types/Sections"
 
 export const DBCard = (props: DBCardProps): JSX.Element => {
-	const [user, setUser] = useState<user>(INITIAL_USER)
+	const [user, setUser] = useState<User>(INITIAL_USER)
 	useAsyncEffect(async () => {
-		const user = await getFetchRequest<user>(getOneUserURL)
+		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (

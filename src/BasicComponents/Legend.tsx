@@ -1,6 +1,6 @@
 import React from "react"
-import { legendProps } from "../types/BasicComponents"
+import { LegendProps } from "../types/BasicComponents"
 
-export const Legend = (props: legendProps): JSX.Element => (
+export const Legend = (props: LegendProps): JSX.Element => (
 	<legend className='text-center fw-bold'>{props.title}</legend>
 )

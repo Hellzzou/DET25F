@@ -6,9 +6,9 @@ import { Select } from "../BasicComponents/Select"
 import { TextArea } from "../BasicComponents/TextArea"
 import { UnvalidateSelect } from "../BasicComponents/UnvalidateSelect"
 import { selectChoiceIsDone, textIsNotNull } from "../tools/validators"
-import { crewFieldsetProps } from "../types/Sections"
+import { CrewFieldsetProps } from "../types/Sections"
 
-export const CrewFieldset = (props: crewFieldsetProps): JSX.Element => {
+export const CrewFieldset = (props: CrewFieldsetProps): JSX.Element => {
 	return (
 		<fieldset className=' card-body-color rounded p-1'>
 			<Legend title='Equipage' />

@@ -6,13 +6,13 @@ import { nightURL } from "../Datas/urls"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest } from "../tools/fetch"
 import { returnZeroOrValue } from "../tools/maths"
-import { flight, Nights } from "../types/Objects"
+import { Flight, Nights } from "../types/Objects"
 import { FlightTableProps } from "../types/Sections"
 
 export const FlightTable = (props: FlightTableProps): JSX.Element => {
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
-	const onFlightClick = (flight: flight) =>
+	const onFlightClick = (flight: Flight) =>
 		history.push(
 			`/debriefFlight/${flight._id}/${getSunsets(nights, Date.parse(flight.departureDate), "jour")}/${getSunsets(
 				nights,

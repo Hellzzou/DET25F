@@ -8,20 +8,20 @@ import { MainNavBar } from "../Sections/MainNavbar"
 import { crewMembersFlights } from "../tools/buildFlightHours"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { crewMember, flight } from "../types/Objects"
+import { CrewMember, Flight } from "../types/Objects"
 
 export const MemberHoursDetail = ({
 	match,
 }: RouteComponentProps<{ name: string; startDate: string; endDate: string }>): JSX.Element => {
 	const [token, setToken] = useState(true)
-	const [crewMembersHours, setCrewMembersHours] = useState<flight[]>([])
-	const [member, setMember] = useState<crewMember>()
+	const [crewMembersHours, setCrewMembersHours] = useState<Flight[]>([])
+	const [member, setMember] = useState<CrewMember>()
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
-			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
+			const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate: new Date(match.params.startDate),
 				endDate: new Date(match.params.endDate),
 			})

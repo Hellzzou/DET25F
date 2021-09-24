@@ -1,8 +1,8 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { alertRowProps } from "../types/BasicComponents"
+import { AlertRowProps } from "../types/BasicComponents"
 
-export const AlertRow = (props: alertRowProps): JSX.Element => {
+export const AlertRow = (props: AlertRowProps): JSX.Element => {
 	const history = useHistory()
 	return (
 		<div onClick={() => history.push(`/newAlert/${props.events._id}`)}>

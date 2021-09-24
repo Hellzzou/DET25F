@@ -7,14 +7,14 @@ import { buildWeekReport } from "../tools/buildReports"
 import { hebdoColor } from "../tools/colorManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { weekReport, weekReportByUnderGroups, weekReportByWeek } from "../tools/reportCalculator"
-import { flight } from "../types/Objects"
+import { Flight } from "../types/Objects"
 
 export const CRHebdo = (): JSX.Element => {
 	const [underGroups, setUnderGroups] = useState<string[]>(["110"])
 	const [flights, setFlights] = useState<Record<string, number>[]>()
 	useAsyncEffect(async () => {
 		const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
-		const yearFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+		const yearFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 			startDate: new Date(new Date().getFullYear(), 0, 1),
 			endDate: new Date(),
 		})

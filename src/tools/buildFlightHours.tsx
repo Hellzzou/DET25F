@@ -1,17 +1,17 @@
-import { crewMember, flight } from "../types/Objects"
+import { CrewMember, Flight } from "../types/Objects"
 import { returnZeroOrValue } from "./maths"
 
 export const crewMembersFlights = (
-	members: Array<crewMember>,
-	allFlights: Array<flight>
-): { name: string; flight: flight[] }[] => {
+	members: Array<CrewMember>,
+	allFlights: Array<Flight>
+): { name: string; flight: Flight[] }[] => {
 	const membersFlights = allFlights.flatMap((flight) =>
 		[flight.chief, flight.pilot, ...flight.crewMembers].map((member) => {
 			return { member, flight }
 		})
 	)
 	const allHours = Object.entries(
-		membersFlights.reduce<Record<string, Record<string, flight[]>>>((acc, { member, flight }) => {
+		membersFlights.reduce<Record<string, Record<string, Flight[]>>>((acc, { member, flight }) => {
 			if (!acc[member]) acc[member] = {}
 			if (!acc[member]["flight"]) acc[member]["flight"] = []
 			acc[member]["flight"].push(flight)
@@ -34,7 +34,7 @@ export const crewMembersFlights = (
 		})
 	return [...allHours, ...missingMembers]
 }
-export const crewMemberHours = (allHours: flight[]): Record<string, number> => {
+export const crewMemberHours = (allHours: Flight[]): Record<string, number> => {
 	return allHours.reduce<Record<string, number>>((acc, flight) => {
 		if (!acc["day"]) acc["day"] = 0
 		if (!acc["night"]) acc["night"] = 0

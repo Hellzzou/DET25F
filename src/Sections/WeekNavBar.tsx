@@ -1,9 +1,9 @@
 import React from "react"
-import { weekNavBarProps } from "../types/BasicComponents"
+import { WeekNavBarProps } from "../types/BasicComponents"
 import { getWeekNumber } from "../tools/dateManager"
 import { Nav } from "react-bootstrap"
 
-export const WeekNavBar = (props: weekNavBarProps): JSX.Element => {
+export const WeekNavBar = (props: WeekNavBarProps): JSX.Element => {
 	return (
 		<div className='row m-1 my-0 justify-content-center'>
 			<Nav.Link className='col-md-2'>

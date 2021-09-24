@@ -1,14 +1,14 @@
 import React from "react"
 import {
-	control,
-	controlArray,
-	newAlert,
-	newEvent,
-	flight,
-	pilotDateTPA,
-	mecboDateTPA,
-	radioDateTPA,
-	denaeDateTPA,
+	Control,
+	ControlArray,
+	Alert,
+	Event,
+	Flight,
+	PilotDateTPA,
+	MecboDateTPA,
+	RadioDateTPA,
+	DenaeDateTPA,
 } from "./Objects"
 
 export type NavButtonProps = {
@@ -30,29 +30,29 @@ export type FDVButtonProps = {
 	onClick: (arg: Date) => void
 	disabled?: boolean
 }
-export type weekNavBarProps = {
+export type WeekNavBarProps = {
 	previousClick: () => void
 	nextClick: () => void
 	nowClick: () => void
 	newEventClick: () => void
 	firstDay: number
 }
-export type flightRowProps = {
-	events: Array<flight>
+export type FlightRowProps = {
+	events: Array<Flight>
 	jAero: string
 	nAero: string
 }
-export type alertRowProps = {
-	events: newAlert
+export type AlertRowProps = {
+	events: Alert
 }
-export type otherEventProps = {
-	events: Array<newEvent>
+export type OtherEventProps = {
+	events: Array<Event>
 }
-export type labelProps = {
+export type LabelProps = {
 	title: string
 	size: number
 }
-export type inputProps = {
+export type InputProps = {
 	size: number
 	backgroundColor: string
 	textColor: string
@@ -60,20 +60,20 @@ export type inputProps = {
 	min: number
 	max: number
 	placeholder?: string
-	control: control
-	setControl: React.Dispatch<React.SetStateAction<control>>
+	control: Control
+	setControl: React.Dispatch<React.SetStateAction<Control>>
 	validator: (arg0: string) => boolean
 	disabled?: boolean
 }
-export type legendProps = {
+export type LegendProps = {
 	title: string
 }
-export type selectProps = {
+export type SelectProps = {
 	size: number
 	backgroundColor: string
 	textColor: string
-	control: control
-	setControl: React.Dispatch<React.SetStateAction<control>>
+	control: Control
+	setControl: React.Dispatch<React.SetStateAction<Control>>
 	options: Array<string>
 	validator: (arg0: string) => boolean
 }
@@ -85,26 +85,26 @@ export type SimpleSelectProps = {
 	options: Array<string>
 	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
-export type textAreaProps = {
+export type TextAreaProps = {
 	size: number
 	backgroundColor: string
 	textColor: string
-	control: controlArray
-	setControl: React.Dispatch<React.SetStateAction<controlArray>>
+	control: ControlArray
+	setControl: React.Dispatch<React.SetStateAction<ControlArray>>
 	validator: (arg0: string) => boolean
 }
-export type flightCellProps = {
-	events: Array<flight>
-	event: flight
+export type FlightCellProps = {
+	events: Array<Flight>
+	event: Flight
 	jAero: string
 	nAero: string
 }
-export type switchProps = {
+export type SwitchProps = {
 	control: { name: string; value: boolean }
 	size: number
 	handleChange: (arg0: { name: string; value: boolean }) => void
 }
-export type unvalidateInputProps = {
+export type UnvalidateInputProps = {
 	size: number
 	backgroundColor: string
 	textColor: string
@@ -116,7 +116,7 @@ export type unvalidateInputProps = {
 export type CrewTPACardProps = {
 	member: {
 		name: string
-		TPA: pilotDateTPA | mecboDateTPA | radioDateTPA | denaeDateTPA
+		TPA: PilotDateTPA | MecboDateTPA | RadioDateTPA | DenaeDateTPA
 	}
 	date: number
 }
@@ -132,7 +132,7 @@ export type TPALineProps = {
 	value: string
 }
 export type PasswordInputProps = {
-	password: control
+	password: Control
 	info: { color: string; value: string }
 	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void | Promise<void>
 }

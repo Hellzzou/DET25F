@@ -4,7 +4,7 @@ import { DateChoiceNavbar } from "../Sections/DateChoiceNavbar"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { INITIAL_ENDDATE_CONTROL } from "../tools/dateManager"
 import { Line, Bar } from "react-chartjs-2"
-import { ChartDatas, crewMember, flight, Group, newAlert } from "../types/Objects"
+import { ChartDatas, CrewMember, Flight, Group, Alert } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { alertDateFinderURL, DebriefedflightDateFinderURL, groupURL, memberURL } from "../Datas/urls"
@@ -24,7 +24,7 @@ export const Stats = (): JSX.Element => {
 	const Conso = async (group: string) => {
 		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 		const startDate = new Date(endDate.getFullYear(), 0, 1)
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+		const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 			startDate,
 			endDate,
 		})
@@ -34,7 +34,7 @@ export const Stats = (): JSX.Element => {
 		setChart("line")
 	}
 	const repartition = async (prop: "area" | "NCArea" | "group" | "type") => {
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+		const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 			startDate: startDate.value,
 			endDate: endDate.value,
 		})
@@ -42,8 +42,8 @@ export const Stats = (): JSX.Element => {
 		setChart("bar")
 	}
 	const alertByMember = async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
-		const alerts = await postFetchRequest<newAlert[]>(alertDateFinderURL, {
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
+		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
 			start: startDate.value,
 			end: endDate.value,
 		})
@@ -53,7 +53,7 @@ export const Stats = (): JSX.Element => {
 	useAsyncEffect(async () => {
 		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 		const startDate = new Date(endDate.getFullYear(), 0, 1)
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+		const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 			startDate,
 			endDate,
 		})

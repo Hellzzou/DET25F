@@ -5,14 +5,14 @@ import { memberURL } from "../Datas/urls"
 import { crewMemberHours } from "../tools/buildFlightHours"
 import { getFetchRequest } from "../tools/fetch"
 import { CrewMemberCardProps } from "../types/Articles"
-import { crewMember } from "../types/Objects"
+import { CrewMember } from "../types/Objects"
 import { Nav } from "react-bootstrap"
 
 export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
-	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+	const [fullName, sertFullName] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [memberHours, setMemberHours] = useState<Record<string, number>>({})
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.crewMemberName)
 			if (member) sertFullName(member)

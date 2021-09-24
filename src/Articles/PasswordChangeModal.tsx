@@ -12,16 +12,16 @@ import { checkPassword, getOneUserURL, signupURL, userDeleteURL } from "../Datas
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { passwordCheck } from "../tools/validators"
-import { passwordChangeModalProps } from "../types/Articles"
-import { user } from "../types/Objects"
+import { PasswordChangeModalProps } from "../types/Articles"
+import { User } from "../types/Objects"
 import { PasswordInput } from "../BasicComponents/PasswordInput"
 
-export const PasswordChangeModal = (props: passwordChangeModalProps): JSX.Element => {
+export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Element => {
 	const [ancientPassword, setAncientPassword] = useState(INITIAL_FALSE_CONTROL)
 	const [newPassword1, setNewPassword1] = useState(INITIAL_FALSE_CONTROL)
 	const [info, setInfo] = useState(INITIAL_BAD_PASSWORD)
 	const [newPassword2, setNewPassword2] = useState(INITIAL_FALSE_CONTROL)
-	const [user, setUser] = useState<user>(INITIAL_USER)
+	const [user, setUser] = useState<User>(INITIAL_USER)
 	const handleClose = () => {
 		setAncientPassword(INITIAL_FALSE_CONTROL)
 		setNewPassword1(INITIAL_FALSE_CONTROL)
@@ -64,7 +64,7 @@ export const PasswordChangeModal = (props: passwordChangeModalProps): JSX.Elemen
 		}
 	}
 	useAsyncEffect(async () => {
-		const user = await getFetchRequest<user>(getOneUserURL)
+		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setUser(user)
 	}, [])
 	return (

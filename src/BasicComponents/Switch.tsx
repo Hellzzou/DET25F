@@ -1,7 +1,7 @@
 import React from "react"
-import { switchProps } from "../types/BasicComponents"
+import { SwitchProps } from "../types/BasicComponents"
 
-export const Switch = (props: switchProps): JSX.Element => {
+export const Switch = (props: SwitchProps): JSX.Element => {
 	return (
 		<div className={`form-check form-switch col-md-${props.size}`}>
 			<input

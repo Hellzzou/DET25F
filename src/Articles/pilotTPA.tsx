@@ -1,9 +1,9 @@
 import React from "react"
 import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
-import { pilotTPAProps } from "../types/Articles"
+import { PilotTPAProps } from "../types/Articles"
 
-export const PilotTPA = (props: pilotTPAProps): JSX.Element => {
+export const PilotTPA = (props: PilotTPAProps): JSX.Element => {
 	const handleChange = (TPA: { name: string; value: boolean }) => {
 		const pilotTPAMod = props.pilotTPAs.map((pilotTPA) => {
 			if (pilotTPA !== props.pilotTPA) return pilotTPA

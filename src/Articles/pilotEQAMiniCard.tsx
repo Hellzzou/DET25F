@@ -6,14 +6,14 @@ import { EQADurations } from "../Datas/constants"
 import { buildPilotEQAPurcentage } from "../tools/buildsPilotsActions"
 import { getDone, getDurationsValidity, getMonthly, getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
-import { pilotEQAMiniCArdProps } from "../types/Articles"
-import { crewMember } from "../types/Objects"
+import { PilotEQAMiniCArdProps } from "../types/Articles"
+import { CrewMember } from "../types/Objects"
 
-export const PilotEQAMiniCArd = (props: pilotEQAMiniCArdProps): JSX.Element => {
-	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+export const PilotEQAMiniCArd = (props: PilotEQAMiniCArdProps): JSX.Element => {
+	const [fullName, sertFullName] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.pilot.name)
 			if (member) sertFullName(member)

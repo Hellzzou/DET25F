@@ -11,19 +11,19 @@ import { crewMembersFlights } from "../tools/buildFlightHours"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { crewMember, flight } from "../types/Objects"
+import { CrewMember, Flight } from "../types/Objects"
 
 export const FlightHours = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [startDate, setStartDate] = useState(INITIAL_STARTDATE_CONTROL)
 	const [endDate, setEnDate] = useState(INITIAL_ENDDATE_CONTROL)
-	const [crewMembersHours, setCrewMembersHours] = useState<{ name: string; flight: flight[] }[]>()
+	const [crewMembersHours, setCrewMembersHours] = useState<{ name: string; flight: Flight[] }[]>()
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
-			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
+			const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate: new Date(startDate.value),
 				endDate: new Date(endDate.value),
 			})

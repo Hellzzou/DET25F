@@ -26,16 +26,16 @@ import { returnZeroOrValue } from "../tools/maths"
 import { tokenCheck } from "../tools/user"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import {
-	controlArray,
-	crewMember,
-	crewTPA,
-	denaeTPA,
-	flight,
+	ControlArray,
+	CrewMember,
+	CrewTPA,
+	DenaeTPA,
+	Flight,
 	Group,
-	mecboTPA,
-	pilotEQA,
-	pilotTPA,
-	radioTPA,
+	MecboTPA,
+	PilotEQA,
+	PilotTPA,
+	RadioTPA,
 } from "../types/Objects"
 import { INITIAL_GROUP } from "../Datas/initialObjects"
 
@@ -65,20 +65,20 @@ export const DebriefFlightForm = ({
 	const [pilot, setPilot] = useState(INITIAL_FALSE_CONTROL)
 	const [pilotList, setPilotList] = useState<Array<string>>([])
 	const [addableCrewMembers, setAddableCrewMembers] = useState<Array<string>>([])
-	const [crewMembers, setCrewMembers] = useState<controlArray>({ value: [], validity: false, disabled: false })
+	const [crewMembers, setCrewMembers] = useState<ControlArray>({ value: [], validity: false, disabled: false })
 	const [deleteMemberSelect, setDeleteMemberSelect] = useState(INITIAL_FALSE_CONTROL)
 	const [addMemberSelect, setAddMemberSelect] = useState(INITIAL_FALSE_CONTROL)
 	const [onDayDuration, setOnDayDuration] = useState(INITIAL_FALSE_CONTROL)
 	const [onNightDuration, setOnNightDuration] = useState(INITIAL_FALSE_CONTROL)
 	const [done, setDone] = useState(INITIAL_FALSE_CONTROL)
 	const [cause, setCause] = useState(INITIAL_FALSE_CONTROL)
-	const [crewTPA, setCrewTPA] = useState<crewTPA>(INITIAL_CREWTPA)
-	const [pilotTPA, setPilotTPA] = useState<Array<pilotTPA>>([])
-	const [mecboTPA, setMecboTPA] = useState<Array<mecboTPA>>([])
-	const [radioTPA, setRadioTPA] = useState<Array<radioTPA>>([])
-	const [denaeTPA, setDenaeTPA] = useState<Array<denaeTPA>>([])
-	const [pilotEQA, setPilotEQA] = useState<Array<pilotEQA>>([])
-	const [allMembers, setAllMembers] = useState<Array<crewMember>>([])
+	const [crewTPA, setCrewTPA] = useState<CrewTPA>(INITIAL_CREWTPA)
+	const [pilotTPA, setPilotTPA] = useState<Array<PilotTPA>>([])
+	const [mecboTPA, setMecboTPA] = useState<Array<MecboTPA>>([])
+	const [radioTPA, setRadioTPA] = useState<Array<RadioTPA>>([])
+	const [denaeTPA, setDenaeTPA] = useState<Array<DenaeTPA>>([])
+	const [pilotEQA, setPilotEQA] = useState<Array<PilotEQA>>([])
+	const [allMembers, setAllMembers] = useState<Array<CrewMember>>([])
 
 	const modifyHooks = [
 		departureDate,
@@ -231,18 +231,18 @@ export const DebriefFlightForm = ({
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const flight = await postFetchRequest<flight[]>(DB_URL + "flights/getOne", { id: match.params.id })
-			const CDA = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			const flight = await postFetchRequest<Flight[]>(DB_URL + "flights/getOne", { id: match.params.id })
+			const CDA = await postFetchRequest<CrewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "CDA",
 			})
-			const pilots = await postFetchRequest<crewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
+			const pilots = await postFetchRequest<CrewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "pilote",
 			})
-			const crewMembers = await getFetchRequest<crewMember[]>(DB_URL + "crewMembers")
+			const crewMembers = await getFetchRequest<CrewMember[]>(DB_URL + "crewMembers")
 			const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
 			if (typeof allGroups !== "string") setAllGroups(allGroups)
-			if (typeof CDA !== "string") setCDAList(CDA.map((member: crewMember) => member.trigram))
-			if (typeof pilots !== "string") setPilotList(pilots.map((member: crewMember) => member.trigram))
+			if (typeof CDA !== "string") setCDAList(CDA.map(({ trigram }) => trigram))
+			if (typeof pilots !== "string") setPilotList(pilots.map(({ trigram }) => trigram))
 			if (typeof crewMembers !== "string" && typeof flight !== "string") {
 				fullfillFlightForm(
 					setters,
@@ -259,7 +259,7 @@ export const DebriefFlightForm = ({
 				setAddableCrewMembers(
 					crewMembers
 						.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
-						.map((member: crewMember) => member.trigram)
+						.map(({ trigram }) => trigram)
 						.filter(
 							(member) =>
 								!flight[0].crewMembers.includes(member) &&

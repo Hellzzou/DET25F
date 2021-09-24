@@ -1,7 +1,7 @@
 import { months } from "../Datas/constants"
-import { ChartDatas, crewMember, flight, Group, newAlert } from "../types/Objects"
+import { ChartDatas, CrewMember, Flight, Group, Alert } from "../types/Objects"
 
-export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas => {
+export const buildConsoChart = (groups: Group[], flights: Flight[]): ChartDatas => {
 	const allocation = groups.reduce((acc, group) => {
 		if (group.allocation !== -1) acc += group.allocation
 		return acc
@@ -38,7 +38,7 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 		],
 	}
 }
-export const buildRepartition = (flights: flight[], prop: "area" | "NCArea" | "group" | "type"): ChartDatas => {
+export const buildRepartition = (flights: Flight[], prop: "area" | "NCArea" | "group" | "type"): ChartDatas => {
 	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
 		const { dayDuration, nightDuration } = flight
 		if (!acc[flight[prop]]) acc[flight[prop]] = 0
@@ -57,7 +57,7 @@ export const buildRepartition = (flights: flight[], prop: "area" | "NCArea" | "g
 		],
 	}
 }
-export const buildAlertByMember = (alerts: newAlert[], members: crewMember[]): ChartDatas => {
+export const buildAlertByMember = (alerts: Alert[], members: CrewMember[]): ChartDatas => {
 	const init = members.reduce<Record<string, number>>((acc, { trigram }) => {
 		acc[trigram] = 0
 		return acc

@@ -1,10 +1,10 @@
-import { control } from "../types/Objects"
+import { Control } from "../types/Objects"
 import { returnDayNightDuration } from "./dateManager"
 import { selectChoiceIsDone, timeIsCorrect } from "./validators"
 
 export const manageNCAreas = (
 	areaValue: string,
-	setNCArea: React.Dispatch<React.SetStateAction<control>>,
+	setNCArea: React.Dispatch<React.SetStateAction<Control>>,
 	NCareaValue: string
 ): void => {
 	if (areaValue !== "ZEENC" && areaValue !== "") {
@@ -15,12 +15,12 @@ export const manageNCAreas = (
 }
 export const manageCNL = (
 	doneValue: string,
-	cause: control,
-	setCause: React.Dispatch<React.SetStateAction<control>>,
-	ON: control,
-	setON: React.Dispatch<React.SetStateAction<control>>,
-	OFF: control,
-	setOFF: React.Dispatch<React.SetStateAction<control>>
+	cause: Control,
+	setCause: React.Dispatch<React.SetStateAction<Control>>,
+	ON: Control,
+	setON: React.Dispatch<React.SetStateAction<Control>>,
+	OFF: Control,
+	setOFF: React.Dispatch<React.SetStateAction<Control>>
 ): void => {
 	if (doneValue === "ME" || doneValue === "MPE") {
 		setON({ value: ON.value, validity: timeIsCorrect(ON.value), disabled: false })
@@ -34,8 +34,8 @@ export const manageCNL = (
 	else if (cause.value !== "") setCause({ value: "Choix...", validity: true, disabled: true })
 }
 export const manageDuration = (
-	start: control,
-	end: control,
+	start: Control,
+	end: Control,
 	jAero: string,
 	nAero: string,
 	done: string

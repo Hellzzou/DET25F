@@ -2,9 +2,9 @@ import React from "react"
 import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { mecboTPAProps } from "../types/Articles"
+import { MecboTPAProps } from "../types/Articles"
 
-export const MecboTPA = (props: mecboTPAProps): JSX.Element => {
+export const MecboTPA = (props: MecboTPAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
 		const mecboTPAMod = props.mecboTPAs.map((mecboTPA) => {
 			if (mecboTPA !== props.mecboTPA) return mecboTPA

@@ -8,7 +8,7 @@ import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
 import { getAllUserURL, getOneUserURL, signupURL, userDeleteURL, userURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest, putFetchRequest } from "../tools/fetch"
-import { user } from "../types/Objects"
+import { User } from "../types/Objects"
 import { NewUserModal } from "../Articles/NewUserModal"
 import { SimpleSelect } from "../BasicComponents/SimpleSelect"
 import { access, ranks } from "../Datas/constants"
@@ -20,11 +20,11 @@ export const UsersManager = (): JSX.Element => {
 	const [deleteUserShow, setDeleteUserShow] = useState(false)
 	const [addUserShow, setAddUserShow] = useState(false)
 	const [show, setShow] = useState(false)
-	const [users, setUsers] = useState<user[]>([])
-	const [currentUser, setCurrentUser] = useState<user>()
+	const [users, setUsers] = useState<User[]>([])
+	const [currentUser, setCurrentUser] = useState<User>()
 	const handleClose = () => setShow(false)
 	const handleShow = () => setShow(true)
-	const Delete = async (userTarget: user) => {
+	const Delete = async (userTarget: User) => {
 		const deleted = await deleteFetchRequest(userDeleteURL, { name: userTarget.name })
 		if (deleted === "success") {
 			setUsers(users.filter((user) => user !== userTarget))
@@ -33,7 +33,7 @@ export const UsersManager = (): JSX.Element => {
 	}
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
-		userTarget: user,
+		userTarget: User,
 		prop: string
 	) => {
 		const usersMod = users.map((user) => {
@@ -51,14 +51,14 @@ export const UsersManager = (): JSX.Element => {
 		})
 		setUsers(usersMod)
 	}
-	const allowDelete = (user: user) => (currentUser?.email === user.email ? true : false)
-	const allNonNull = (user: user) =>
+	const allowDelete = (user: User) => (currentUser?.email === user.email ? true : false)
+	const allNonNull = (user: User) =>
 		user.rank !== "" && user.name !== "" && user.responsability !== "" && user.email !== ""
-	const modifyUser = async (user: user) => {
+	const modifyUser = async (user: User) => {
 		const modify = await putFetchRequest(userURL, user)
 		if (modify === "success") setModifyUserShow(true)
 	}
-	const reinitLogins = async (user: user) => {
+	const reinitLogins = async (user: User) => {
 		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.name })
 		if (deleted === "success") {
 			const signup = await postFetchRequest(signupURL, {
@@ -73,8 +73,8 @@ export const UsersManager = (): JSX.Element => {
 		}
 	}
 	useAsyncEffect(async () => {
-		const users = await getFetchRequest<user[]>(getAllUserURL)
-		const user = await getFetchRequest<user>(getOneUserURL)
+		const users = await getFetchRequest<User[]>(getAllUserURL)
+		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setCurrentUser(user)
 		if (typeof users !== "string") setUsers(users)
 	}, [])

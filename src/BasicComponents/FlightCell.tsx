@@ -2,9 +2,9 @@ import React from "react"
 import { useHistory } from "react-router-dom"
 import { getFlightColor } from "../tools/colorManager"
 import { getBetweenColSpan, getColSpan } from "../tools/spanManager"
-import { flightCellProps } from "../types/BasicComponents"
+import { FlightCellProps } from "../types/BasicComponents"
 
-export const FlightCell = (props: flightCellProps): JSX.Element => {
+export const FlightCell = (props: FlightCellProps): JSX.Element => {
 	const history = useHistory()
 	return (
 		<>

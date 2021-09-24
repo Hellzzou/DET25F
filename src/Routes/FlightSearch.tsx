@@ -9,7 +9,7 @@ import { MainNavBar } from "../Sections/MainNavbar"
 import { INITIAL_ENDDATE_CONTROL, INITIAL_STARTDATE_CONTROL } from "../tools/dateManager"
 import { postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { crewMember, flight } from "../types/Objects"
+import { CrewMember, Flight } from "../types/Objects"
 
 export const FlightSearch = (): JSX.Element => {
 	const [token, setToken] = useState(true)
@@ -24,17 +24,17 @@ export const FlightSearch = (): JSX.Element => {
 	const [NCArea, setNCArea] = useState(INITIAL_FALSE_SELECT)
 	const [done, setDone] = useState(INITIAL_FALSE_SELECT)
 	const [time, setTime] = useState(INITIAL_FALSE_SELECT)
-	const [flights, setFlights] = useState<Array<flight>>([])
+	const [flights, setFlights] = useState<Array<Flight>>([])
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
 			let CDAName = "Choix..."
 			if (crew.value !== "Choix...") {
-				const CDA = await postFetchRequest<crewMember[]>(CDAURL, { crew: crew.value })
+				const CDA = await postFetchRequest<CrewMember[]>(CDAURL, { crew: crew.value })
 				if (typeof CDA !== "string") CDAName = CDA[0].trigram
 			}
-			const filteredFlights = await postFetchRequest<flight[]>(DB_URL + "flights/filteredFlights", {
+			const filteredFlights = await postFetchRequest<Flight[]>(DB_URL + "flights/filteredFlights", {
 				date: { startDate: new Date(startDate.value), endDate: new Date(endDate.value) },
 				aircraft: aircraft.value,
 				chief: CDAName,

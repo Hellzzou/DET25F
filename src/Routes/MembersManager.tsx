@@ -10,16 +10,16 @@ import { memberURL, saveMemberURL } from "../Datas/urls"
 import { crews, groundFunction, ranks, specialities } from "../Datas/constants"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { crewMember } from "../types/Objects"
+import { CrewMember } from "../types/Objects"
 
 export const membersManager = (): JSX.Element => {
 	const history = useHistory()
 	const [show, setShow] = useState(false)
-	const [members, setMembers] = useState<crewMember[]>([])
-	const Delete = (memberTarget: crewMember) => setMembers(members.filter((member) => member !== memberTarget))
+	const [members, setMembers] = useState<CrewMember[]>([])
+	const Delete = (memberTarget: CrewMember) => setMembers(members.filter((member) => member !== memberTarget))
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
-		memberTarget: crewMember,
+		memberTarget: CrewMember,
 		prop: string
 	) => {
 		const membersMod = members.map((member) => {
@@ -92,7 +92,7 @@ export const membersManager = (): JSX.Element => {
 		}
 	}
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof members !== "string") setMembers(members)
 	}, [])
 	return (

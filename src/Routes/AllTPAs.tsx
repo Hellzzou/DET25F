@@ -12,15 +12,15 @@ import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllTPAs } from "../tools/buildMemberActions"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
-import { crewMember, denaeDateTPA, flight, mecboDateTPA, pilotDateTPA, radioDateTPA } from "../types/Objects"
+import { CrewMember, DenaeDateTPA, Flight, MecboDateTPA, PilotDateTPA, RadioDateTPA } from "../types/Objects"
 
 export const AllTPAs = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [dateTocompare, setDateToCompare] = useState(new Date().getMonth())
-	const [pilotTPA, setPilotTPA] = useState<{ name: string; TPA: pilotDateTPA }[]>([])
-	const [mecboTPA, setMecboTPA] = useState<{ name: string; TPA: mecboDateTPA }[]>([])
-	const [radioTPA, setRadioTPA] = useState<{ name: string; TPA: radioDateTPA }[]>([])
-	const [denaeTPA, setDenaeTPA] = useState<{ name: string; TPA: denaeDateTPA }[]>([])
+	const [pilotTPA, setPilotTPA] = useState<{ name: string; TPA: PilotDateTPA }[]>([])
+	const [mecboTPA, setMecboTPA] = useState<{ name: string; TPA: MecboDateTPA }[]>([])
+	const [radioTPA, setRadioTPA] = useState<{ name: string; TPA: RadioDateTPA }[]>([])
+	const [denaeTPA, setDenaeTPA] = useState<{ name: string; TPA: DenaeDateTPA }[]>([])
 
 	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
 	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
@@ -31,11 +31,11 @@ export const AllTPAs = (): JSX.Element => {
 		if (token) {
 			const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 			const startDate = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
-			const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
+			const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate,
 				endDate,
 			})
-			const allMembers = await getFetchRequest<crewMember[]>(memberURL)
+			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
 				const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
 				setPilotTPA(TPAs.pilotTPA)

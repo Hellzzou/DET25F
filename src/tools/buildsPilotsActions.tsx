@@ -1,9 +1,9 @@
 import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/initialObjects"
 import { EQADurations } from "../Datas/constants"
-import { AllEQAs, crewMember, flight, PilotDateEQA } from "../types/Objects"
+import { AllEQAs, CrewMember, Flight, PilotDateEQA } from "../types/Objects"
 import { getDone, getDurationsValidity, getMonthly, getQuadri } from "./colorManager"
 
-export const buildAllEQAs = (members: Array<crewMember>, fourYearsFlights: Array<flight>, month: number): AllEQAs => {
+export const buildAllEQAs = (members: Array<CrewMember>, fourYearsFlights: Array<Flight>, month: number): AllEQAs => {
 	const lastYear = new Date(new Date().getFullYear() - 1, month, 1)
 	const fourMonths = new Date(new Date().getFullYear(), month - 4, 1)
 	const lastMonth = new Date(new Date().getFullYear(), month, 1)

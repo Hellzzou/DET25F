@@ -8,7 +8,7 @@ import { Select } from "../BasicComponents/Select"
 import { onBoardFunctionURL } from "../Datas/urls"
 import { postFetchRequest } from "../tools/fetch"
 import { dateIsCorrect, selectChoiceIsDone } from "../tools/validators"
-import { crewMember } from "../types/Objects"
+import { CrewMember } from "../types/Objects"
 import { alertFieldsetProps } from "../types/Sections"
 
 export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
@@ -18,22 +18,22 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 	const [radios, setRadios] = useState<Array<string>>(["Choix..."])
 	const [techs, setTechs] = useState<Array<string>>(["Choix..."])
 	useAsyncEffect(async () => {
-		const cdas = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const cdas = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "CDA",
 		})
-		const pilots = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "pilote",
 		})
-		const mecbos = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const mecbos = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "MECBO",
 		})
-		const navs = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const navs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "DENAE",
 		})
-		const radios = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const radios = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "GETBO",
 		})
-		const techs = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+		const techs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 			function: "TECH",
 		})
 		if (typeof cdas !== "string" && typeof pilots !== "string")

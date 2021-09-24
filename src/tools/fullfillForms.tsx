@@ -1,29 +1,29 @@
 import {
 	Alert,
-	control,
-	controlArray,
-	crewTPA,
-	denaeTPA,
+	Control,
+	ControlArray,
+	CrewTPA,
+	DenaeTPA,
 	Event,
-	flight,
-	mecboTPA,
-	pilotEQA,
-	pilotTPA,
-	radioTPA,
+	Flight,
+	MecboTPA,
+	PilotEQA,
+	PilotTPA,
+	RadioTPA,
 } from "../types/Objects"
 import { returnZeroOrValue } from "./maths"
 import { selectChoiceIsDone, timeIsCorrect } from "./validators"
 
 export const fullfillFlightForm = (
-	setters: Array<React.Dispatch<React.SetStateAction<control>>>,
-	setCrewMembers: React.Dispatch<React.SetStateAction<controlArray>>,
-	setCrewTPA: React.Dispatch<React.SetStateAction<crewTPA>>,
-	setPilotTPA: React.Dispatch<React.SetStateAction<pilotTPA[]>>,
-	setMecboTPA: React.Dispatch<React.SetStateAction<mecboTPA[]>>,
-	setRadioTPA: React.Dispatch<React.SetStateAction<radioTPA[]>>,
-	setDenaeTPA: React.Dispatch<React.SetStateAction<denaeTPA[]>>,
-	setPilotEQA: React.Dispatch<React.SetStateAction<pilotEQA[]>>,
-	flight: flight
+	setters: Array<React.Dispatch<React.SetStateAction<Control>>>,
+	setCrewMembers: React.Dispatch<React.SetStateAction<ControlArray>>,
+	setCrewTPA: React.Dispatch<React.SetStateAction<CrewTPA>>,
+	setPilotTPA: React.Dispatch<React.SetStateAction<PilotTPA[]>>,
+	setMecboTPA: React.Dispatch<React.SetStateAction<MecboTPA[]>>,
+	setRadioTPA: React.Dispatch<React.SetStateAction<RadioTPA[]>>,
+	setDenaeTPA: React.Dispatch<React.SetStateAction<DenaeTPA[]>>,
+	setPilotEQA: React.Dispatch<React.SetStateAction<PilotEQA[]>>,
+	flight: Flight
 ): void => {
 	const departureTime = flight.departureDate.split("T")[1].split("Z")[0]
 	const arrivalTime = flight.arrivalDate.split("T")[1].split("Z")[0]
@@ -64,7 +64,7 @@ export const fullfillFlightForm = (
 	setters[19]({ value: returnZeroOrValue(flight.dayDuration).toString(), validity: true, disabled: false })
 	setters[20]({ value: returnZeroOrValue(flight.nightDuration).toString(), validity: true, disabled: false })
 }
-export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
+export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetStateAction<Control>>[]): void => {
 	setters[0]({ value: alert.departureDate.split("T")[0], validity: true, disabled: false })
 	setters[1]({ value: alert.chief, validity: true, disabled: false })
 	setters[2]({ value: alert.pilot, validity: true, disabled: false })
@@ -74,7 +74,7 @@ export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetSta
 	setters[6]({ value: alert.radio, validity: true, disabled: false })
 	setters[7]({ value: alert.tech, validity: true, disabled: false })
 }
-export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetStateAction<control>>[]): void => {
+export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetStateAction<Control>>[]): void => {
 	const departureTime = event.departureDate.split("T")[1].split("Z")[0]
 	const arrivalTime = event.arrivalDate.split("T")[1].split("Z")[0]
 	setters[0]({ value: event.departureDate.split("T")[0], validity: true, disabled: false })

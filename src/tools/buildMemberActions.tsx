@@ -7,24 +7,24 @@ import {
 	old,
 } from "../Datas/initialObjects"
 import {
-	allTPAs,
-	crewMember,
-	denaeDateTPA,
-	denaeTPA,
-	flight,
-	mecboDateTPA,
-	mecboTPA,
-	pilotDateTPA,
-	pilotTPA,
-	radioDateTPA,
-	radioTPA,
+	AllTPAs,
+	CrewMember,
+	DenaeDateTPA,
+	DenaeTPA,
+	Flight,
+	MecboDateTPA,
+	MecboTPA,
+	PilotDateTPA,
+	PilotTPA,
+	RadioDateTPA,
+	RadioTPA,
 } from "../types/Objects"
 import { getAnnual, getQuadri } from "./colorManager"
 
 export const buildAllPilotsTPA = (
 	membersActions: Record<string, Record<string, Date[]>>,
-	members: crewMember[]
-): { name: string; TPA: pilotDateTPA }[] => {
+	members: CrewMember[]
+): { name: string; TPA: PilotDateTPA }[] => {
 	const pilots = members
 		.filter(({ onBoardFunction }) => ["CDA", "pilote"].includes(onBoardFunction))
 		.map(({ trigram }) => trigram)
@@ -54,8 +54,8 @@ export const buildAllPilotsTPA = (
 }
 export const buildAllMecbosTPA = (
 	membersActions: Record<string, Record<string, Date[]>>,
-	members: crewMember[]
-): { name: string; TPA: mecboDateTPA }[] => {
+	members: CrewMember[]
+): { name: string; TPA: MecboDateTPA }[] => {
 	const mecbos = members.filter(({ onBoardFunction }) => onBoardFunction === "MECBO").map(({ trigram }) => trigram)
 	const allTPAs = Object.entries(membersActions)
 		.filter(([trigram]) => mecbos.includes(trigram))
@@ -85,8 +85,8 @@ export const buildAllMecbosTPA = (
 }
 export const buildAllRadiosTPA = (
 	membersActions: Record<string, Record<string, Date[]>>,
-	members: crewMember[]
-): { name: string; TPA: radioDateTPA }[] => {
+	members: CrewMember[]
+): { name: string; TPA: RadioDateTPA }[] => {
 	const radios = members.filter(({ onBoardFunction }) => onBoardFunction === "GETBO").map(({ trigram }) => trigram)
 	const allTPAs = Object.entries(membersActions)
 		.filter(([trigram]) => radios.includes(trigram))
@@ -117,8 +117,8 @@ export const buildAllRadiosTPA = (
 }
 export const buildAllDeanesTPA = (
 	membersActions: Record<string, Record<string, Date[]>>,
-	members: crewMember[]
-): { name: string; TPA: denaeDateTPA }[] => {
+	members: CrewMember[]
+): { name: string; TPA: DenaeDateTPA }[] => {
 	const denaes = members.filter(({ onBoardFunction }) => onBoardFunction === "DENAE").map(({ trigram }) => trigram)
 	const allTPAs = Object.entries(membersActions)
 		.filter(([trigram]) => denaes.includes(trigram))
@@ -147,7 +147,7 @@ export const buildAllDeanesTPA = (
 	return [...allTPAs, ...missingMembers]
 }
 
-export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<flight>): allTPAs => {
+export const buildAllTPAs = (members: Array<CrewMember>, allFlights: Array<Flight>): AllTPAs => {
 	const membersActions = allFlights
 		.flatMap((flight) =>
 			[flight.chief, flight.pilot, ...flight.crewMembers]
@@ -157,7 +157,7 @@ export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<fligh
 					const { pilotTPA, mecboTPA, radioTPA, denaeTPA, crewTPA, departureDate } = flight
 					const flightDate = new Date(departureDate)
 					const { onBoardFunction } = flightMember
-					const specialityTPA: Array<pilotTPA | mecboTPA | radioTPA | denaeTPA> = ((onBoardFunction) => {
+					const specialityTPA: Array<PilotTPA | MecboTPA | RadioTPA | DenaeTPA> = ((onBoardFunction) => {
 						switch (onBoardFunction) {
 							case "CDA":
 							case "pilote":
@@ -200,7 +200,7 @@ export const buildAllTPAs = (members: Array<crewMember>, allFlights: Array<fligh
 		denaeTPA: buildAllDeanesTPA(membersActions, members),
 	}
 }
-export const buildPilotPurcentage = (pilotTPA: pilotDateTPA, dateToCompare: number): number => {
+export const buildPilotPurcentage = (pilotTPA: PilotDateTPA, dateToCompare: number): number => {
 	let purcentage = [pilotTPA.ATTPC, pilotTPA.IFR, pilotTPA.LCS, pilotTPA.DITCHING, pilotTPA.SIMAR].reduce(
 		(acc, TPA) => {
 			if (getQuadri(TPA, dateToCompare) === "success") acc += 1
@@ -214,7 +214,7 @@ export const buildPilotPurcentage = (pilotTPA: pilotDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 9) * 100)
 }
-export const buildMecboPurcentage = (mecboTPA: mecboDateTPA, dateToCompare: number): number => {
+export const buildMecboPurcentage = (mecboTPA: MecboDateTPA, dateToCompare: number): number => {
 	let purcentage = [...mecboTPA.PH, mecboTPA.LCS, mecboTPA.DITCHING, mecboTPA.SIMAR].reduce((acc, TPA) => {
 		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
 		return acc
@@ -225,7 +225,7 @@ export const buildMecboPurcentage = (mecboTPA: mecboDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 10) * 100)
 }
-export const buildDenaePurcentage = (denaeTPA: denaeDateTPA, dateToCompare: number): number => {
+export const buildDenaePurcentage = (denaeTPA: DenaeDateTPA, dateToCompare: number): number => {
 	let purcentage = [...denaeTPA.appRDR, denaeTPA.PGPS, denaeTPA.DITCHING, denaeTPA.SIMAR].reduce((acc, TPA) => {
 		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
 		return acc
@@ -236,7 +236,7 @@ export const buildDenaePurcentage = (denaeTPA: denaeDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 13) * 100)
 }
-export const buildRadioPurcentage = (radioTPA: radioDateTPA, dateToCompare: number): number => {
+export const buildRadioPurcentage = (radioTPA: RadioDateTPA, dateToCompare: number): number => {
 	let purcentage = [...radioTPA.IMINT, ...radioTPA.entCodage, radioTPA.DITCHING, radioTPA.SIMAR].reduce(
 		(acc, TPA) => {
 			if (getQuadri(TPA, dateToCompare) === "success") acc += 1

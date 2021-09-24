@@ -1,7 +1,7 @@
 import React from "react"
-import { unvalidateInputProps } from "../types/BasicComponents"
+import { UnvalidateInputProps } from "../types/BasicComponents"
 
-export const UnvalidateInput = (props: unvalidateInputProps): JSX.Element => {
+export const UnvalidateInput = (props: UnvalidateInputProps): JSX.Element => {
 	return (
 		<div className={`col-md-${props.size}`}>
 			<input

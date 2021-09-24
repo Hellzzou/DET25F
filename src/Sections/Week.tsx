@@ -9,7 +9,7 @@ import { alertDateFinderURL, eventDateFinderURL, flightDateFinderURL, nightURL }
 import { currentMonday, days, inDays } from "../Datas/constants"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { newAlert, newEvent, flight, Nights } from "../types/Objects"
+import { Alert, Event, Flight, Nights } from "../types/Objects"
 import { WeekNavBar } from "./WeekNavBar"
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
@@ -20,9 +20,9 @@ import { INITIAL_ALERT } from "../Datas/initialObjects"
 
 export const Week = (): JSX.Element => {
 	const [monday, setMonday] = useState(currentMonday)
-	const [weekFlights, setWeekFlights] = useState<Array<Array<flight>>>([])
-	const [weekAlerts, setWeekAlerts] = useState<Array<newAlert>>([])
-	const [weekEvents, setWeekEvents] = useState<Array<Array<newEvent>>>([])
+	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
+	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([])
+	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	const etat400Click = () => {
@@ -44,15 +44,15 @@ export const Week = (): JSX.Element => {
 		history.push("/newFlight")
 	}
 	useAsyncEffect(async () => {
-		const flights = await postFetchRequest<flight[]>(flightDateFinderURL, {
+		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const alerts = await postFetchRequest<newAlert[]>(alertDateFinderURL, {
+		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
-		const events = await postFetchRequest<newEvent[]>(eventDateFinderURL, {
+		const events = await postFetchRequest<Event[]>(eventDateFinderURL, {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})

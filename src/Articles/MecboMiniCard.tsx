@@ -7,13 +7,13 @@ import { buildMecboPurcentage } from "../tools/buildMemberActions"
 import { getAnnual, getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
 import { MecboMiniCardProps } from "../types/Articles"
-import { crewMember } from "../types/Objects"
+import { CrewMember } from "../types/Objects"
 
 export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
-	const [fullName, sertFullName] = useState<crewMember>(INITIAL_CREWMEMBER)
+	const [fullName, sertFullName] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
-		const members = await getFetchRequest<crewMember[]>(memberURL)
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof members !== "string") {
 			const member = members.find(({ trigram }) => trigram === props.mecbo.name)
 			if (member) sertFullName(member)

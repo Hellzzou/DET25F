@@ -1,7 +1,7 @@
-import { Duration, flight } from "../types/Objects"
+import { Duration, Flight } from "../types/Objects"
 import { findNumberOfWeeks, getWeekNumber } from "./dateManager"
 
-export const buildQOG = (yearFlights: flight[], allUnderGroups: string[]): Record<string, Duration>[] => {
+export const buildQOG = (yearFlights: Flight[], allUnderGroups: string[]): Record<string, Duration>[] => {
 	const emptyArray = Array.from(Array(12), () =>
 		allUnderGroups.reduce<Record<string, Duration>>((acc, underGroup) => {
 			if (!acc[underGroup]) acc[underGroup] = { dayDuration: 0, nightDuration: 0 }
@@ -18,7 +18,7 @@ export const buildQOG = (yearFlights: flight[], allUnderGroups: string[]): Recor
 		return acc
 	}, emptyArray)
 }
-export const buildWeekReport = (yearFlights: flight[], allunderGroups: string[]): Record<string, number>[] => {
+export const buildWeekReport = (yearFlights: Flight[], allunderGroups: string[]): Record<string, number>[] => {
 	// build an Array with objects where all groups equals 0, its length equals the number of week in the year
 	const emptyArray = Array.from(Array(findNumberOfWeeks()), () =>
 		allunderGroups.reduce<Record<string, number>>((acc, underGroup) => {

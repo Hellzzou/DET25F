@@ -10,7 +10,7 @@ import { arrayIsNotEmpty, formValidity } from "../tools/validators"
 import { Redirect, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/buildEvents"
 import { MainNavBar } from "../Sections/MainNavbar"
-import { controlArray, crewMember, Group, Nights } from "../types/Objects"
+import { ControlArray, CrewMember, Group, Nights } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { groupURL, memberURL, nightURL, onBoardFunctionURL, saveFlightURL } from "../Datas/urls"
@@ -45,10 +45,10 @@ export const NewFlightForm = (): JSX.Element => {
 	const [pilot, setPilot] = useState(INITIAL_FALSE_CONTROL)
 	const [pilotList, setPilotList] = useState<Array<string>>([])
 	const [addableCrewMembers, setAddableCrewMembers] = useState<Array<string>>([])
-	const [crewMembers, setCrewMembers] = useState<controlArray>({ value: [], validity: false, disabled: false })
+	const [crewMembers, setCrewMembers] = useState<ControlArray>({ value: [], validity: false, disabled: false })
 	const [deleteMemberSelect, setDeleteMemberSelect] = useState(INITIAL_FALSE_CONTROL)
 	const [addMemberSelect, setAddMemberSelect] = useState(INITIAL_FALSE_CONTROL)
-	const [allMembers, setAllMembers] = useState<crewMember[]>([])
+	const [allMembers, setAllMembers] = useState<CrewMember[]>([])
 	const hooks = [
 		departureDate,
 		departureTime,
@@ -96,11 +96,11 @@ export const NewFlightForm = (): JSX.Element => {
 		setToken(token)
 		if (token) {
 			const nights = await getFetchRequest<Nights[]>(nightURL)
-			const crewMembers = await getFetchRequest<crewMember[]>(memberURL)
-			const CDA = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+			const crewMembers = await getFetchRequest<CrewMember[]>(memberURL)
+			const CDA = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 				function: "CDA",
 			})
-			const pilots = await postFetchRequest<crewMember[]>(onBoardFunctionURL, {
+			const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
 				function: "pilote",
 			})
 			const allGroups = await getFetchRequest<Group[]>(groupURL)

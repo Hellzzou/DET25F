@@ -13,7 +13,7 @@ import { fullfillAlert } from "../tools/fullfillForms"
 import { buildNewAlert } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
-import { newAlert } from "../types/Objects"
+import { Alert } from "../types/Objects"
 import { MainNavBar } from "../Sections/MainNavbar"
 
 export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
@@ -50,7 +50,7 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
-			const alert = await postFetchRequest<newAlert[]>(alertIDFinderURL, { id: match.params.id })
+			const alert = await postFetchRequest<Alert[]>(alertIDFinderURL, { id: match.params.id })
 			if (typeof alert !== "string") fullfillAlert(alert[0], setters)
 		}
 	}, [])

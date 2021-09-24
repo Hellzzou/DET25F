@@ -1,7 +1,7 @@
 import React from "react"
-import { textAreaProps } from "../types/BasicComponents"
+import { TextAreaProps } from "../types/BasicComponents"
 
-export const TextArea = (props: textAreaProps): JSX.Element => {
+export const TextArea = (props: TextAreaProps): JSX.Element => {
 	const printCrewMembers = (): string => props.control.value.reduce((acc, member) => (acc += " " + member), "")
 	return (
 		<div className={`col-md-${props.size}`}>

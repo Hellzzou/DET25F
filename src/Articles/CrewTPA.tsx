@@ -1,8 +1,8 @@
 import React from "react"
 import { Switch } from "../BasicComponents/Switch"
-import { crewTPAProps } from "../types/Articles"
+import { CrewTPAProps } from "../types/Articles"
 
-export const CrewTPA = (props: crewTPAProps): JSX.Element => {
+export const CrewTPA = (props: CrewTPAProps): JSX.Element => {
 	const handleChange = (TPA: { name: string; value: boolean }) => {
 		props.setCrewTPA({
 			TMAHD: { name: "TMA HD", value: TPA.name === "TMA HD" ? !TPA.value : props.crewTPA.TMAHD.value },

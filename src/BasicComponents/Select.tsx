@@ -1,7 +1,7 @@
 import React from "react"
-import { selectProps } from "../types/BasicComponents"
+import { SelectProps } from "../types/BasicComponents"
 
-export const Select = (props: selectProps): JSX.Element => {
+export const Select = (props: SelectProps): JSX.Element => {
 	const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		props.setControl({
 			value: e.target.value,

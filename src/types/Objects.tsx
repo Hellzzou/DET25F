@@ -1,35 +1,10 @@
-export type event = {
-	start: Date
-	end: Date
-	mission: string
-	CDA: string
-	PAX: Array<string>
-	crew: string
-	fuel: string
-	aircraft: string
-}
-export type alert = {
-	CDA: string
-	PAX: Array<string>
-}
-export type otherEvent = {
-	start: Date
-	end: Date
-	title: string
-	PAX: Array<string>
-}
-export type control = {
+export type Control = {
 	value: string
 	validity: boolean
 	disabled: boolean
 }
-export type controlArray = {
+export type ControlArray = {
 	value: Array<string>
-	validity: boolean
-	disabled: boolean
-}
-export type disabledControl = {
-	value: string
 	validity: boolean
 	disabled: boolean
 }
@@ -51,7 +26,7 @@ export type Fuel = {
 export type Config = {
 	name: string
 }
-export type user = {
+export type User = {
 	_id?: string
 	rank: string
 	name: string
@@ -61,10 +36,7 @@ export type user = {
 	token?: string
 	password: string
 }
-export type error = {
-	error: string
-}
-export type flight = {
+export type Flight = {
 	_id?: string
 	departureDate: string
 	arrivalDate: string
@@ -91,22 +63,22 @@ export type flight = {
 	onNightDuration: string
 	done: string
 	cause: string
-	crewTPA: crewTPA
-	pilotTPA: Array<pilotTPA>
-	mecboTPA: Array<mecboTPA>
-	radioTPA: Array<radioTPA>
-	denaeTPA: Array<denaeTPA>
-	pilotEQA: Array<pilotEQA>
+	crewTPA: CrewTPA
+	pilotTPA: Array<PilotTPA>
+	mecboTPA: Array<MecboTPA>
+	radioTPA: Array<RadioTPA>
+	denaeTPA: Array<DenaeTPA>
+	pilotEQA: Array<PilotEQA>
 }
-export type newEvent = {
+export type Event = {
 	_id: string
 	departureDate: string
 	arrivalDate: string
 	event: string
 	members: [string]
 }
-export type newAlert = {
-	_id: string
+export type Alert = {
+	_id?: string
 	departureDate: string
 	chief: string
 	pilot: string
@@ -116,7 +88,7 @@ export type newAlert = {
 	radio: string
 	tech: string
 }
-export type crewMember = {
+export type CrewMember = {
 	firstName: string
 	surName: string
 	rank: string
@@ -127,7 +99,7 @@ export type crewMember = {
 	tel?: string
 	registration?: string
 }
-export type crewTPA = {
+export type CrewTPA = {
 	TMAHD: { name: string; value: boolean }
 	COOPBAT: { name: string; value: boolean }
 	SAR: { name: string; value: boolean }
@@ -135,7 +107,7 @@ export type crewTPA = {
 	SIMAR: { name: string; value: boolean }
 }
 
-export type pilotTPA = {
+export type PilotTPA = {
 	name: string
 	TPA: {
 		ATTPC: { name: string; value: boolean }
@@ -143,7 +115,7 @@ export type pilotTPA = {
 		LCS: { name: string; value: boolean }
 	}
 }
-export type mecboTPA = {
+export type MecboTPA = {
 	name: string
 	TPA: {
 		LCS: { name: string; value: boolean }
@@ -151,21 +123,21 @@ export type mecboTPA = {
 		TRP: { name: string; value: boolean }
 	}
 }
-export type radioTPA = {
+export type RadioTPA = {
 	name: string
 	TPA: {
 		IMINT: { name: string; value: boolean }
 		entCodage: { name: string; value: string }
 	}
 }
-export type denaeTPA = {
+export type DenaeTPA = {
 	name: string
 	TPA: {
 		PGPS: { name: string; value: boolean }
 		appRDR: { name: string; value: string }
 	}
 }
-export type pilotEQA = {
+export type PilotEQA = {
 	name: string
 	EQA: {
 		PILJ: { name: string; value: string; validity: boolean }
@@ -181,7 +153,7 @@ export type pilotEQA = {
 		ERGTR: { name: string; value: boolean }
 	}
 }
-export type pilotDateTPA = {
+export type PilotDateTPA = {
 	TMAHD: Array<Date>
 	COOPBAT: Date
 	SAR: Date
@@ -206,7 +178,7 @@ export type PilotDateEQA = {
 	fourMonthsNight: number
 	lastMonth: number
 }
-export type mecboDateTPA = {
+export type MecboDateTPA = {
 	TMAHD: Array<Date>
 	COOPBAT: Date
 	SAR: Date
@@ -216,7 +188,7 @@ export type mecboDateTPA = {
 	PH: Array<Date>
 	TRP: Date
 }
-export type radioDateTPA = {
+export type RadioDateTPA = {
 	TMAHD: Array<Date>
 	COOPBAT: Date
 	SAR: Date
@@ -225,7 +197,7 @@ export type radioDateTPA = {
 	IMINT: Array<Date>
 	entCodage: Array<Date>
 }
-export type denaeDateTPA = {
+export type DenaeDateTPA = {
 	TMAHD: Array<Date>
 	COOPBAT: Date
 	SAR: Date
@@ -234,11 +206,11 @@ export type denaeDateTPA = {
 	appRDR: Array<Date>
 	PGPS: Date
 }
-export type allTPAs = {
-	pilotTPA: Array<{ name: string; TPA: pilotDateTPA }>
-	mecboTPA: Array<{ name: string; TPA: mecboDateTPA }>
-	radioTPA: Array<{ name: string; TPA: radioDateTPA }>
-	denaeTPA: Array<{ name: string; TPA: denaeDateTPA }>
+export type AllTPAs = {
+	pilotTPA: Array<{ name: string; TPA: PilotDateTPA }>
+	mecboTPA: Array<{ name: string; TPA: MecboDateTPA }>
+	radioTPA: Array<{ name: string; TPA: RadioDateTPA }>
+	denaeTPA: Array<{ name: string; TPA: DenaeDateTPA }>
 }
 export type AllEQAs = Array<{ name: string; EQA: PilotDateEQA }>
 
@@ -251,21 +223,6 @@ export type Group = {
 	manager: string
 	client: string
 	allocation: number
-}
-export type Alert = {
-	departureDate: string
-	chief: string
-	pilot: string
-	mecbo: string
-	nav: string
-	rdr: string
-	radio: string
-	tech: string
-}
-export type Event = {
-	departureDate: string
-	arrivalDate: string
-	event: string
 }
 export type Duration = {
 	dayDuration: number

@@ -2,9 +2,9 @@ import React from "react"
 import { Label } from "../BasicComponents/Label"
 import { Switch } from "../BasicComponents/Switch"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { denaeTPAProps } from "../types/Articles"
+import { DenaeTPAProps } from "../types/Articles"
 
-export const NavTPA = (props: denaeTPAProps): JSX.Element => {
+export const NavTPA = (props: DenaeTPAProps): JSX.Element => {
 	const handleSwitchChange = (TPA: { name: string; value: boolean }) => {
 		const navTPAMod = props.denaeTPAs.map((denaeTPA) => {
 			if (denaeTPA !== props.denaeTPA) return denaeTPA

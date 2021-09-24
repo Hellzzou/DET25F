@@ -6,9 +6,9 @@ import { PilotEQA } from "../Articles/PilotEQA"
 import { PilotTPA } from "../Articles/pilotTPA"
 import { RadioTPA } from "../Articles/RadioTPA"
 import { Legend } from "../BasicComponents/Legend"
-import { crewTPAFieldsetProps } from "../types/Sections"
+import { CrewTPAFieldsetProps } from "../types/Sections"
 
-export const CrewTPAFieldset = (props: crewTPAFieldsetProps): JSX.Element => {
+export const CrewTPAFieldset = (props: CrewTPAFieldsetProps): JSX.Element => {
 	return (
 		<>
 			<fieldset className=' card-body-color rounded p-2 mb-1'>

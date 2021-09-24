@@ -2,9 +2,9 @@ import React from "react"
 import { useHistory } from "react-router-dom"
 import { sortEventByRow } from "../tools/buildWeekEvents"
 import { getBetweenColSpan, getColSpan } from "../tools/spanManager"
-import { otherEventProps } from "../types/BasicComponents"
+import { OtherEventProps } from "../types/BasicComponents"
 
-export const OtherEvent = (props: otherEventProps): JSX.Element => {
+export const OtherEvent = (props: OtherEventProps): JSX.Element => {
 	const history = useHistory()
 	const eventClick = (id: string): void => history.push(`/newEvent/${id}`)
 	return (

@@ -1,83 +1,83 @@
 import {
-	control,
-	crewTPA,
-	denaeDateTPA,
-	denaeTPA,
-	flight,
+	Control,
+	CrewTPA,
+	DenaeDateTPA,
+	DenaeTPA,
+	Flight,
 	Group,
-	mecboDateTPA,
-	mecboTPA,
+	MecboDateTPA,
+	MecboTPA,
 	PilotDateEQA,
-	pilotDateTPA,
-	pilotEQA,
-	pilotTPA,
-	radioDateTPA,
-	radioTPA,
-	user,
+	PilotDateTPA,
+	PilotEQA,
+	PilotTPA,
+	RadioDateTPA,
+	RadioTPA,
+	User,
 } from "./Objects"
 
-export type pilotTPAProps = {
-	pilotTPA: pilotTPA
-	pilotTPAs: Array<pilotTPA>
-	setPilotTPA: React.Dispatch<React.SetStateAction<Array<pilotTPA>>>
+export type PilotTPAProps = {
+	pilotTPA: PilotTPA
+	pilotTPAs: Array<PilotTPA>
+	setPilotTPA: React.Dispatch<React.SetStateAction<Array<PilotTPA>>>
 }
-export type crewTPAProps = {
-	crewTPA: crewTPA
-	setCrewTPA: React.Dispatch<React.SetStateAction<crewTPA>>
+export type CrewTPAProps = {
+	crewTPA: CrewTPA
+	setCrewTPA: React.Dispatch<React.SetStateAction<CrewTPA>>
 }
-export type mecboTPAProps = {
-	mecboTPA: mecboTPA
-	mecboTPAs: Array<mecboTPA>
-	setMecboTPA: React.Dispatch<React.SetStateAction<Array<mecboTPA>>>
+export type MecboTPAProps = {
+	mecboTPA: MecboTPA
+	mecboTPAs: Array<MecboTPA>
+	setMecboTPA: React.Dispatch<React.SetStateAction<Array<MecboTPA>>>
 }
-export type radioTPAProps = {
-	radioTPA: radioTPA
-	radioTPAs: Array<radioTPA>
-	setRadioTPa: React.Dispatch<React.SetStateAction<Array<radioTPA>>>
+export type RadioTPAProps = {
+	radioTPA: RadioTPA
+	radioTPAs: Array<RadioTPA>
+	setRadioTPa: React.Dispatch<React.SetStateAction<Array<RadioTPA>>>
 }
-export type denaeTPAProps = {
-	denaeTPA: denaeTPA
-	denaeTPAs: Array<denaeTPA>
-	setDenaeTPA: React.Dispatch<React.SetStateAction<Array<denaeTPA>>>
+export type DenaeTPAProps = {
+	denaeTPA: DenaeTPA
+	denaeTPAs: Array<DenaeTPA>
+	setDenaeTPA: React.Dispatch<React.SetStateAction<Array<DenaeTPA>>>
 }
-export type pilotEQAProps = {
-	pilotEQA: pilotEQA
-	pilotEQAs: Array<pilotEQA>
-	setPilotEQA: React.Dispatch<React.SetStateAction<Array<pilotEQA>>>
-	dayDuration: control
-	setDayDuration: React.Dispatch<React.SetStateAction<control>>
-	nightDuration: control
-	setNightDuration: React.Dispatch<React.SetStateAction<control>>
+export type PilotEQAProps = {
+	pilotEQA: PilotEQA
+	pilotEQAs: Array<PilotEQA>
+	setPilotEQA: React.Dispatch<React.SetStateAction<Array<PilotEQA>>>
+	dayDuration: Control
+	setDayDuration: React.Dispatch<React.SetStateAction<Control>>
+	nightDuration: Control
+	setNightDuration: React.Dispatch<React.SetStateAction<Control>>
 }
 export type PilotMiniCardProps = {
 	pilot: {
 		name: string
-		TPA: pilotDateTPA
+		TPA: PilotDateTPA
 	}
 	date: number
 }
 export type MecboMiniCardProps = {
 	mecbo: {
 		name: string
-		TPA: mecboDateTPA
+		TPA: MecboDateTPA
 	}
 	date: number
 }
 export type RadioMiniCardProps = {
 	radio: {
 		name: string
-		TPA: radioDateTPA
+		TPA: RadioDateTPA
 	}
 	date: number
 }
 export type DenaeMiniCardProps = {
 	denae: {
 		name: string
-		TPA: denaeDateTPA
+		TPA: DenaeDateTPA
 	}
 	date: number
 }
-export type pilotEQAMiniCArdProps = {
+export type PilotEQAMiniCArdProps = {
 	pilot: {
 		name: string
 		EQA: PilotDateEQA
@@ -86,7 +86,7 @@ export type pilotEQAMiniCArdProps = {
 }
 export type CrewMemberCardProps = {
 	crewMemberName: string
-	crewMemberHours: flight[]
+	crewMemberHours: Flight[]
 	startDate: string
 	endDate: string
 }
@@ -100,11 +100,11 @@ export type NewUserModalProps = {
 	setShow: React.Dispatch<React.SetStateAction<boolean>>
 	onHide: () => void
 	onShow: () => void
-	users: user[]
-	setUsers: React.Dispatch<React.SetStateAction<user[]>>
+	users: User[]
+	setUsers: React.Dispatch<React.SetStateAction<User[]>>
 	setAddUserShow: React.Dispatch<React.SetStateAction<boolean>>
 }
-export type passwordChangeModalProps = {
+export type PasswordChangeModalProps = {
 	show: boolean
 	setShow: React.Dispatch<React.SetStateAction<boolean>>
 	onHide: () => void
