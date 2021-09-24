@@ -9,7 +9,7 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 	const reference = Array.from(Array(12), () => allocation / 12).map((alloc, index) => alloc * (index + 1))
 	const underGroups = groups.map(({ underGroup }) => underGroup)
 	const monthly = flights
-		.filter((flight) => underGroups.includes(flight.group))
+		.filter(({ group }) => underGroups.includes(group))
 		.reduce<number[]>(
 			(acc, flight) => {
 				const { dayDuration, nightDuration, departureDate } = flight
@@ -19,10 +19,7 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 			},
 			Array.from(Array(12), () => 0)
 		)
-	const datas = monthly.reduce<number[]>((acc, month, index) => {
-		if (index !== 0) acc[index] += acc[index - 1]
-		return acc
-	}, monthly)
+	for (let i = 1; i < monthly.length; i++) monthly[i] += monthly[i - 1]
 	return {
 		labels: months,
 		datasets: [
@@ -34,7 +31,7 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 			},
 			{
 				label: "consommation réelle",
-				data: datas,
+				data: monthly,
 				backgroundColor: "rgb(88, 160, 231)",
 				borderColor: "rgba(88, 160, 231, 0.2)",
 			},
@@ -43,8 +40,9 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 }
 export const buildRepartition = (flights: flight[], prop: "area" | "NCArea" | "group" | "type"): ChartDatas => {
 	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
+		const { dayDuration, nightDuration } = flight
 		if (!acc[flight[prop]]) acc[flight[prop]] = 0
-		acc[flight[prop]] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
+		acc[flight[prop]] += parseFloat(dayDuration) + parseFloat(nightDuration)
 		return acc
 	}, {})
 	return {
