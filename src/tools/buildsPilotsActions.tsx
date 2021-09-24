@@ -1,5 +1,5 @@
-import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/dateTPA"
-import { EQADurations } from "../Datas/EQADurations"
+import { INITIAL_PILOT_DATE_EQA, old } from "../Datas/initialObjects"
+import { EQADurations } from "../Datas/constants"
 import { AllEQAs, crewMember, flight, PilotDateEQA } from "../types/Objects"
 import { getDone, getDurationsValidity, getMonthly, getQuadri } from "./colorManager"
 

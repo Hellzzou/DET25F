@@ -2,40 +2,31 @@ import React, { useState } from "react"
 import { Modal } from "react-bootstrap"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
-import { Label } from "../BasicComponents/Label"
-import { INITIAL_USER } from "../Datas/crewMember"
-import { checkPassword, getOneUserURL, signupURL, userDeleteURL } from "../Datas/datas"
-import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
+import {
+	INITIAL_BAD_PASSWORD,
+	INITIAL_CORRECT_PASSWORD,
+	INITIAL_NOT_SAME_PASSWORD,
+	INITIAL_USER,
+} from "../Datas/initialObjects"
+import { checkPassword, getOneUserURL, signupURL, userDeleteURL } from "../Datas/urls"
+import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { passwordCheck } from "../tools/validators"
 import { passwordChangeModalProps } from "../types/Articles"
 import { user } from "../types/Objects"
+import { PasswordInput } from "../BasicComponents/PasswordInput"
 
 export const PasswordChangeModal = (props: passwordChangeModalProps): JSX.Element => {
 	const [ancientPassword, setAncientPassword] = useState(INITIAL_FALSE_CONTROL)
 	const [newPassword1, setNewPassword1] = useState(INITIAL_FALSE_CONTROL)
-	const [info1, setInfo1] = useState({
-		value: "Entre 8 et 15 caractères, une majuscule, un chiffre, et un caractère spécial",
-		color: "danger",
-	})
-	const [info2, setInfo2] = useState({
-		value: "Entre 8 et 15 caractères, une majuscule, un chiffre, et un caractère spécial",
-		color: "danger",
-	})
+	const [info, setInfo] = useState(INITIAL_BAD_PASSWORD)
 	const [newPassword2, setNewPassword2] = useState(INITIAL_FALSE_CONTROL)
 	const [user, setUser] = useState<user>(INITIAL_USER)
 	const handleClose = () => {
 		setAncientPassword(INITIAL_FALSE_CONTROL)
 		setNewPassword1(INITIAL_FALSE_CONTROL)
 		setNewPassword2(INITIAL_FALSE_CONTROL)
-		setInfo1({
-			value: "Entre 8 et 15 caractères, une majuscule, un chiffre, et un caractère spécial",
-			color: "danger",
-		})
-		setInfo2({
-			value: "Entre 8 et 15 caractères, une majuscule, un chiffre, et un caractère spécial",
-			color: "danger",
-		})
+		setInfo(INITIAL_BAD_PASSWORD)
 		props.onHide()
 	}
 	const checkAncientPasswordValidity = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,33 +35,15 @@ export const PasswordChangeModal = (props: passwordChangeModalProps): JSX.Elemen
 		if (check === "correct")
 			setAncientPassword({ value: e.target.value, validity: check === "correct", disabled: false })
 	}
-	const checkPAssword1 = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const checkPAssword = (e: React.ChangeEvent<HTMLInputElement>, number: 1 | 2) => {
 		let validity = passwordCheck(e.target.value)
 		if (validity) {
-			setInfo1({ value: "Les mots de passe doivent être les mêmes", color: "danger" })
-			setInfo2({ value: "Les mots de passe doivent être les mêmes", color: "danger" })
-			validity = validity && e.target.value === newPassword2.value
-			if (validity) {
-				setInfo1({ value: "mots de passe corrects", color: "success" })
-				setInfo2({ value: "mots de passe corrects", color: "success" })
-			}
+			setInfo(INITIAL_NOT_SAME_PASSWORD)
+			validity = validity && e.target.value === (number === 1 ? newPassword2.value : newPassword1.value)
+			if (validity) setInfo(INITIAL_CORRECT_PASSWORD)
 		}
-		setNewPassword1({ value: e.target.value, validity, disabled: false })
-		setNewPassword2({ value: newPassword2.value, validity, disabled: false })
-	}
-	const checkPAssword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let validity = passwordCheck(e.target.value)
-		if (validity) {
-			setInfo2({ value: "Les mots de passe doivent être les mêmes", color: "danger" })
-			setInfo1({ value: "Les mots de passe doivent être les mêmes", color: "danger" })
-			validity = validity && e.target.value === newPassword1.value
-			if (validity) {
-				setInfo2({ value: "mots de passe corrects", color: "success" })
-				setInfo1({ value: "mots de passe corrects", color: "success" })
-			}
-		}
-		setNewPassword2({ value: e.target.value, validity, disabled: false })
-		setNewPassword1({ value: newPassword1.value, validity, disabled: false })
+		setNewPassword1({ value: number === 1 ? e.target.value : newPassword1.value, validity, disabled: false })
+		setNewPassword2({ value: number === 1 ? newPassword2.value : e.target.value, validity, disabled: false })
 	}
 	const createNewUser = async () => {
 		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.name })
@@ -100,50 +73,16 @@ export const PasswordChangeModal = (props: passwordChangeModalProps): JSX.Elemen
 				<Modal.Title>Changer mon mot de passe</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div className='row my-3'>
-					<Label size={4} title='Ancien mot de passe : ' />
-					<div className='col-md-8'>
-						<input
-							className={`form-control bg-dark
-                    text-center text-white
-                    ${ancientPassword.validity ? "is-valid" : "is-invalid"}`}
-							type='password'
-							onChange={(e) => checkAncientPasswordValidity(e)}
-							value={ancientPassword.value}
-							disabled={false}
-						/>
-					</div>
-				</div>
-				<div className='row my-3'>
-					<Label size={4} title='Nouveau mot de passe : ' />
-					<div className='col-md-8'>
-						<input
-							className={`form-control bg-dark
-                    text-center text-white
-                    ${newPassword1.validity ? "is-valid" : "is-invalid"}`}
-							type='password'
-							onChange={(e) => checkPAssword1(e)}
-							value={newPassword1.value}
-							disabled={false}
-						/>
-						<small className={`col-md-8 text-${info1.color}`}>{info1.value}</small>
-					</div>
-				</div>
-				<div className='row my-3'>
-					<Label size={4} title='Confirmer le mot de passe : ' />
-					<div className='col-md-8'>
-						<input
-							className={`form-control bg-dark
-                    text-center text-white
-                    ${newPassword2.validity ? "is-valid" : "is-invalid"}`}
-							type='password'
-							onChange={(e) => checkPAssword2(e)}
-							value={newPassword2.value}
-							disabled={false}
-						/>
-						<small className={`text-${info2.color}`}>{info2.value}</small>
-					</div>
-				</div>
+				<PasswordInput
+					password={ancientPassword}
+					info={{
+						color: "",
+						value: "",
+					}}
+					handleChange={(e) => checkAncientPasswordValidity(e)}
+				/>
+				<PasswordInput password={newPassword1} info={info} handleChange={(e) => checkPAssword(e, 1)} />
+				<PasswordInput password={newPassword2} info={info} handleChange={(e) => checkPAssword(e, 2)} />
 			</Modal.Body>
 			<Modal.Footer>
 				<Button

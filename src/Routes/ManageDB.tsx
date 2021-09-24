@@ -1,5 +1,5 @@
 import React from "react"
-import { DBInfos } from "../Datas/DbInfos"
+import { DBInfos } from "../Datas/constants"
 import { DBCard } from "../Sections/DBCard"
 import { MainNavBar } from "../Sections/MainNavbar"
 

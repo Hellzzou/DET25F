@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
-import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
-import { memberURL } from "../Datas/datas"
+import { TPALine } from "../BasicComponents/TPALine"
+import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
+import { memberURL } from "../Datas/urls"
 import { buildRadioPurcentage } from "../tools/buildMemberActions"
 import { getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
@@ -52,46 +53,14 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 								{props.radio.TPA.IMINT[1].toLocaleDateString()}
 							</div>
 						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>Codage : </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.radio.TPA.entCodage[0],
-									props.date
-								)}`}>
-								{props.radio.TPA.entCodage[0].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>Codage : </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.radio.TPA.entCodage[1],
-									props.date
-								)}`}>
-								{props.radio.TPA.entCodage[1].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>Codage : </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.radio.TPA.entCodage[2],
-									props.date
-								)}`}>
-								{props.radio.TPA.entCodage[2].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>Codage : </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.radio.TPA.entCodage[3],
-									props.date
-								)}`}>
-								{props.radio.TPA.entCodage[3].toLocaleDateString()}
-							</div>
-						</div>
+						{props.radio.TPA.entCodage.map((entCodage) => (
+							<TPALine
+								key={props.radio.TPA.entCodage.indexOf(entCodage)}
+								title='Codage : '
+								color={getQuadri(entCodage, props.date)}
+								value={entCodage.toLocaleDateString()}
+							/>
+						))}
 					</div>
 				</div>
 			</div>

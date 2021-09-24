@@ -5,13 +5,13 @@ import useAsyncEffect from "use-async-effect"
 import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { getAllUserURL, getOneUserURL, signupURL, userDeleteURL, userURL } from "../Datas/datas"
+import { getAllUserURL, getOneUserURL, signupURL, userDeleteURL, userURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest, putFetchRequest } from "../tools/fetch"
 import { user } from "../types/Objects"
 import { NewUserModal } from "../Articles/NewUserModal"
 import { SimpleSelect } from "../BasicComponents/SimpleSelect"
-import { access, ranks } from "../Datas/members"
+import { access, ranks } from "../Datas/constants"
 
 export const UsersManager = (): JSX.Element => {
 	const history = useHistory()

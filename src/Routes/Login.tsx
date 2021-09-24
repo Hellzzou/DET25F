@@ -7,7 +7,7 @@ import { Label } from "../BasicComponents/Label"
 import { Input } from "../BasicComponents/input"
 import { formValidity, textIsNotNull } from "../tools/validators"
 import { Button } from "../BasicComponents/Button"
-import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
+import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
 
 export const Login = (): JSX.Element => {
 	const [login, setLogin] = useState(INITIAL_FALSE_CONTROL)

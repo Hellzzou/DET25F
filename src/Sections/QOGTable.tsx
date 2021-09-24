@@ -3,8 +3,8 @@ import React from "react"
 import { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { QOGRow } from "../Articles/QOGRow"
-import { distinctGroupURL, groupURL } from "../Datas/datas"
-import { INITIAL_GROUP } from "../Datas/group"
+import { distinctGroupURL, groupURL } from "../Datas/urls"
+import { INITIAL_GROUP } from "../Datas/initialObjects"
 import { getFetchRequest } from "../tools/fetch"
 import {
 	allocSumOfAGroup,

@@ -1,4 +1,4 @@
-import { DB_URL } from "../Datas/datas"
+import { DB_URL } from "../Datas/urls"
 import { user } from "../types/Objects"
 import { getFetchRequest, postFetchRequest } from "./fetch"
 

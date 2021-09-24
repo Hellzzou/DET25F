@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { CrewTPACard } from "../BasicComponents/CrewTPACard"
-import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
-import { memberURL } from "../Datas/datas"
+import { TPALine } from "../BasicComponents/TPALine"
+import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
+import { memberURL } from "../Datas/urls"
 import { buildDenaePurcentage } from "../tools/buildMemberActions"
 import { getQuadri } from "../tools/colorManager"
 import { getFetchRequest } from "../tools/fetch"
@@ -38,72 +39,19 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 					</div>
 					<div className='col-md-6'>
 						<h6 className='card-subtitle mb-2 text-muted text-center'>TPA Individuel</h6>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.denae.TPA.appRDR[0],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[0].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.denae.TPA.appRDR[1],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[1].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.denae.TPA.appRDR[2],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[2].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.denae.TPA.appRDR[3],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[3].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end  text-${getQuadri(
-									props.denae.TPA.appRDR[4],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[4].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>APP RDR: </div>
-							<div
-								className={`col-md-6 text-end text-${getQuadri(
-									props.denae.TPA.appRDR[5],
-									props.date
-								)}`}>
-								{props.denae.TPA.appRDR[5].toLocaleDateString()}
-							</div>
-						</div>
-						<div className='row'>
-							<div className='col-md-6 text-start'>P GPS : </div>
-							<div className={`col-md-6 text-end  text-${getQuadri(props.denae.TPA.PGPS, props.date)}`}>
-								{props.denae.TPA.PGPS.toLocaleDateString()}
-							</div>
-						</div>
+						{props.denae.TPA.appRDR.map((appRDR) => (
+							<TPALine
+								key={props.denae.TPA.appRDR.indexOf(appRDR)}
+								title='APP RDR: '
+								color={getQuadri(appRDR, props.date)}
+								value={appRDR.toLocaleDateString()}
+							/>
+						))}
+						<TPALine
+							title='P GPS : '
+							color={getQuadri(props.denae.TPA.PGPS, props.date)}
+							value={props.denae.TPA.PGPS.toLocaleDateString()}
+						/>
 					</div>
 				</div>
 			</div>

@@ -7,16 +7,10 @@ import { Line, Bar } from "react-chartjs-2"
 import { ChartDatas, flight, Group, newAlert } from "../types/Objects"
 import useAsyncEffect from "use-async-effect"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { alertDateFinderURL, DebriefedflightDateFinderURL, groupURL } from "../Datas/datas"
-import {
-	buildAlertByMember,
-	buildAreaNCRepartition,
-	buildAreaRepartition,
-	buildConsoChart,
-	buildGroupRepartition,
-	buildTypeRepartition,
-} from "../tools/buildStats"
+import { alertDateFinderURL, DebriefedflightDateFinderURL, groupURL } from "../Datas/urls"
+import { buildAlertByMember, buildConsoChart, buildRepartition } from "../tools/buildStats"
 import { groupFilter } from "../tools/reportCalculator"
+import { INITIAL_CHART_DATA } from "../Datas/initialObjects"
 
 export const Stats = (): JSX.Element => {
 	const [startDate, setStartDate] = useState({
@@ -25,7 +19,7 @@ export const Stats = (): JSX.Element => {
 		disabled: false,
 	})
 	const [endDate, setEndDate] = useState(INITIAL_ENDDATE_CONTROL)
-	const [data, setData] = useState<ChartDatas>()
+	const [data, setData] = useState<ChartDatas>(INITIAL_CHART_DATA)
 	const [chart, setChart] = useState("line")
 	const Conso = async (group: string) => {
 		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
@@ -39,36 +33,12 @@ export const Stats = (): JSX.Element => {
 			setData(buildConsoChart(groupFilter(groups, group), allDebriefedFlights))
 		setChart("line")
 	}
-	const groupRepartition = async () => {
+	const repartition = async (prop: "area" | "NCArea" | "group" | "type") => {
 		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
 			startDate: startDate.value,
 			endDate: endDate.value,
 		})
-		if (typeof allDebriefedFlights !== "string") setData(buildGroupRepartition(allDebriefedFlights))
-		setChart("bar")
-	}
-	const areaRepartition = async () => {
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
-			startDate: startDate.value,
-			endDate: endDate.value,
-		})
-		if (typeof allDebriefedFlights !== "string") setData(buildAreaRepartition(allDebriefedFlights))
-		setChart("bar")
-	}
-	const areaNCRepartition = async () => {
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
-			startDate: startDate.value,
-			endDate: endDate.value,
-		})
-		if (typeof allDebriefedFlights !== "string") setData(buildAreaNCRepartition(allDebriefedFlights))
-		setChart("bar")
-	}
-	const typeRepartition = async () => {
-		const allDebriefedFlights = await postFetchRequest<flight[]>(DebriefedflightDateFinderURL, {
-			startDate: startDate.value,
-			endDate: endDate.value,
-		})
-		if (typeof allDebriefedFlights !== "string") setData(buildTypeRepartition(allDebriefedFlights))
+		if (typeof allDebriefedFlights !== "string") setData(buildRepartition(allDebriefedFlights, prop))
 		setChart("bar")
 	}
 	const alertByMember = async () => {
@@ -108,10 +78,10 @@ export const Stats = (): JSX.Element => {
 						</Nav>
 						<li>Répartition</li>
 						<Nav defaultActiveKey='/home' className='flex-column'>
-							<Nav.Link onClick={groupRepartition}>heures par groupes</Nav.Link>
-							<Nav.Link onClick={areaRepartition}>heures par zones</Nav.Link>
-							<Nav.Link onClick={areaNCRepartition}>heures par zones NC</Nav.Link>
-							<Nav.Link onClick={typeRepartition}>heures par types de vol</Nav.Link>
+							<Nav.Link onClick={() => repartition("group")}>heures par groupes</Nav.Link>
+							<Nav.Link onClick={() => repartition("area")}>heures par zones</Nav.Link>
+							<Nav.Link onClick={() => repartition("NCArea")}>heures par zones NC</Nav.Link>
+							<Nav.Link onClick={() => repartition("type")}>heures par types de vol</Nav.Link>
 						</Nav>
 						<li>Crevardomètre</li>
 						<Nav defaultActiveKey='/home' className='flex-column'>
@@ -126,8 +96,8 @@ export const Stats = (): JSX.Element => {
 						endDate={endDate}
 						setEndDate={setEndDate}
 					/>
-					{chart === "line" && <Line data={data!} />}
-					{chart === "bar" && <Bar data={data!} />}
+					{chart === "line" && <Line data={data} />}
+					{chart === "bar" && <Bar data={data} />}
 				</div>
 			</div>
 		</>

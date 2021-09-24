@@ -1,4 +1,4 @@
-import { inDays } from "../Datas/dates"
+import { inDays } from "../Datas/constants"
 import { newAlert, newEvent, flight } from "../types/Objects"
 import { returnHoursInInteger } from "./dateManager"
 

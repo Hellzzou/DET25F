@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
-import { INITIAL_CREWMEMBER } from "../Datas/crewMember"
-import { memberURL } from "../Datas/datas"
+import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
+import { memberURL } from "../Datas/urls"
 import { crewMemberHours } from "../tools/buildFlightHours"
 import { getFetchRequest } from "../tools/fetch"
 import { CrewMemberCardProps } from "../types/Articles"
@@ -18,7 +18,6 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 			if (member) sertFullName(member)
 		}
 		const memberHours = crewMemberHours(props.crewMemberHours)
-		console.log(memberHours)
 		setMemberHours(memberHours)
 	}, [props.crewMemberHours])
 	return (

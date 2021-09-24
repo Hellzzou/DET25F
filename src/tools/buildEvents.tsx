@@ -6,7 +6,7 @@ import {
 	INITIAL_PILOTEQA,
 	INITIAL_PILOTTPA,
 	INITIAL_RADIOTPA,
-} from "../Datas/TPA"
+} from "../Datas/initialObjects"
 import {
 	control,
 	controlArray,

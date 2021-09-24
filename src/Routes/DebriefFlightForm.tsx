@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
-import { DB_URL } from "../Datas/datas"
-import { INITIAL_FALSE_CONTROL } from "../Datas/initialHooks"
+import { DB_URL } from "../Datas/urls"
+import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
 import {
 	INITIAL_CREWTPA,
 	INITIAL_DENAETPA,
@@ -11,7 +11,7 @@ import {
 	INITIAL_PILOTEQA,
 	INITIAL_PILOTTPA,
 	INITIAL_RADIOTPA,
-} from "../Datas/TPA"
+} from "../Datas/initialObjects"
 import { CrewFieldset } from "../Sections/CrewFieldset"
 import { CrewTPAFieldset } from "../Sections/CrewTPAFieldset"
 import { DebriefTimingFieldset } from "../Sections/DebriefTimingFieldset"
@@ -37,7 +37,7 @@ import {
 	pilotTPA,
 	radioTPA,
 } from "../types/Objects"
-import { INITIAL_GROUP } from "../Datas/group"
+import { INITIAL_GROUP } from "../Datas/initialObjects"
 
 export const DebriefFlightForm = ({
 	match,

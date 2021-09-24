@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { Redirect, RouteComponentProps } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { DebriefedflightDateFinderURL, memberURL } from "../Datas/datas"
+import { DebriefedflightDateFinderURL, memberURL } from "../Datas/urls"
 import { FlightTable } from "../Sections/FlightTable"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { crewMembersFlights } from "../tools/buildFlightHours"

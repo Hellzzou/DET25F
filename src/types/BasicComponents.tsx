@@ -126,3 +126,13 @@ export type AlertToastProps = {
 	show: boolean
 	onClose: () => void
 }
+export type TPALineProps = {
+	title: string
+	color: string
+	value: string
+}
+export type PasswordInputProps = {
+	password: control
+	info: { color: string; value: string }
+	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void | Promise<void>
+}

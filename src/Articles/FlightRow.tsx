@@ -6,7 +6,7 @@ export const FlightRow = (props: flightRowProps): JSX.Element => {
 	return (
 		<tbody>
 			<tr>
-				{typeof props.events !== "undefined" &&
+				{!!props.events &&
 					props.events.map((event) => (
 						<FlightCell
 							events={props.events}

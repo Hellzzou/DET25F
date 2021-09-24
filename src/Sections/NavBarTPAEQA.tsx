@@ -1,6 +1,6 @@
 import React from "react"
 import { Button } from "../BasicComponents/Button"
-import { months } from "../Datas/dates"
+import { months } from "../Datas/constants"
 import { NavbarTPAEQAProps } from "../types/Sections"
 
 export const NavBarTPAEQA = (props: NavbarTPAEQAProps): JSX.Element => {

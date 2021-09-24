@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import useAsyncEffect from "use-async-effect"
 import { Select } from "../BasicComponents/Select"
-import { aircraftURL, areaURL, groupURL, NCAreaURL, typeURL } from "../Datas/datas"
+import { aircraftURL, areaURL, groupURL, NCAreaURL, typeURL } from "../Datas/urls"
 import { getFetchRequest } from "../tools/fetch"
 import { selectChoiceIsDone } from "../tools/validators"
 import { Aircraft, Area, FlightType, Group, NCArea } from "../types/Objects"

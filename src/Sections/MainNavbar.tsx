@@ -1,12 +1,12 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
-import { getOneUserURL } from "../Datas/datas"
+import { getOneUserURL } from "../Datas/urls"
 import plane from "../images/whiteAircraft.png"
 import { getFetchRequest } from "../tools/fetch"
 import { user } from "../types/Objects"
 import { Navbar, Nav, NavDropdown } from "react-bootstrap"
-import { INITIAL_USER } from "../Datas/crewMember"
+import { INITIAL_USER } from "../Datas/initialObjects"
 
 export const MainNavBar = (): JSX.Element => {
 	const [user, setUser] = useState<user>(INITIAL_USER)

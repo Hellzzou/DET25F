@@ -6,9 +6,6 @@ import { flightCellProps } from "../types/BasicComponents"
 
 export const FlightCell = (props: flightCellProps): JSX.Element => {
 	const history = useHistory()
-	const onFlightClick = () => {
-		history.push(`/debriefFlight/${props.event._id}/${props.jAero}/${props.nAero}`)
-	}
 	return (
 		<>
 			{getBetweenColSpan(props.event, props.events) > 0 && (
@@ -18,7 +15,7 @@ export const FlightCell = (props: flightCellProps): JSX.Element => {
 				key={props.events.indexOf(props.event)}
 				className={`rounded bg-${getFlightColor(props.event)} align-middle container px-1`}
 				colSpan={getColSpan(props.event)}
-				onClick={onFlightClick}>
+				onClick={() => history.push(`/debriefFlight/${props.event._id}/${props.jAero}/${props.nAero}`)}>
 				<div className='row justify-content-center'>
 					<div className='col-md-3'>
 						{props.event.departureDate.split("T")[1].split(":")[0] +

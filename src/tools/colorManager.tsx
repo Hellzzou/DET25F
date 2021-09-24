@@ -1,4 +1,4 @@
-import { old } from "../Datas/dateTPA"
+import { old } from "../Datas/initialObjects"
 import { flight } from "../types/Objects"
 
 export const getFlightColor = (flight: flight): string => (flight.client === "25F" ? "normalFlight" : "simar")

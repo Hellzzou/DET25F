@@ -1,21 +1,28 @@
-import { months } from "../Datas/dates"
+import { months } from "../Datas/constants"
 import { ChartDatas, flight, Group, newAlert } from "../types/Objects"
 
 export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas => {
-	const underGroups = groups.map(({ underGroup }) => underGroup)
 	const allocation = groups.reduce((acc, group) => {
 		if (group.allocation !== -1) acc += group.allocation
 		return acc
 	}, 0)
 	const reference = Array.from(Array(12), () => allocation / 12).map((alloc, index) => alloc * (index + 1))
-	const datas = flights
+	const underGroups = groups.map(({ underGroup }) => underGroup)
+	const monthly = flights
 		.filter((flight) => underGroups.includes(flight.group))
-		.reduce<number[]>((acc, flight) => {
-			const departureDate = new Date(flight.departureDate).getMonth()
-			if (!acc[departureDate]) acc[departureDate] = 0
-			acc[departureDate] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
-			return acc
-		}, [])
+		.reduce<number[]>(
+			(acc, flight) => {
+				const { dayDuration, nightDuration, departureDate } = flight
+				const monthDeparture = new Date(departureDate).getMonth()
+				acc[monthDeparture] += parseFloat(dayDuration) + parseFloat(nightDuration)
+				return acc
+			},
+			Array.from(Array(12), () => 0)
+		)
+	const datas = monthly.reduce<number[]>((acc, month, index) => {
+		if (index !== 0) acc[index] += acc[index - 1]
+		return acc
+	}, monthly)
 	return {
 		labels: months,
 		datasets: [
@@ -26,7 +33,7 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 				borderColor: "rgba(32, 184, 104, 0.2)",
 			},
 			{
-				label: "consommatiion réelle",
+				label: "consommation réelle",
 				data: datas,
 				backgroundColor: "rgb(88, 160, 231)",
 				borderColor: "rgba(88, 160, 231, 0.2)",
@@ -34,28 +41,10 @@ export const buildConsoChart = (groups: Group[], flights: flight[]): ChartDatas 
 		],
 	}
 }
-export const buildGroupRepartition = (flights: flight[]): ChartDatas => {
+export const buildRepartition = (flights: flight[], prop: "area" | "NCArea" | "group" | "type"): ChartDatas => {
 	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
-		if (!acc[flight.group]) acc[flight.group] = 0
-		acc[flight.group] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
-		return acc
-	}, {})
-	return {
-		labels: Object.entries(datas).map(([group]) => group),
-		datasets: [
-			{
-				label: "Répartition par groupe",
-				data: Object.entries(datas).map(([, total]) => total),
-				backgroundColor: "rgb(88, 160, 231)",
-				borderColor: "rgba(88, 160, 231, 0.2)",
-			},
-		],
-	}
-}
-export const buildAreaRepartition = (flights: flight[]): ChartDatas => {
-	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
-		if (!acc[flight.area]) acc[flight.area] = 0
-		acc[flight.area] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
+		if (!acc[flight[prop]]) acc[flight[prop]] = 0
+		acc[flight[prop]] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
 		return acc
 	}, {})
 	return {
@@ -70,44 +59,7 @@ export const buildAreaRepartition = (flights: flight[]): ChartDatas => {
 		],
 	}
 }
-export const buildAreaNCRepartition = (flights: flight[]): ChartDatas => {
-	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
-		if (!acc[flight.NCArea]) acc[flight.NCArea] = 0
-		acc[flight.NCArea] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
-		return acc
-	}, {})
-	return {
-		labels: Object.entries(datas).map(([group]) => group),
-		datasets: [
-			{
-				label: "Répartition par zone en ZEE",
-				data: Object.entries(datas).map(([, total]) => total),
-				backgroundColor: "rgb(88, 160, 231)",
-				borderColor: "rgba(88, 160, 231, 0.2)",
-			},
-		],
-	}
-}
-export const buildTypeRepartition = (flights: flight[]): ChartDatas => {
-	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
-		if (!acc[flight.type]) acc[flight.type] = 0
-		acc[flight.type] += parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
-		return acc
-	}, {})
-	return {
-		labels: Object.entries(datas).map(([group]) => group),
-		datasets: [
-			{
-				label: "Répartition par tpye",
-				data: Object.entries(datas).map(([, total]) => total),
-				backgroundColor: "rgb(88, 160, 231)",
-				borderColor: "rgba(88, 160, 231, 0.2)",
-			},
-		],
-	}
-}
 export const buildAlertByMember = (alerts: newAlert[]): ChartDatas => {
-	console.log(alerts)
 	const datas = alerts.reduce<Record<string, number>>((acc, alert) => {
 		if (!acc[alert.chief]) acc[alert.chief] = 0
 		if (!acc[alert.pilot]) acc[alert.pilot] = 0

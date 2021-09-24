@@ -4,10 +4,9 @@ import { alertRowProps } from "../types/BasicComponents"
 
 export const AlertRow = (props: alertRowProps): JSX.Element => {
 	const history = useHistory()
-	const alertClick = () => history.push(`/newAlert/${props.events._id}`)
 	return (
-		<div onClick={alertClick}>
-			{typeof props.events !== "undefined" && typeof props.events !== "undefined" && (
+		<div onClick={() => history.push(`/newAlert/${props.events._id}`)}>
+			{!!props.events && !!props.events && (
 				<div className='text-center bg-alert rounded'>
 					<div className='row'>
 						<div className='col-md-6'>{props.events.chief}</div>
