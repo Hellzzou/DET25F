@@ -10,5 +10,7 @@ export const textIsNotNull = (value: string): boolean => value !== "" && value.l
 export const arrayIsNotEmpty = (array: Array<string>): boolean => array.length !== -1
 export const formValidity = (hooks: Array<Control | ControlArray>): boolean =>
 	hooks.reduce<boolean>((acc, hook) => (acc = acc && hook.validity), true)
+export const AtLeastOne = (hooks: Array<Control>): boolean =>
+	hooks.reduce<boolean>((acc, hook) => (acc = acc || hook.validity), false)
 export const passwordCheck = (value: string): boolean =>
 	/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,15}$/.test(value)

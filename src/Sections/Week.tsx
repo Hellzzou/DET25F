@@ -25,24 +25,6 @@ export const Week = (): JSX.Element => {
 	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
-	const etat400Click = () => {
-		console.log("Etat 400")
-	}
-	const fdvClick = (date: Date) => {
-		console.log(date)
-	}
-	const nextWeekClick = () => {
-		setMonday(monday + 7 * inDays)
-	}
-	const previousWeekClick = () => {
-		setMonday(monday - 7 * inDays)
-	}
-	const thisWeekClick = () => {
-		setMonday(currentMonday)
-	}
-	const newEventClick = () => {
-		history.push("/newFlight")
-	}
 	useAsyncEffect(async () => {
 		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, {
 			start: new Date(monday),
@@ -66,10 +48,10 @@ export const Week = (): JSX.Element => {
 		<>
 			<div className='row m-1 my-0'>
 				<WeekNavBar
-					nextClick={nextWeekClick}
-					previousClick={previousWeekClick}
-					nowClick={thisWeekClick}
-					newEventClick={newEventClick}
+					nextClick={() => setMonday(monday + 7 * inDays)}
+					previousClick={() => setMonday(monday - 7 * inDays)}
+					nowClick={() => setMonday(currentMonday)}
+					newEventClick={() => history.push("/newFlight")}
 					firstDay={monday}
 				/>
 				<table className='col-md-12 table table-secondary table-sm align-middle my-1'>
@@ -95,7 +77,9 @@ export const Week = (): JSX.Element => {
 													buttonColor='primary'
 													buttonContent='FDV'
 													onClick={() =>
-														fdvClick(new Date(monday + days.indexOf(day) * inDays))
+														history.push(
+															`/fdv/${(monday + days.indexOf(day) * inDays).toString()}`
+														)
 													}
 												/>
 											</div>
@@ -155,7 +139,12 @@ export const Week = (): JSX.Element => {
 				</table>
 			</div>
 			<div className='row justify-content-center'>
-				<Button size={2} buttonContent='ETAT 400' buttonColor='primary' onClick={etat400Click} />
+				<Button
+					size={2}
+					buttonContent='ETAT 400'
+					buttonColor='primary'
+					onClick={() => history.push(`/etat400/${monday.toString()}`)}
+				/>
 			</div>
 		</>
 	)

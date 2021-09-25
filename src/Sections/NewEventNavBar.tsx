@@ -8,7 +8,7 @@ export const NewEventNavBar = (): JSX.Element => {
 	const newEventClick = () => history.push("/newEvent/newOne")
 	const newAlertClick = () => history.push("/newAlert/newOne")
 	return (
-		<div className='row justify-content-center' style={{ width: "100%" }}>
+		<div className='row justify-content-center p-2' style={{ width: "100%" }}>
 			<Button size={3} buttonColor='primary' buttonContent='Nouveau vol' onClick={newFlightClick} />
 			<div className='col-md-1'></div>
 			<Button size={3} buttonColor='primary' buttonContent='Nouvel évènement' onClick={newEventClick} />

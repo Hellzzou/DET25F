@@ -74,6 +74,7 @@ export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Elemen
 			</Modal.Header>
 			<Modal.Body>
 				<PasswordInput
+					type='password'
 					password={ancientPassword}
 					info={{
 						color: "",
@@ -81,8 +82,18 @@ export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Elemen
 					}}
 					handleChange={(e) => checkAncientPasswordValidity(e)}
 				/>
-				<PasswordInput password={newPassword1} info={info} handleChange={(e) => checkPAssword(e, 1)} />
-				<PasswordInput password={newPassword2} info={info} handleChange={(e) => checkPAssword(e, 2)} />
+				<PasswordInput
+					type='password'
+					password={newPassword1}
+					info={info}
+					handleChange={(e) => checkPAssword(e, 1)}
+				/>
+				<PasswordInput
+					type='password'
+					password={newPassword2}
+					info={info}
+					handleChange={(e) => checkPAssword(e, 2)}
+				/>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button

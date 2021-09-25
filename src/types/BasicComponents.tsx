@@ -132,6 +132,7 @@ export type TPALineProps = {
 	value: string
 }
 export type PasswordInputProps = {
+	type: string
 	password: Control
 	info: { color: string; value: string }
 	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void | Promise<void>

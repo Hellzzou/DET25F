@@ -25,6 +25,8 @@ import { membersManager } from "./Routes/MembersManager"
 import { UsersManager } from "./Routes/UsersManager"
 import { MyAccount } from "./Routes/MyAccount"
 import { Stats } from "./Routes/Stats"
+import { Etat400 } from "./Routes/Etat400"
+import { FlightSheet } from "./Routes/FlightSheet"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -55,6 +57,8 @@ export const App = (): React.ReactElement => {
 				<Route path='/users' component={UsersManager} />
 				<Route path='/myAccount' component={MyAccount} />
 				<Route path='/stats' component={Stats} />
+				<Route path='/etat400/:monday' component={Etat400} />
+				<Route path='/fdv/:monday' component={FlightSheet} />
 			</Switch>
 		</BrowserRouter>
 	)

@@ -237,3 +237,26 @@ export type ChartDatas = {
 		borderColor: string
 	}[]
 }
+export type Etat400View = {
+	date: string
+	crew: string
+	takeOff: string
+	duration: number
+	type: string
+	mission: string
+	underGroup: string
+	fuel: string
+	config: string
+}
+export type FDVView = {
+	crew: string
+	chief: string
+	crewMembers: string
+	takeOff: string
+	duration: number
+	type: string
+	mission: string
+	underGroup: string
+	fuel: string
+	config: string
+}

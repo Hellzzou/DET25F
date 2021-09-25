@@ -12,7 +12,7 @@ import { postFetchRequest } from "../tools/fetch"
 import { fullfillAlert } from "../tools/fullfillForms"
 import { buildNewAlert } from "../tools/buildEvents"
 import { tokenCheck } from "../tools/user"
-import { formValidity } from "../tools/validators"
+import { AtLeastOne, formValidity } from "../tools/validators"
 import { Alert } from "../types/Objects"
 import { MainNavBar } from "../Sections/MainNavbar"
 
@@ -82,9 +82,16 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 						setTech={setTech}
 					/>
 				</div>
+				<div className='row justify-content-center text-danger'>
+					{formValidity([departureDate])
+						? AtLeastOne([chief, pilot, mecbo, nav, radio, rdr, tech])
+							? ""
+							: "Vous devez au moins rentré un membre"
+						: "La date doit être valide"}
+				</div>
 			</form>
 			<AddOrReturnButtons
-				validity={formValidity([departureDate])}
+				validity={formValidity([departureDate]) && AtLeastOne([chief, pilot, mecbo, nav, radio, rdr, tech])}
 				addContent={match.params.id !== "newOne" ? "Modifier" : "Ajouter"}
 				addClick={match.params.id !== "newOne" ? modifyAlertClick : addEventClick}
 				deleteClick={deleteClick}
