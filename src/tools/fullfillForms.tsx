@@ -82,4 +82,5 @@ export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetSta
 	setters[2]({ value: event.arrivalDate.split("T")[0], validity: true, disabled: false })
 	setters[3]({ value: arrivalTime, validity: true, disabled: false })
 	setters[4]({ value: event.event, validity: true, disabled: false })
+	setters[5]({ value: event.type, validity: true, disabled: false })
 }

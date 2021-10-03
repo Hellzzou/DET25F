@@ -40,6 +40,7 @@ export type Flight = {
 	_id?: string
 	departureDate: string
 	arrivalDate: string
+	briefingTime?: string
 	aircraft: string
 	fuel: string
 	config: string
@@ -75,6 +76,7 @@ export type Event = {
 	departureDate: string
 	arrivalDate: string
 	event: string
+	type: string
 	members: [string]
 }
 export type Alert = {
@@ -147,7 +149,7 @@ export type PilotEQA = {
 		ATTN1: { name: string; value: boolean }
 		ATTN: { name: string; value: boolean }
 		AMVPADV: { name: string; value: boolean }
-		AMVMANU: { name: string; value: boolean }
+		AMVM: { name: string; value: boolean }
 		AMVN: { name: string; value: boolean }
 		STAND: { name: string; value: boolean }
 		ERGTR: { name: string; value: boolean }
@@ -224,6 +226,15 @@ export type Group = {
 	client: string
 	allocation: number
 }
+export type UpgradedGroup = {
+	group: string
+	underGroup: string
+	updradedUnderGroup: number
+	description: string
+	manager: string
+	client: string
+	allocation: number
+}
 export type Duration = {
 	dayDuration: number
 	nightDuration: number
@@ -233,8 +244,8 @@ export type ChartDatas = {
 	datasets: {
 		label: string
 		data: number[]
-		backgroundColor: string
-		borderColor: string
+		backgroundColor: string[]
+		borderColor: string[]
 	}[]
 }
 export type Etat400View = {

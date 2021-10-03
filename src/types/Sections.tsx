@@ -12,6 +12,8 @@ export type timingFieldsetProps = {
 	setEndDate: React.Dispatch<React.SetStateAction<Control>>
 	endTime: Control
 	setEndTime: React.Dispatch<React.SetStateAction<Control>>
+	biefingTime?: Control
+	setBriefingTime?: React.Dispatch<React.SetStateAction<Control>>
 	jAero?: string
 	nAero?: string
 }
@@ -63,6 +65,8 @@ export type addOrReturnButtonsProps = {
 export type eventFieldsetProps = {
 	event: Control
 	setEvent: React.Dispatch<React.SetStateAction<Control>>
+	eventType: Control
+	setEventType: React.Dispatch<React.SetStateAction<Control>>
 }
 export type alertFieldsetProps = {
 	departureDate: Control
@@ -113,7 +117,7 @@ export type CrewTPAFieldsetProps = {
 	setNightDuration: React.Dispatch<React.SetStateAction<Control>>
 }
 export type NavbarTPAEQAProps = {
-	date: number
+	date: Date
 	next: () => void
 	prev: () => void
 }

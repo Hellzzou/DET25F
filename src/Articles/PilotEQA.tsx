@@ -23,8 +23,7 @@ export const PilotEQA = (props: PilotEQAProps): JSX.Element => {
 							TPA.name === "AMV PA DV jour"
 								? { name: "AMV PA DV jour", value: !TPA.value }
 								: pilotEQA.EQA.AMVPADV,
-						AMVMANU:
-							TPA.name === "AMV manu" ? { name: "AMV manu", value: !TPA.value } : pilotEQA.EQA.AMVMANU,
+						AMVM: TPA.name === "AMV manu" ? { name: "AMV manu", value: !TPA.value } : pilotEQA.EQA.AMVM,
 						AMVN: TPA.name === "AMV nuit" ? { name: "AMV nuit", value: !TPA.value } : pilotEQA.EQA.AMVN,
 						STAND: TPA.name === "stand" ? { name: "stand", value: !TPA.value } : pilotEQA.EQA.STAND,
 						ERGTR:
@@ -91,7 +90,7 @@ export const PilotEQA = (props: PilotEQAProps): JSX.Element => {
 						ATTN1: pilotEQA.EQA.ATTN1,
 						ATTN: pilotEQA.EQA.ATTN,
 						AMVPADV: pilotEQA.EQA.AMVPADV,
-						AMVMANU: pilotEQA.EQA.AMVMANU,
+						AMVM: pilotEQA.EQA.AMVM,
 						AMVN: pilotEQA.EQA.AMVN,
 						STAND: pilotEQA.EQA.STAND,
 						ERGTR: pilotEQA.EQA.ERGTR,
@@ -119,7 +118,7 @@ export const PilotEQA = (props: PilotEQAProps): JSX.Element => {
 						ATTN1: { name: "att n-1", value: eqa.EQA.ATTN1.value },
 						ATTN: { name: "att nuit", value: eqa.EQA.ATTN.value },
 						AMVPADV: { name: "AMV PA DV jour", value: eqa.EQA.AMVPADV.value },
-						AMVMANU: { name: "AMV manu", value: eqa.EQA.AMVMANU.value },
+						AMVM: { name: "AMV manu", value: eqa.EQA.AMVM.value },
 						AMVN: { name: "AMV nuit", value: eqa.EQA.AMVN.value },
 						STAND: { name: "stand", value: eqa.EQA.STAND.value },
 						ERGTR: { name: "EXT/RAL GTR", value: eqa.EQA.ERGTR.value },
@@ -190,7 +189,7 @@ export const PilotEQA = (props: PilotEQAProps): JSX.Element => {
 					<Switch control={props.pilotEQA.EQA.ATTN1} size={3} handleChange={handleSwitchChange} />
 					<Switch control={props.pilotEQA.EQA.ATTN} size={3} handleChange={handleSwitchChange} />
 					<Switch control={props.pilotEQA.EQA.AMVPADV} size={3} handleChange={handleSwitchChange} />
-					<Switch control={props.pilotEQA.EQA.AMVMANU} size={3} handleChange={handleSwitchChange} />
+					<Switch control={props.pilotEQA.EQA.AMVM} size={3} handleChange={handleSwitchChange} />
 					<Switch control={props.pilotEQA.EQA.AMVN} size={3} handleChange={handleSwitchChange} />
 					<Switch control={props.pilotEQA.EQA.STAND} size={3} handleChange={handleSwitchChange} />
 					<Switch control={props.pilotEQA.EQA.ERGTR} size={3} handleChange={handleSwitchChange} />

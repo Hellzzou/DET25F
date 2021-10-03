@@ -22,6 +22,15 @@ $custom-colors: (
 .mutedWarning {
 	color: rgb(233, 198, 133);
 }
+.yellowGroup {
+	background-color: rgb(248, 246, 112);
+}
+.redGroup {
+	background-color: rgb(250, 161, 166);
+}
+.blueGroup {
+	background-color: rgb(164, 208, 252);
+}
 $primary: rgb(88, 160, 231);
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";

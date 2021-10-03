@@ -200,7 +200,7 @@ export const buildAllTPAs = (members: Array<CrewMember>, allFlights: Array<Fligh
 		denaeTPA: buildAllDeanesTPA(membersActions, members),
 	}
 }
-export const buildPilotPurcentage = (pilotTPA: PilotDateTPA, dateToCompare: number): number => {
+export const buildPilotPurcentage = (pilotTPA: PilotDateTPA, dateToCompare: Date): number => {
 	let purcentage = [pilotTPA.ATTPC, pilotTPA.IFR, pilotTPA.LCS, pilotTPA.DITCHING, pilotTPA.SIMAR].reduce(
 		(acc, TPA) => {
 			if (getQuadri(TPA, dateToCompare) === "success") acc += 1
@@ -214,7 +214,7 @@ export const buildPilotPurcentage = (pilotTPA: PilotDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 9) * 100)
 }
-export const buildMecboPurcentage = (mecboTPA: MecboDateTPA, dateToCompare: number): number => {
+export const buildMecboPurcentage = (mecboTPA: MecboDateTPA, dateToCompare: Date): number => {
 	let purcentage = [...mecboTPA.PH, mecboTPA.LCS, mecboTPA.DITCHING, mecboTPA.SIMAR].reduce((acc, TPA) => {
 		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
 		return acc
@@ -225,7 +225,7 @@ export const buildMecboPurcentage = (mecboTPA: MecboDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 10) * 100)
 }
-export const buildDenaePurcentage = (denaeTPA: DenaeDateTPA, dateToCompare: number): number => {
+export const buildDenaePurcentage = (denaeTPA: DenaeDateTPA, dateToCompare: Date): number => {
 	let purcentage = [...denaeTPA.appRDR, denaeTPA.PGPS, denaeTPA.DITCHING, denaeTPA.SIMAR].reduce((acc, TPA) => {
 		if (getQuadri(TPA, dateToCompare) === "success") acc += 1
 		return acc
@@ -236,7 +236,7 @@ export const buildDenaePurcentage = (denaeTPA: DenaeDateTPA, dateToCompare: numb
 	}, 0)
 	return Math.ceil((purcentage / 13) * 100)
 }
-export const buildRadioPurcentage = (radioTPA: RadioDateTPA, dateToCompare: number): number => {
+export const buildRadioPurcentage = (radioTPA: RadioDateTPA, dateToCompare: Date): number => {
 	let purcentage = [...radioTPA.IMINT, ...radioTPA.entCodage, radioTPA.DITCHING, radioTPA.SIMAR].reduce(
 		(acc, TPA) => {
 			if (getQuadri(TPA, dateToCompare) === "success") acc += 1

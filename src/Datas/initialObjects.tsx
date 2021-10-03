@@ -33,8 +33,8 @@ export const INITIAL_CHART_DATA = {
 		{
 			label: "",
 			data: [1],
-			backgroundColor: "",
-			borderColor: "",
+			backgroundColor: [""],
+			borderColor: [""],
 		},
 	],
 }
@@ -104,6 +104,17 @@ export const INITIAL_GROUP = [
 		allocation: 0,
 	},
 ]
+export const INITIAL_UPGRADEDGROUP = [
+	{
+		group: "1",
+		underGroup: "110",
+		updradedUnderGroup: 0,
+		description: "",
+		manager: "",
+		client: "",
+		allocation: 0,
+	},
+]
 export const INITIAL_FALSE_CONTROL = {
 	value: "",
 	validity: false,
@@ -148,7 +159,7 @@ export const INITIAL_PILOTEQA = {
 	ATTN1: { name: "att n-1", value: false },
 	ATTN: { name: "att nuit", value: false },
 	AMVPADV: { name: "AMV PA DV jour", value: false },
-	AMVMANU: { name: "AMV manu", value: false },
+	AMVM: { name: "AMV manu", value: false },
 	AMVN: { name: "AMV nuit", value: false },
 	STAND: { name: "stand", value: false },
 	ERGTR: { name: "EXT/RAL GTR", value: false },

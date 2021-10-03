@@ -19,6 +19,7 @@ import { buildWeekAlerts, buildWeekEvents, buildWeekFlights } from "../tools/bui
 import { INITIAL_ALERT } from "../Datas/initialObjects"
 
 export const Week = (): JSX.Element => {
+	const colNumber = Array.from(Array(28), () => "3.4%")
 	const [monday, setMonday] = useState(currentMonday)
 	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
 	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([])
@@ -107,20 +108,9 @@ export const Week = (): JSX.Element => {
 								<td className='text-center'>
 									<table width='100%'>
 										<colgroup>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
-											<col width='6.8%'></col>
+											{colNumber.map((col) => (
+												<col key={colNumber.indexOf(col)} width={col}></col>
+											))}
 										</colgroup>
 										<FlightRow
 											events={weekFlights ? weekFlights[days.indexOf(day)] : []}

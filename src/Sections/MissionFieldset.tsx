@@ -34,7 +34,16 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 		const configs = await getFetchRequest<Config[]>(configURL)
 		if (typeof configs !== "string") setConfig(configs.map(({ name }) => name))
 		const allGroups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof allGroups !== "string") setGroups(allGroups.map(({ underGroup }) => underGroup))
+		if (typeof allGroups !== "string") {
+			setGroups(
+				allGroups
+					.map(({ underGroup }) => {
+						return { underGroup: underGroup, upgradedUndergroup: parseInt(underGroup.replace("X", "0")) }
+					})
+					.sort((u1, u2) => u1.upgradedUndergroup - u2.upgradedUndergroup)
+					.map((undergroup) => undergroup.underGroup)
+			)
+		}
 	}, [])
 	return (
 		<fieldset className=' card-body-color rounded py-1'>
@@ -47,7 +56,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.aircraft}
 					setControl={props.setAircraft}
-					options={aircraft}
+					options={aircraft.sort((a1, a2) => parseInt(a1) - parseInt(a2))}
 					validator={selectChoiceIsDone}
 				/>
 				<Select
@@ -65,7 +74,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.config}
 					setControl={props.setConfig}
-					options={config}
+					options={config.sort()}
 					validator={selectChoiceIsDone}
 				/>
 			</div>
@@ -77,7 +86,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.type}
 					setControl={props.setType}
-					options={type}
+					options={type.sort()}
 					validator={selectChoiceIsDone}
 				/>
 				<Input
@@ -101,7 +110,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.area}
 					setControl={props.setArea}
-					options={areas}
+					options={areas.sort()}
 					validator={selectChoiceIsDone}
 				/>
 				<Select
@@ -110,7 +119,7 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.NCArea}
 					setControl={props.setNCArea}
-					options={NCAreas}
+					options={NCAreas.sort()}
 					validator={selectChoiceIsDone}
 				/>
 			</div>

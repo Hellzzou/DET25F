@@ -82,3 +82,17 @@ export const DBInfos = {
 		warning: "Attention vous devez être administrateur pour pouvoir les modifier",
 	},
 }
+export const eventType = [
+	"REPOS",
+	"EXER",
+	"MISSION",
+	"PERM",
+	"VISITE",
+	"DET25F",
+	"RESA ZONE",
+	"MOUV",
+	"SPORT",
+	"CEREMONIE",
+	"ARRET TRAVAIL",
+	"JET AVIATION",
+]

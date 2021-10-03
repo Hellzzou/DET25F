@@ -118,7 +118,7 @@ export type CrewTPACardProps = {
 		name: string
 		TPA: PilotDateTPA | MecboDateTPA | RadioDateTPA | DenaeDateTPA
 	}
-	date: number
+	date: Date
 }
 export type AlertToastProps = {
 	color: string

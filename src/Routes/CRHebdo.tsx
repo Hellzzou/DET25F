@@ -4,14 +4,23 @@ import useAsyncEffect from "use-async-effect"
 import { DebriefedflightDateFinderURL, distinctUnderGroupURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { buildWeekReport } from "../tools/buildReports"
-import { hebdoColor } from "../tools/colorManager"
+import { groupColor, hebdoColor } from "../tools/colorManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { weekReport, weekReportByUnderGroups, weekReportByWeek } from "../tools/reportCalculator"
-import { Flight } from "../types/Objects"
+import {
+	sumGroup,
+	sumGroupByWeek,
+	underGroupFilter,
+	weekReport,
+	weekReportByUnderGroups,
+	weekReportByWeek,
+	weekReportNight,
+	weekReportNightByWeek,
+} from "../tools/reportCalculator"
+import { Duration, Flight } from "../types/Objects"
 
 export const CRHebdo = (): JSX.Element => {
 	const [underGroups, setUnderGroups] = useState<string[]>(["110"])
-	const [flights, setFlights] = useState<Record<string, number>[]>()
+	const [flights, setFlights] = useState<Record<string, Duration>[]>()
 	useAsyncEffect(async () => {
 		const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
 		const yearFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
@@ -46,17 +55,40 @@ export const CRHebdo = (): JSX.Element => {
 					</tr>
 				</thead>
 				<tbody>
-					{underGroups.map((underGroup) => (
-						<tr
-							key={underGroups?.indexOf(underGroup)}
-							className={`text-center table-${hebdoColor(underGroup)}`}>
-							<td>{underGroup}</td>
-							{!!flights &&
-								flights.map((flight) => (
-									<td key={flights.indexOf(flight)}>{flight[underGroup].toFixed(1)}</td>
-								))}
-							<td>{!!flights && weekReportByUnderGroups(flights, underGroup).toFixed(1)}</td>
-						</tr>
+					{["1", "2", "3"].map((group) => (
+						<>
+							{underGroupFilter(underGroups, group).map((underGroup) => (
+								<tr
+									key={underGroups?.indexOf(underGroup)}
+									className={`text-center table-${hebdoColor(underGroup)}`}>
+									<td>{underGroup}</td>
+									{!!flights &&
+										flights.map((flight) => (
+											<td key={flights.indexOf(flight)}>
+												{(
+													flight[underGroup].dayDuration + flight[underGroup].nightDuration
+												).toFixed(1)}
+											</td>
+										))}
+									<td>{!!flights && weekReportByUnderGroups(flights, underGroup).toFixed(1)}</td>
+								</tr>
+							))}
+							<tr className={`text-center ${groupColor(group)}`}>
+								<td>Total</td>
+								{!!flights &&
+									sumGroupByWeek(flights, underGroupFilter(underGroups, group)).map((week) => (
+										<td
+											key={sumGroupByWeek(flights, underGroupFilter(underGroups, group)).indexOf(
+												week
+											)}>
+											{week.toFixed(1)}
+										</td>
+									))}
+								<td>
+									{!!flights && sumGroup(flights, underGroupFilter(underGroups, group)).toFixed(1)}
+								</td>
+							</tr>
+						</>
 					))}
 				</tbody>
 				<tfoot className='table-secondary'>
@@ -69,6 +101,16 @@ export const CRHebdo = (): JSX.Element => {
 								</th>
 							))}
 						<th>{!!flights && weekReport(flights, underGroups).toFixed(1)}</th>
+					</tr>
+					<tr className='text-center'>
+						<th>DONT NUIT</th>
+						{!!flights &&
+							flights.map((flight) => (
+								<th key={flights.indexOf(flight)}>
+									{weekReportNightByWeek(flight, underGroups).toFixed(1)}
+								</th>
+							))}
+						<th>{!!flights && weekReportNight(flights, underGroups).toFixed(1)}</th>
 					</tr>
 				</tfoot>
 			</table>

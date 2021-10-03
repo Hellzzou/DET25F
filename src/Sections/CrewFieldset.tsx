@@ -29,7 +29,7 @@ export const CrewFieldset = (props: CrewFieldsetProps): JSX.Element => {
 					textColor='white'
 					control={props.pilot}
 					setControl={props.setPilot}
-					options={props.pilotList}
+					options={[...props.CDAList, ...props.pilotList]}
 					validator={selectChoiceIsDone}
 				/>
 			</div>

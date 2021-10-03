@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
-import { Redirect, RouteComponentProps } from "react-router-dom"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
+import { Button } from "../BasicComponents/Button"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/urls"
 import { FlightTable } from "../Sections/FlightTable"
 import { MainNavBar } from "../Sections/MainNavbar"
@@ -13,6 +14,7 @@ import { CrewMember, Flight } from "../types/Objects"
 export const MemberHoursDetail = ({
 	match,
 }: RouteComponentProps<{ name: string; startDate: string; endDate: string }>): JSX.Element => {
+	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const [crewMembersHours, setCrewMembersHours] = useState<Flight[]>([])
 	const [member, setMember] = useState<CrewMember>()
@@ -41,6 +43,14 @@ export const MemberHoursDetail = ({
 			<MainNavBar />
 			<h4 className='text-center my-3'>{`Heures du ${member?.rank} ${member?.firstName} ${member?.surName}`}</h4>
 			<FlightTable flights={crewMembersHours!} />
+			<div className='row justify-content-center'>
+				<Button
+					size={3}
+					buttonColor='danger'
+					buttonContent='Retour'
+					onClick={() => history.push("/flightHours")}
+				/>
+			</div>
 		</div>
 	)
 }

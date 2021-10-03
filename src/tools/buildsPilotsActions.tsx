@@ -3,10 +3,10 @@ import { EQADurations } from "../Datas/constants"
 import { AllEQAs, CrewMember, Flight, PilotDateEQA } from "../types/Objects"
 import { getDone, getDurationsValidity, getMonthly, getQuadri } from "./colorManager"
 
-export const buildAllEQAs = (members: Array<CrewMember>, fourYearsFlights: Array<Flight>, month: number): AllEQAs => {
-	const lastYear = new Date(new Date().getFullYear() - 1, month, 1)
-	const fourMonths = new Date(new Date().getFullYear(), month - 4, 1)
-	const lastMonth = new Date(new Date().getFullYear(), month, 1)
+export const buildAllEQAs = (members: Array<CrewMember>, fourYearsFlights: Array<Flight>, date: Date): AllEQAs => {
+	const lastYear = new Date(date.getFullYear(), date.getMonth() - 12, 1)
+	const fourMonths = new Date(date.getFullYear(), date.getMonth() - 4, 1)
+	const lastMonth = new Date(date.getFullYear(), date.getMonth(), 1)
 	const pilotActions = fourYearsFlights.flatMap((flight) =>
 		[flight.chief, flight.pilot, ...flight.crewMembers]
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -94,7 +94,7 @@ export const buildAllEQAs = (members: Array<CrewMember>, fourYearsFlights: Array
 
 	return [...allEQAs, ...missingMembers]
 }
-export const buildPilotEQAPurcentage = (pilotEQA: PilotDateEQA, dateToCompare: number): number => {
+export const buildPilotEQAPurcentage = (pilotEQA: PilotDateEQA, dateToCompare: Date): number => {
 	let purcentage = [
 		...pilotEQA.ATTJ,
 		pilotEQA.ATTN1,

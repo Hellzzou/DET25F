@@ -3,7 +3,7 @@ import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Legend } from "../BasicComponents/Legend"
 import { eventDelete, eventIDFinder, saveEventURL } from "../Datas/urls"
-import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
+import { INITIAL_FALSE_CONTROL, INITIAL_FALSE_SELECT } from "../Datas/initialObjects"
 import { AddOrReturnButtons } from "../Sections/AddOrReturnButtons"
 import { EventFieldset } from "../Sections/EventFieldset"
 import { MainNavBar } from "../Sections/MainNavbar"
@@ -24,8 +24,9 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalTime, setArrivalTime] = useState(INITIAL_FALSE_CONTROL)
 	const [event, setEvent] = useState(INITIAL_FALSE_CONTROL)
-	const hooks = [departureDate, departureTime, arrivalDate, arrivalTime, event]
-	const setters = [setDepartureDate, setDepartureTime, setArrivalDate, setArrivalTime, setEvent]
+	const [eventType, setEventType] = useState(INITIAL_FALSE_SELECT)
+	const hooks = [departureDate, departureTime, arrivalDate, arrivalTime, event, eventType]
+	const setters = [setDepartureDate, setDepartureTime, setArrivalDate, setArrivalTime, setEvent, setEventType]
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks)
 		const saved = await postFetchRequest<string>(saveEventURL, { newEvent })
@@ -72,7 +73,12 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 					/>
 				</div>
 				<div className='col-md-6 m-1 justify-content-center'>
-					<EventFieldset event={event} setEvent={setEvent} />
+					<EventFieldset
+						event={event}
+						setEvent={setEvent}
+						eventType={eventType}
+						setEventType={setEventType}
+					/>
 				</div>
 			</form>
 			<AddOrReturnButtons

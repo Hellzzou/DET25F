@@ -6,21 +6,23 @@ import { DebriefedflightDateFinderURL, memberURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllEQAs } from "../tools/buildsPilotsActions"
+import { getEndOfMonth, getEndOfNextMonth, getEndOfPreviousMonth } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
 import { AllEQAs, CrewMember, Flight } from "../types/Objects"
 
 export const PilotEQA = (): JSX.Element => {
+	const endOfMonth = getEndOfMonth()
 	const [token, setToken] = useState(true)
-	const [dateTocompare, setDateToCompare] = useState(new Date().getMonth())
+	const [dateTocompare, setDateToCompare] = useState(endOfMonth)
 	const [pilotEQAs, setPilotEQAs] = useState<AllEQAs>([])
-	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
-	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
+	const nextMonthClick = () => setDateToCompare(getEndOfNextMonth(dateTocompare))
+	const previousMonthClick = () => setDateToCompare(getEndOfPreviousMonth(dateTocompare))
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
+			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate() + 1)
 			const lastFourYears = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
 			const lastFourYearsFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate: lastFourYears,
@@ -32,7 +34,7 @@ export const PilotEQA = (): JSX.Element => {
 				setPilotEQAs(EQAs)
 			}
 		}
-	}, [])
+	}, [dateTocompare])
 	return !token ? (
 		<Redirect to='/' />
 	) : (

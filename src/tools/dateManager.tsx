@@ -1,4 +1,5 @@
-import { Nights } from "../types/Objects"
+import { inDays } from "../Datas/constants"
+import { Control, Nights } from "../types/Objects"
 
 export const getWeekNumber = (date: number): number => {
 	let i = 0
@@ -48,7 +49,7 @@ export const returnDayNightDuration = (
 	if (end < jAero) nuit -= jAero - end
 	else if (end > jAero && end < nAero) jour -= nAero - end
 	else if (end > nAero) nuit += end - nAero
-	jour = Math.floor(jour * 10) / 10
+	jour = Math.ceil(jour * 10) / 10
 	nuit = Math.ceil(nuit * 10) / 10
 	return { jour: jour, nuit: nuit }
 }
@@ -67,3 +68,22 @@ export const INITIAL_ENDDATE_CONTROL = {
 	validity: true,
 	disabled: false,
 }
+export const getBriefingTime = (departureTime: Control): Control => {
+	const briefingHour = new Date().setHours(
+		parseInt(departureTime.value.split(":")[0]) - 1,
+		parseInt(departureTime.value.split(":")[1]) - 30
+	)
+	const briefingTime =
+		new Date(briefingHour).getHours().toString() + ":" + new Date(briefingHour).getMinutes().toString()
+	return {
+		value: briefingTime,
+		validity: true,
+		disabled: false,
+	}
+}
+export const getEndOfMonth = (): Date =>
+	new Date(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).getTime() - inDays)
+export const getEndOfNextMonth = (date: Date): Date =>
+	new Date(new Date(date.getFullYear(), date.getMonth() + 2, 1).getTime() - inDays)
+export const getEndOfPreviousMonth = (date: Date): Date =>
+	new Date(new Date(date.getFullYear(), date.getMonth(), 1).getTime() - inDays)

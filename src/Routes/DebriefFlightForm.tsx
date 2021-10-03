@@ -341,7 +341,7 @@ export const DebriefFlightForm = ({
 						ATTN1: { name: "att n-1", value: eqa.EQA.ATTN1.value },
 						ATTN: { name: "att nuit", value: eqa.EQA.ATTN.value },
 						AMVPADV: { name: "AMV PA DV jour", value: eqa.EQA.AMVPADV.value },
-						AMVMANU: { name: "AMV manu", value: eqa.EQA.AMVMANU.value },
+						AMVM: { name: "AMV manu", value: eqa.EQA.AMVM.value },
 						AMVN: { name: "AMV nuit", value: eqa.EQA.AMVN.value },
 						STAND: { name: "stand", value: eqa.EQA.STAND.value },
 						ERGTR: { name: "EXT/RAL GTR", value: eqa.EQA.ERGTR.value },

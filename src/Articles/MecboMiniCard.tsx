@@ -23,7 +23,7 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 			value: purcentage + " %",
 			color: purcentage < 66 ? (purcentage < 50 ? "danger" : "warning") : "success",
 		})
-	}, [])
+	}, [props.date])
 	return (
 		<div className='card m-1'>
 			<div className='card-body card-body-color py-2'>

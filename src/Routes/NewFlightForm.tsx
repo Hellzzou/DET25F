@@ -19,6 +19,7 @@ import { manageNCAreas } from "../tools/formManager"
 import { tokenCheck } from "../tools/user"
 import { Button } from "../BasicComponents/Button"
 import { INITIAL_GROUP } from "../Datas/initialObjects"
+import { getBriefingTime } from "../tools/dateManager"
 
 export const NewFlightForm = (): JSX.Element => {
 	const history = useHistory()
@@ -30,6 +31,7 @@ export const NewFlightForm = (): JSX.Element => {
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalTime, setArrivalTime] = useState(INITIAL_FALSE_CONTROL)
+	const [briefingTime, setBriefingTime] = useState(INITIAL_FALSE_CONTROL)
 	const [aircraft, setAircraft] = useState(INITIAL_FALSE_CONTROL)
 	const [fuel, setFuel] = useState(INITIAL_FALSE_CONTROL)
 	const [config, setConfig] = useState(INITIAL_FALSE_CONTROL)
@@ -54,6 +56,7 @@ export const NewFlightForm = (): JSX.Element => {
 		departureTime,
 		arrivalDate,
 		arrivalTime,
+		briefingTime,
 		aircraft,
 		fuel,
 		config,
@@ -143,6 +146,7 @@ export const NewFlightForm = (): JSX.Element => {
 		})
 	}, [pilot.value])
 	useEffect(() => manageNCAreas(area.value, setNCArea, NCArea.value), [area.value])
+	useEffect(() => setBriefingTime(getBriefingTime(departureTime)), [departureTime.value])
 	useAsyncEffect(async () => {
 		if (departureDate.validity) {
 			const departure = new Date(departureDate.value)
@@ -168,6 +172,8 @@ export const NewFlightForm = (): JSX.Element => {
 						setEndDate={setArrivalDate}
 						endTime={arrivalTime}
 						setEndTime={setArrivalTime}
+						biefingTime={briefingTime}
+						setBriefingTime={setBriefingTime}
 						jAero={jAero}
 						nAero={nAero}
 					/>

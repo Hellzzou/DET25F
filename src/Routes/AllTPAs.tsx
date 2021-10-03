@@ -10,26 +10,28 @@ import { DebriefedflightDateFinderURL, memberURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
 import { buildAllTPAs } from "../tools/buildMemberActions"
+import { getEndOfMonth, getEndOfNextMonth, getEndOfPreviousMonth } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { tokenCheck } from "../tools/user"
 import { CrewMember, DenaeDateTPA, Flight, MecboDateTPA, PilotDateTPA, RadioDateTPA } from "../types/Objects"
 
 export const AllTPAs = (): JSX.Element => {
+	const endOfMonth = getEndOfMonth()
 	const [token, setToken] = useState(true)
-	const [dateTocompare, setDateToCompare] = useState(new Date().getMonth())
+	const [dateTocompare, setDateToCompare] = useState(endOfMonth)
 	const [pilotTPA, setPilotTPA] = useState<{ name: string; TPA: PilotDateTPA }[]>([])
 	const [mecboTPA, setMecboTPA] = useState<{ name: string; TPA: MecboDateTPA }[]>([])
 	const [radioTPA, setRadioTPA] = useState<{ name: string; TPA: RadioDateTPA }[]>([])
 	const [denaeTPA, setDenaeTPA] = useState<{ name: string; TPA: DenaeDateTPA }[]>([])
 
-	const nextMonthClick = () => setDateToCompare(new Date().getMonth() + 1)
-	const previousMonthClick = () => setDateToCompare(new Date().getMonth())
+	const nextMonthClick = () => setDateToCompare(getEndOfNextMonth(dateTocompare))
+	const previousMonthClick = () => setDateToCompare(getEndOfPreviousMonth(dateTocompare))
 
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
+			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate() + 1)
 			const startDate = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
 			const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate,
@@ -44,7 +46,7 @@ export const AllTPAs = (): JSX.Element => {
 				setDenaeTPA(TPAs.denaeTPA)
 			}
 		}
-	}, [])
+	}, [dateTocompare])
 	return !token ? (
 		<Redirect to='/' />
 	) : (

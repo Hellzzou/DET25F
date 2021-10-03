@@ -54,35 +54,35 @@ export type PilotMiniCardProps = {
 		name: string
 		TPA: PilotDateTPA
 	}
-	date: number
+	date: Date
 }
 export type MecboMiniCardProps = {
 	mecbo: {
 		name: string
 		TPA: MecboDateTPA
 	}
-	date: number
+	date: Date
 }
 export type RadioMiniCardProps = {
 	radio: {
 		name: string
 		TPA: RadioDateTPA
 	}
-	date: number
+	date: Date
 }
 export type DenaeMiniCardProps = {
 	denae: {
 		name: string
 		TPA: DenaeDateTPA
 	}
-	date: number
+	date: Date
 }
 export type PilotEQAMiniCArdProps = {
 	pilot: {
 		name: string
 		EQA: PilotDateEQA
 	}
-	date: number
+	date: Date
 }
 export type CrewMemberCardProps = {
 	crewMemberName: string

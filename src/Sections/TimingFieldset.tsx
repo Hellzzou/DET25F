@@ -70,6 +70,23 @@ export const TimingFieldset = (props: timingFieldsetProps): JSX.Element => {
 					validator={timeIsCorrect}
 				/>
 			</div>
+			{!!props.biefingTime && !!props.setBriefingTime && (
+				<div className='form-group row m-1'>
+					<Label size={4} title='Heure de briefing :' />
+					<div className='col-md-4'></div>
+					<Input
+						size={4}
+						backgroundColor='dark'
+						textColor='white'
+						type='time'
+						min={0}
+						max={0}
+						control={props.biefingTime}
+						setControl={props.setBriefingTime}
+						validator={timeIsCorrect}
+					/>
+				</div>
+			)}
 		</fieldset>
 	)
 }

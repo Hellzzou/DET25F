@@ -26,6 +26,18 @@
   color: #e9c685;
 }
 
+.yellowGroup {
+  background-color: #f8f670;
+}
+
+.redGroup {
+  background-color: #faa1a6;
+}
+
+.blueGroup {
+  background-color: #a4d0fc;
+}
+
 /*!
  * Bootstrap v5.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

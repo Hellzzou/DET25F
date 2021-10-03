@@ -18,18 +18,22 @@ export const buildQOG = (yearFlights: Flight[], allUnderGroups: string[]): Recor
 		return acc
 	}, emptyArray)
 }
-export const buildWeekReport = (yearFlights: Flight[], allunderGroups: string[]): Record<string, number>[] => {
+export const buildWeekReport = (yearFlights: Flight[], allunderGroups: string[]): Record<string, Duration>[] => {
 	// build an Array with objects where all groups equals 0, its length equals the number of week in the year
 	const emptyArray = Array.from(Array(findNumberOfWeeks()), () =>
-		allunderGroups.reduce<Record<string, number>>((acc, underGroup) => {
-			if (!acc[underGroup]) acc[underGroup] = 0
+		allunderGroups.reduce<Record<string, Duration>>((acc, underGroup) => {
+			if (!acc[underGroup]) acc[underGroup] = { dayDuration: 0, nightDuration: 0 }
 			return acc
 		}, {})
 	)
 	// sum all the year flights of the same week sorting them by week and groups
-	return yearFlights.reduce<Record<string, number>[]>((acc, flight) => {
-		acc[getWeekNumber(Date.parse(flight.departureDate)) - 1][flight.group] +=
-			parseFloat(flight.dayDuration) + parseFloat(flight.nightDuration)
+	return yearFlights.reduce<Record<string, Duration>[]>((acc, flight) => {
+		acc[getWeekNumber(Date.parse(flight.departureDate)) - 1][flight.group].dayDuration += parseFloat(
+			flight.dayDuration
+		)
+		acc[getWeekNumber(Date.parse(flight.departureDate)) - 1][flight.group].nightDuration += parseFloat(
+			flight.nightDuration
+		)
 		return acc
 	}, emptyArray)
 }

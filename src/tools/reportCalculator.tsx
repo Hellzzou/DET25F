@@ -1,11 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Duration, Group } from "../types/Objects"
+import { Duration, Group, UpgradedGroup } from "../types/Objects"
 
 export const groupFilter = (groups: Group[], groupName: string): Group[] => {
 	const regex = "^" + groupName
 	return groups.filter((group) => new RegExp(regex).test(group.underGroup))
 }
-export const getUnderGroupList = (groups: Group[], index: number): string[] => {
+export const clientUndergroupFilter = (groups: Group[], groupName: string, clients?: string[]): Group[] => {
+	const regex = "^" + groupName
+	const groupFiltered = groups.filter((group) => new RegExp(regex).test(group.underGroup))
+	if (clients) return groupFiltered.filter(({ client }) => clients.includes(client))
+	return groupFiltered
+}
+export const underGroupFilter = (underGroups: string[], groupName: string): string[] => {
+	const regex = "^" + groupName
+	return underGroups.filter((underGroup) => new RegExp(regex).test(underGroup))
+}
+export const getUnderGroupList = (groups: UpgradedGroup[], index: number): string[] => {
 	const underGroupList = [groups[index].underGroup]
 	let i = index
 	if (i + 1 < groups.length && groups[i + 1]!.allocation !== -1) return [groups[index].underGroup]
@@ -33,9 +43,19 @@ export const sumQOGFlights = (flights: Record<string, Duration>[], underGroups: 
 	flights.reduce((acc, month) => acc + monthReportByCel(flights, underGroups, flights.indexOf(month)), 0)
 export const monthReportNight = (flights: Record<string, Duration>[], underGroups: Group[]): number =>
 	flights.reduce((acc, month) => acc + nightReportByCol(flights, underGroups, flights.indexOf(month)), 0)
-export const weekReportByUnderGroups = (flights: Record<string, number>[], underGroup: string): number =>
-	flights.reduce((acc, week) => acc + week[underGroup], 0)
-export const weekReportByWeek = (flight: Record<string, number>, underGroups: string[]): number =>
-	underGroups.reduce((acc, underGroup) => acc + flight[underGroup], 0)
-export const weekReport = (flights: Record<string, number>[], underGroups: string[]): number =>
+export const weekReportByUnderGroups = (flights: Record<string, Duration>[], underGroup: string): number =>
+	flights.reduce((acc, week) => acc + week[underGroup].dayDuration + week[underGroup].nightDuration, 0)
+export const weekReportNightByUnderGroups = (flights: Record<string, Duration>[], underGroup: string): number =>
+	flights.reduce((acc, week) => acc + week[underGroup].nightDuration, 0)
+export const weekReportByWeek = (flight: Record<string, Duration>, underGroups: string[]): number =>
+	underGroups.reduce((acc, underGroup) => acc + flight[underGroup].dayDuration + flight[underGroup].nightDuration, 0)
+export const weekReportNightByWeek = (flight: Record<string, Duration>, underGroups: string[]): number =>
+	underGroups.reduce((acc, underGroup) => acc + flight[underGroup].nightDuration, 0)
+export const weekReport = (flights: Record<string, Duration>[], underGroups: string[]): number =>
 	underGroups.reduce((acc, underGroup) => acc + weekReportByUnderGroups(flights, underGroup), 0)
+export const weekReportNight = (flights: Record<string, Duration>[], underGroups: string[]): number =>
+	underGroups.reduce((acc, underGroup) => acc + weekReportNightByUnderGroups(flights, underGroup), 0)
+export const sumGroupByWeek = (flights: Record<string, Duration>[], underGroups: string[]): number[] =>
+	flights.map((flight) => weekReportByWeek(flight, underGroups))
+export const sumGroup = (flights: Record<string, Duration>[], underGroups: string[]): number =>
+	flights.reduce((acc, flight) => acc + weekReportByWeek(flight, underGroups), 0)

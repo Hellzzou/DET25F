@@ -85,7 +85,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='pilote :' size={4} />
+				<Label title='Pilote :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'
@@ -97,7 +97,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='Mecbo :' size={4} />
+				<Label title='MECBO :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'
@@ -109,7 +109,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='Nav :' size={4} />
+				<Label title='DENAE 1 :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'
@@ -121,7 +121,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='Radariste :' size={4} />
+				<Label title='DENAE 2 :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'
@@ -133,7 +133,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='Radio :' size={4} />
+				<Label title='GETBO :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'
@@ -145,7 +145,7 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 				/>
 			</div>
 			<div className='row form-group m-1'>
-				<Label title='Tech :' size={4} />
+				<Label title='TECH :' size={4} />
 				<Select
 					size={8}
 					backgroundColor='dark'

@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
-import { Button } from "../BasicComponents/Button"
 import { nightURL } from "../Datas/urls"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest } from "../tools/fetch"
@@ -92,14 +91,6 @@ export const FlightTable = (props: FlightTableProps): JSX.Element => {
 					<h4 className='col-md-12 text-center'>AUCUN VOL TROUVÉ</h4>
 				</div>
 			)}
-			<div className='row justify-content-center'>
-				<Button
-					size={3}
-					buttonColor='danger'
-					buttonContent='Retour'
-					onClick={() => history.push("/flightHours")}
-				/>
-			</div>
 		</>
 	)
 }
