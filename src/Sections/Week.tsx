@@ -22,7 +22,7 @@ export const Week = (): JSX.Element => {
 	const colNumber = Array.from(Array(28), () => "3.4%")
 	const [monday, setMonday] = useState(currentMonday)
 	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
-	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([])
+	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([INITIAL_ALERT])
 	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
@@ -108,20 +108,23 @@ export const Week = (): JSX.Element => {
 								<td className='text-center'>
 									<table width='100%'>
 										<colgroup>
-											{colNumber.map((col) => (
-												<col key={colNumber.indexOf(col)} width={col}></col>
+											{colNumber.map((col, index) => (
+												<col key={index} width={col}></col>
 											))}
 										</colgroup>
 										<FlightRow
-											events={weekFlights ? weekFlights[days.indexOf(day)] : []}
+											events={weekFlights[days.indexOf(day)]}
 											jAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
 											nAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
 										/>
-										<OtherEvent events={weekEvents ? weekEvents[days.indexOf(day)] : []} />
+										<OtherEvent events={weekEvents[days.indexOf(day)]} />
 									</table>
 								</td>
 								<td className='p-0'>
-									<AlertRow events={weekAlerts ? weekAlerts[days.indexOf(day) - 1] : INITIAL_ALERT} />
+									<AlertRow
+										events={weekAlerts[days.indexOf(day) - 1]}
+										date={monday + days.indexOf(day) * inDays}
+									/>
 								</td>
 							</tr>
 						))}

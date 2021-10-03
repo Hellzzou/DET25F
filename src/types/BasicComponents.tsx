@@ -44,6 +44,7 @@ export type FlightRowProps = {
 }
 export type AlertRowProps = {
 	events: Alert
+	date: number
 }
 export type OtherEventProps = {
 	events: Array<Event>

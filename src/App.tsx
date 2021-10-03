@@ -36,7 +36,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/activities/:toast' component={Activities} />
 				<Route path='/newFlight' component={NewFlightForm} />
 				<Route path='/newEvent/:id' component={NewEventForm} />
-				<Route path='/newAlert/:id' component={NewAlertForm} />
+				<Route path='/newAlert/:id/:date' component={NewAlertForm} />
 				<Route path='/debriefFlight/:id/:jAero/:nAero' component={DebriefFlightForm} />
 				<Route path='/allTPAs' component={AllTPAs} />
 				<Route path='/pilotEQA' component={PilotEQA} />

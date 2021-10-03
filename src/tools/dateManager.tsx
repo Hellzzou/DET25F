@@ -25,7 +25,7 @@ export const returnHoursInInteger = (value: string): number => {
 	return parseInt(value)
 }
 export const getDateNumber = (number: number): string => (number < 10 ? "0" + number : number.toString())
-export const getMonthNumber = (number: number): string => (number < 10 ? "0" + (number + 1) : (number + 1).toString())
+export const getMonthNumber = (number: number): string => (number < 9 ? "0" + (number + 1) : (number + 1).toString())
 export const returnDayNightDuration = (
 	startTime: string,
 	endTime: string,

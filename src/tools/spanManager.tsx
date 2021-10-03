@@ -24,7 +24,7 @@ export const getBetweenColSpan = (event: Flight | Event, events: Array<Flight | 
 export const getColSpan = (event: Flight | Event): number => {
 	const departure = new Date(event.departureDate).getUTCHours() + new Date(event.departureDate).getUTCMinutes() / 60
 	const arrival = new Date(event.arrivalDate).getUTCHours() + new Date(event.arrivalDate).getUTCMinutes() / 60
-	return Math.max(arrival - departure, 3) * 2
+	return Math.max(arrival - departure, 2.5) * 2
 }
 export const allocRowSpan = (groups: UpgradedGroup[], index: number): number => {
 	let rowSpan = 1
