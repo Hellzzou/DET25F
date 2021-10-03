@@ -81,6 +81,10 @@ export const DBInfos = {
 		infos: "Vous pourrez ici, modifier toutes les infos de tous les utilisateurs de l'appli",
 		warning: "Attention vous devez être administrateur pour pouvoir les modifier",
 	},
+	conso: {
+		infos: "Vous pourrez ici, modifier les groupes pour les courbes de consommation",
+		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+	},
 }
 export const eventType = [
 	"REPOS",

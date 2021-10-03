@@ -87,12 +87,17 @@ export type SimpleSelectProps = {
 	options: Array<string>
 	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
+export type UncontrolledSelectProps = {
+	size: number
+	backgroundColor: string
+	textColor: string
+	options: Array<string>
+}
 export type TextAreaProps = {
 	size: number
 	backgroundColor: string
 	textColor: string
 	control: ControlArray
-	setControl: React.Dispatch<React.SetStateAction<ControlArray>>
 	validator: (arg0: string) => boolean
 }
 export type FlightCellProps = {

@@ -59,7 +59,6 @@ export const CrewFieldset = (props: CrewFieldsetProps): JSX.Element => {
 					backgroundColor='dark'
 					textColor='white'
 					control={props.crewMembers}
-					setControl={props.setCrewMembers}
 					validator={textIsNotNull}
 				/>
 			</div>

@@ -271,3 +271,14 @@ export type FDVView = {
 	fuel: string
 	config: string
 }
+export type Conso = {
+	name: string
+	underGroups: string[]
+}
+export type UpgradedConso = {
+	name: string
+	underGroups: string[]
+	addableUnderGroups: string[]
+	addUnderGroup: Control
+	deleteUnderGroup: Control
+}

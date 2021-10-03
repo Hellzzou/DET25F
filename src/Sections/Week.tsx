@@ -21,7 +21,7 @@ import { WeekProps } from "../types/Sections"
 
 export const Week = (props: WeekProps): JSX.Element => {
 	const colNumber = Array.from(Array(28), () => "3.4%")
-	const [monday, setMonday] = useState(parseInt(props.date))
+	const [monday, setMonday] = useState(props.date === "null" ? currentMonday : parseInt(props.date))
 	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
 	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([INITIAL_ALERT])
 	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])

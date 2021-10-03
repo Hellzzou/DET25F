@@ -74,6 +74,9 @@ export const ManageDB = (): JSX.Element => {
 						url='/users'
 					/>
 				</div>
+				<div className='col-md-4'>
+					<DBCard title='CONSO' infos={DBInfos.conso.infos} warning={DBInfos.conso.warning} url='/conso' />
+				</div>
 			</div>
 		</div>
 	)
