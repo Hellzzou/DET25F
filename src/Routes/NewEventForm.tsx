@@ -16,7 +16,7 @@ import { tokenCheck } from "../tools/user"
 import { formValidity } from "../tools/validators"
 import { Event } from "../types/Objects"
 
-export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JSX.Element => {
+export const NewEventForm = ({ match }: RouteComponentProps<{ id: string; week: string }>): JSX.Element => {
 	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
@@ -30,19 +30,19 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks)
 		const saved = await postFetchRequest<string>(saveEventURL, { newEvent })
-		if (saved === "success") history.push("/activities/newEvent")
+		if (saved === "success") history.push(`/activities/newEvent/${match.params.week}`)
 	}
 	async function modifyEventClick() {
 		const newEvent = buildNewEvent(hooks)
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveEventURL, { newEvent })
-			if (res === "success") history.push("/activities/modifyEvent")
+			if (res === "success") history.push(`/activities/modifyEvent/${match.params.week}`)
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
-		if (deleted === "success") history.push("/activities/deleteEvent")
+		if (deleted === "success") history.push(`/activities/deleteEvent/${match.params.week}`)
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -57,7 +57,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 	) : (
 		<div className='alegreya'>
 			<MainNavBar />
-			<NewEventNavBar />
+			<NewEventNavBar date={parseInt(match.params.week)} />
 			<form className='bg-white m-1 rounded text-dark row justify-content-center'>
 				<Legend title='Nouveau évènement' />
 				<div className='col-md-6 m-1 justify-content-center'>
@@ -87,7 +87,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string }>): JS
 				addClick={match.params.id !== "newOne" ? modifyEventClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={() => history.push("/activities/null")}
+				returnClick={() => history.push(`/activities/null/${match.params.week}`)}
 			/>
 		</div>
 	)

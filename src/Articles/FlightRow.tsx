@@ -14,6 +14,7 @@ export const FlightRow = (props: FlightRowProps): JSX.Element => {
 							key={props.events.indexOf(event)}
 							jAero={props.jAero}
 							nAero={props.nAero}
+							date={props.date}
 						/>
 					))}
 			</tr>

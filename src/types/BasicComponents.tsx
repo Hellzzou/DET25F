@@ -41,6 +41,7 @@ export type FlightRowProps = {
 	events: Array<Flight>
 	jAero: string
 	nAero: string
+	date: number
 }
 export type AlertRowProps = {
 	events: Alert
@@ -99,6 +100,7 @@ export type FlightCellProps = {
 	event: Flight
 	jAero: string
 	nAero: string
+	date: number
 }
 export type SwitchProps = {
 	control: { name: string; value: boolean }

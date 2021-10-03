@@ -21,7 +21,7 @@ export const MainNavBar = (): JSX.Element => {
 			<Navbar.Toggle aria-controls='navbarScroll' />
 			<Navbar.Collapse id='navbarScroll'>
 				<Nav className='mr-auto my-2 my-lg-0' style={{ maxHeight: "100px" }} navbarScroll>
-					<Nav.Link className='text-primary' href='/activities/null'>
+					<Nav.Link className='text-primary' href='/activities/null/null'>
 						Planchette
 					</Nav.Link>
 					<Nav.Link className='text-primary mx-2' href='/AllTPAs'>

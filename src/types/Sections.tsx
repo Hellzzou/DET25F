@@ -1,7 +1,10 @@
 import { Control, ControlArray, CrewTPA, DenaeTPA, Flight, MecboTPA, PilotEQA, PilotTPA, RadioTPA } from "./Objects"
 
-export type weekProps = {
-	date: Date
+export type WeekProps = {
+	date: string
+}
+export type NewEventNavBarProps = {
+	date: number
 }
 export type timingFieldsetProps = {
 	startDate: Control

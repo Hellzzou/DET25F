@@ -7,7 +7,7 @@ import useAsyncEffect from "use-async-effect"
 import { AlertToast } from "../BasicComponents/AlertToast"
 import { MainNavBar } from "../Sections/MainNavbar"
 
-export const Activities = ({ match }: RouteComponentProps<{ toast: string }>): JSX.Element => {
+export const Activities = ({ match }: RouteComponentProps<{ toast: string; week: string }>): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [newFlightShow, setNewFlightShow] = useState(false)
 	const [newAlertShow, setNewAlertShow] = useState(false)
@@ -98,7 +98,7 @@ export const Activities = ({ match }: RouteComponentProps<{ toast: string }>): J
 				show={debriefFlightShow}
 				onClose={() => setDebriefFlightShow(false)}
 			/>
-			<Week />
+			<Week date={match.params.week} />
 		</div>
 	)
 }

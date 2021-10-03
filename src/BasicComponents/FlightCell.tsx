@@ -29,7 +29,9 @@ export const FlightCell = (props: FlightCellProps): JSX.Element => {
 				key={props.events.indexOf(props.event)}
 				className={`rounded bg-${getFlightColor(props.event)} align-middle container px-1`}
 				colSpan={getColSpan(props.event)}
-				onClick={() => history.push(`/debriefFlight/${props.event._id}/${props.jAero}/${props.nAero}`)}>
+				onClick={() =>
+					history.push(`/debriefFlight/${props.event._id}/${props.jAero}/${props.nAero}/${props.date}`)
+				}>
 				<div className='row justify-content-center'>
 					<div className='col-md-3'>
 						{props.event.departureDate.split("T")[1].split(":")[0] +

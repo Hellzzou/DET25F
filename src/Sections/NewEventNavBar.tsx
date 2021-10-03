@@ -1,8 +1,9 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
 import { Button } from "../BasicComponents/Button"
+import { NewEventNavBarProps } from "../types/Sections"
 
-export const NewEventNavBar = (): JSX.Element => {
+export const NewEventNavBar = (props: NewEventNavBarProps): JSX.Element => {
 	const history = useHistory()
 	return (
 		<div className='row justify-content-center p-2' style={{ width: "100%" }}>
@@ -17,7 +18,7 @@ export const NewEventNavBar = (): JSX.Element => {
 				size={3}
 				buttonColor='primary'
 				buttonContent='Nouvel évènement'
-				onClick={() => history.push("/newEvent/newOne")}
+				onClick={() => history.push(`/newEvent/newOne/${props.date}`)}
 			/>
 		</div>
 	)

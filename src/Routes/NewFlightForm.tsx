@@ -7,7 +7,7 @@ import { CrewFieldset } from "../Sections/CrewFieldset"
 import { MissionFieldset } from "../Sections/MissionFieldset"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { arrayIsNotEmpty, formValidity } from "../tools/validators"
-import { Redirect, useHistory } from "react-router-dom"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import { buildNewFlight } from "../tools/buildEvents"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { ControlArray, CrewMember, Group, Nights } from "../types/Objects"
@@ -21,7 +21,7 @@ import { Button } from "../BasicComponents/Button"
 import { INITIAL_GROUP } from "../Datas/initialObjects"
 import { getBriefingTime } from "../tools/dateManager"
 
-export const NewFlightForm = (): JSX.Element => {
+export const NewFlightForm = ({ match }: RouteComponentProps<{ week: string }>): JSX.Element => {
 	const history = useHistory()
 	const [jAero, setJAero] = useState("")
 	const [nAero, setNAero] = useState("")
@@ -92,7 +92,7 @@ export const NewFlightForm = (): JSX.Element => {
 	async function addFlightClick() {
 		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups, allMembers)
 		const res = await postFetchRequest(saveFlightURL, { newFlight: newFlight })
-		if (res === "success") history.push("/activities/newFlight")
+		if (res === "success") history.push(`/activities/newFlight/${match.params.week}`)
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -159,7 +159,7 @@ export const NewFlightForm = (): JSX.Element => {
 	) : (
 		<div className='alegreya'>
 			<MainNavBar />
-			<NewEventNavBar />
+			<NewEventNavBar date={parseInt(match.params.week)} />
 			<form className='bg-white rounded text-dark row justify-content-center' style={{ width: "100%" }}>
 				<Legend title='Nouveau vol' />
 				<div className='col-md-6 m-1 justify-content-center'>
@@ -250,7 +250,7 @@ export const NewFlightForm = (): JSX.Element => {
 						size={4}
 						buttonColor='danger'
 						buttonContent='Annuler'
-						onClick={() => history.push("/activities/null")}
+						onClick={() => history.push(`/activities/null/${match.params.week}`)}
 					/>
 				</div>
 			</div>

@@ -41,7 +41,7 @@ import { INITIAL_GROUP } from "../Datas/initialObjects"
 
 export const DebriefFlightForm = ({
 	match,
-}: RouteComponentProps<{ id: string; jAero: string; nAero: string }>): JSX.Element => {
+}: RouteComponentProps<{ id: string; jAero: string; nAero: string; week: string }>): JSX.Element => {
 	const history = useHistory()
 	const [token, setToken] = useState(true)
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
@@ -200,7 +200,7 @@ export const DebriefFlightForm = ({
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
-			if (res === "success") history.push("/activities/modifyFlight")
+			if (res === "success") history.push(`/activities/modifyFlight/${match.params.week}`)
 		}
 	}
 	async function addFlightClick() {
@@ -220,12 +220,12 @@ export const DebriefFlightForm = ({
 		const saved = await postFetchRequest(DB_URL + "flights/save", { newFlight: debriefedFlight })
 		if (saved === "success") {
 			const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-			if (deleted === "success") history.push("/activities/debriefFlight")
+			if (deleted === "success") history.push(`/activities/debriefFlight/${match.params.week}`)
 		}
 	}
 	async function deleteFlight() {
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-		if (deleted === "success") history.push("/activities/deleteFlight")
+		if (deleted === "success") history.push(`/activities/deleteFlight/${match.params.week}`)
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -475,7 +475,7 @@ export const DebriefFlightForm = ({
 					size={2}
 					buttonColor='danger'
 					buttonContent='Annuler'
-					onClick={() => history.push("/activities/null")}
+					onClick={() => history.push(`/activities/null/${match.params.week}`)}
 				/>
 			</div>
 		</div>

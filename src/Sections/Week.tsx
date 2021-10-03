@@ -17,10 +17,11 @@ import { Button } from "../BasicComponents/Button"
 import { FDVButton } from "../BasicComponents/FDVButton"
 import { buildWeekAlerts, buildWeekEvents, buildWeekFlights } from "../tools/buildWeekEvents"
 import { INITIAL_ALERT } from "../Datas/initialObjects"
+import { WeekProps } from "../types/Sections"
 
-export const Week = (): JSX.Element => {
+export const Week = (props: WeekProps): JSX.Element => {
 	const colNumber = Array.from(Array(28), () => "3.4%")
-	const [monday, setMonday] = useState(currentMonday)
+	const [monday, setMonday] = useState(parseInt(props.date))
 	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
 	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([INITIAL_ALERT])
 	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
@@ -52,7 +53,7 @@ export const Week = (): JSX.Element => {
 					nextClick={() => setMonday(monday + 7 * inDays)}
 					previousClick={() => setMonday(monday - 7 * inDays)}
 					nowClick={() => setMonday(currentMonday)}
-					newEventClick={() => history.push("/newFlight")}
+					newEventClick={() => history.push(`/newFlight/${monday}`)}
 					firstDay={monday}
 				/>
 				<table className='col-md-12 table table-secondary table-sm align-middle my-1'>
@@ -116,6 +117,7 @@ export const Week = (): JSX.Element => {
 											events={weekFlights[days.indexOf(day)]}
 											jAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
 											nAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
+											date={monday}
 										/>
 										<OtherEvent events={weekEvents[days.indexOf(day)]} />
 									</table>

@@ -16,7 +16,9 @@ import { Alert } from "../types/Objects"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { getDateNumber, getMonthNumber } from "../tools/dateManager"
 
-export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string; date: string }>): JSX.Element => {
+export const NewAlertForm = ({
+	match,
+}: RouteComponentProps<{ id: string; date: string; week: string }>): JSX.Element => {
 	const [departureDate, setDepartureDate] = useState(INITIAL_FALSE_CONTROL)
 	const [chief, setChief] = useState(INITIAL_FALSE_CONTROL)
 	const [pilot, setPilot] = useState(INITIAL_FALSE_CONTROL)
@@ -32,19 +34,19 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string; date: 
 	async function addEventClick() {
 		const newAlert = buildNewAlert(hooks)
 		const saved = await postFetchRequest(saveAlertURL, { newAlert })
-		if (saved === "success") history.push("/activities/newAlert")
+		if (saved === "success") history.push(`/activities/newAlert/${match.params.week}`)
 	}
 	async function modifyAlertClick() {
 		const newAlert = buildNewAlert(hooks)
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveAlertURL, { newAlert })
-			if (res === "success") history.push("/activities/modifyAlert")
+			if (res === "success") history.push(`/activities/modifyAlert/${match.params.week}`)
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
-		if (deleted === "success") history.push("/activities/deleteAlert")
+		if (deleted === "success") history.push(`/activities/deleteAlert/${match.params.week}`)
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -107,7 +109,7 @@ export const NewAlertForm = ({ match }: RouteComponentProps<{ id: string; date: 
 				addClick={match.params.id !== "newOne" ? modifyAlertClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={() => history.push("/activities/null")}
+				returnClick={() => history.push(`/activities/null/${match.params.week}`)}
 			/>
 		</div>
 	)

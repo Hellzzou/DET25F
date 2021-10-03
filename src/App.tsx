@@ -33,11 +33,11 @@ export const App = (): React.ReactElement => {
 		<BrowserRouter>
 			<Switch>
 				<Route path='/' exact component={Login} />
-				<Route path='/activities/:toast' component={Activities} />
-				<Route path='/newFlight' component={NewFlightForm} />
-				<Route path='/newEvent/:id' component={NewEventForm} />
-				<Route path='/newAlert/:id/:date' component={NewAlertForm} />
-				<Route path='/debriefFlight/:id/:jAero/:nAero' component={DebriefFlightForm} />
+				<Route path='/activities/:toast/:week' component={Activities} />
+				<Route path='/newFlight/:week' component={NewFlightForm} />
+				<Route path='/newEvent/:id/:week' component={NewEventForm} />
+				<Route path='/newAlert/:id/:date/:week' component={NewAlertForm} />
+				<Route path='/debriefFlight/:id/:jAero/:nAero/:week' component={DebriefFlightForm} />
 				<Route path='/allTPAs' component={AllTPAs} />
 				<Route path='/pilotEQA' component={PilotEQA} />
 				<Route path='/flightHours' component={FlightHours} />

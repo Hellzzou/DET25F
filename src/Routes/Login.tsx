@@ -8,6 +8,7 @@ import { Input } from "../BasicComponents/input"
 import { formValidity, textIsNotNull } from "../tools/validators"
 import { Button } from "../BasicComponents/Button"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
+import { currentMonday } from "../Datas/constants"
 
 export const Login = (): JSX.Element => {
 	const [login, setLogin] = useState(INITIAL_FALSE_CONTROL)
@@ -25,7 +26,7 @@ export const Login = (): JSX.Element => {
 			if (typeof findUser !== "string") {
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				sessionStorage.setItem("token", findUser.token!)
-				history.push("/activities/null")
+				history.push(`/activities/null/${currentMonday}`)
 			} else setLoginError(findUser)
 		})()
 	}
