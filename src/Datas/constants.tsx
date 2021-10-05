@@ -90,7 +90,7 @@ export const eventType = [
 	"REPOS",
 	"EXER",
 	"MISSION",
-	"PERM",
+	"RECUP",
 	"VISITE",
 	"DET25F",
 	"RESA ZONE",

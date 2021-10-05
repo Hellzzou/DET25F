@@ -18,6 +18,7 @@ export const INITIAL_CREWMEMBER = {
 	trigram: "",
 	tel: "",
 	registration: "",
+	holidays: 0,
 }
 export const INITIAL_USER = {
 	rank: "",

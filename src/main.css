@@ -1,9 +1,13 @@
 .bg-simar {
-  background-color: #ce5555;
+  background-color: #ce9e55;
 }
 
 .bg-normalFlight {
-  background-color: #a670d8;
+  background-color: #709ad8;
+}
+
+.bg-cnl {
+  background-color: #ce5555;
 }
 
 .bg-alert {
@@ -12,6 +16,10 @@
 
 .bg-event {
   background-color: #dbbc54;
+}
+
+.bg-holiday {
+  background-color: #e2a14c;
 }
 
 .card-body-color {

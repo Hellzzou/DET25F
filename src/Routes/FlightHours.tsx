@@ -30,7 +30,7 @@ export const FlightHours = (): JSX.Element => {
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
 				const crewMembersHours = crewMembersFlights(
 					allMembers.filter(({ onBoardFunction }) => onBoardFunction !== "TECH"),
-					allDebriefedFlights
+					allDebriefedFlights.filter(({ done }) => done !== "CNL")
 				)
 				setCrewMembersHours(crewMembersHours)
 			}

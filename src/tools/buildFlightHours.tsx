@@ -35,6 +35,7 @@ export const crewMembersFlights = (
 	return [...allHours, ...missingMembers]
 }
 export const crewMemberHours = (allHours: Flight[]): Record<string, number> => {
+	console.log(allHours)
 	return allHours.reduce<Record<string, number>>((acc, flight) => {
 		if (!acc["day"]) acc["day"] = 0
 		if (!acc["night"]) acc["night"] = 0

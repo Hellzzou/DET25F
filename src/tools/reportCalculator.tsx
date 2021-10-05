@@ -5,12 +5,6 @@ export const groupFilter = (groups: Group[], groupName: string): Group[] => {
 	const regex = "^" + groupName
 	return groups.filter((group) => new RegExp(regex).test(group.underGroup))
 }
-export const clientUndergroupFilter = (groups: Group[], groupName: string, clients?: string[]): Group[] => {
-	const regex = "^" + groupName
-	const groupFiltered = groups.filter((group) => new RegExp(regex).test(group.underGroup))
-	if (clients) return groupFiltered.filter(({ client }) => clients.includes(client))
-	return groupFiltered
-}
 export const underGroupFilter = (underGroups: string[], groupName: string): string[] => {
 	const regex = "^" + groupName
 	return underGroups.filter((underGroup) => new RegExp(regex).test(underGroup))

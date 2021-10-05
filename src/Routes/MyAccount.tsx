@@ -36,9 +36,6 @@ export const MyAccount = (): JSX.Element => {
 		const modified = await putFetchRequest(userURL, user)
 		if (modified === "success") setModifyUserShow(true)
 	}
-	const passwordChange = () => {
-		setModalShow(true)
-	}
 	useAsyncEffect(async () => {
 		const user = await getFetchRequest<User>(getOneUserURL)
 		if (typeof user !== "string") setUser(user)
@@ -153,7 +150,7 @@ export const MyAccount = (): JSX.Element => {
 					size={2}
 					buttonColor='primary'
 					buttonContent='Changer mon mot de passe'
-					onClick={passwordChange}
+					onClick={() => setModalShow(true)}
 					disabled={user.rank == "" || user.name === "" || user.email === "" || user.login === ""}
 				/>
 			</div>

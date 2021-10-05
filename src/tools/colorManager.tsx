@@ -1,7 +1,8 @@
 import { old } from "../Datas/initialObjects"
 import { Flight } from "../types/Objects"
 
-export const getFlightColor = (flight: Flight): string => (flight.client === "25F" ? "normalFlight" : "simar")
+export const getFlightColor = (flight: Flight): string =>
+	flight.done === "CNL" ? "cnl" : flight.client === "25F" ? "normalFlight" : "simar"
 export const getAnnual = (date: Date, dateToCompare: Date): string => {
 	const lastYear = new Date(dateToCompare.getFullYear(), dateToCompare.getMonth() - 12, 1)
 	const lastMonth = new Date(dateToCompare.getFullYear(), dateToCompare.getMonth() - 11, 1)

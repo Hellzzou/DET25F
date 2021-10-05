@@ -59,7 +59,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string; week: 
 			<MainNavBar />
 			<NewEventNavBar date={parseInt(match.params.week)} />
 			<form className='bg-white m-1 rounded text-dark row justify-content-center'>
-				<Legend title='Nouveau évènement' />
+				<Legend title='Nouvel évènement' />
 				<div className='col-md-6 m-1 justify-content-center'>
 					<TimingFieldset
 						startDate={departureDate}

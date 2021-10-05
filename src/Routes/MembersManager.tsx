@@ -35,6 +35,7 @@ export const membersManager = (): JSX.Element => {
 					onBoardFunction: prop === "onBoardFunction" ? e.target.value : member.onBoardFunction,
 					groundFunction: prop === "groundFunction" ? e.target.value : member.groundFunction,
 					tel: prop === "tel" ? e.target.value : member.tel,
+					holidays: member.holidays,
 				}
 		})
 		setMembers(membersMod)
@@ -52,6 +53,7 @@ export const membersManager = (): JSX.Element => {
 				onBoardFunction: "",
 				groundFunction: "",
 				tel: "",
+				holidays: 0,
 			},
 		])
 	const allNonNull = () => {
@@ -85,6 +87,7 @@ export const membersManager = (): JSX.Element => {
 						onBoardFunction,
 						groundFunction,
 						tel: tel ? tel : "",
+						holidays: 0,
 					},
 				})
 			})

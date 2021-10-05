@@ -2,10 +2,12 @@ import {
 	Alert,
 	Control,
 	ControlArray,
+	CrewMember,
 	CrewTPA,
 	DenaeTPA,
 	Event,
 	Flight,
+	Holiday,
 	MecboTPA,
 	PilotEQA,
 	PilotTPA,
@@ -83,4 +85,17 @@ export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetSta
 	setters[3]({ value: arrivalTime, validity: true, disabled: false })
 	setters[4]({ value: event.event, validity: true, disabled: false })
 	setters[5]({ value: event.type, validity: true, disabled: false })
+}
+export const fullfillHoliday = (
+	event: Holiday,
+	setDate: React.Dispatch<React.SetStateAction<Control>>,
+	setPermType: React.Dispatch<React.SetStateAction<Control>>,
+	setAddableMembers: React.Dispatch<React.SetStateAction<string[]>>,
+	setMembers: React.Dispatch<React.SetStateAction<ControlArray>>,
+	members: CrewMember[]
+): void => {
+	setDate({ value: event.date.split("T")[0], validity: true, disabled: false })
+	setPermType({ value: event.type, validity: true, disabled: false })
+	setMembers({ value: event.members, validity: true, disabled: false })
+	setAddableMembers(members.filter(({ trigram }) => !event.members.includes(trigram)).map(({ trigram }) => trigram))
 }

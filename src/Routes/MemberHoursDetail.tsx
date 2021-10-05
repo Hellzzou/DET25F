@@ -29,9 +29,12 @@ export const MemberHoursDetail = ({
 			})
 			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
 				setMember(allMembers.find(({ trigram }) => trigram === match.params.name))
-				const crewMembersHours = crewMembersFlights(allMembers, allDebriefedFlights).find(
-					({ name }) => name === match.params.name
-				)?.flight
+				const crewMembersHours = crewMembersFlights(
+					allMembers,
+					allDebriefedFlights
+						.filter(({ done }) => done !== "CNL")
+						.sort((f1, f2) => new Date(f1.departureDate).getTime() - new Date(f2.departureDate).getTime())
+				).find(({ name }) => name === match.params.name)?.flight
 				if (typeof crewMembersHours !== "undefined") setCrewMembersHours(crewMembersHours)
 			}
 		}

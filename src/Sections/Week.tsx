@@ -5,17 +5,24 @@ import useAsyncEffect from "use-async-effect"
 import { AlertRow } from "../Articles/AlertRow"
 import { FlightRow } from "../Articles/FlightRow"
 import { OtherEvent } from "../Articles/OtherEventRow"
-import { alertDateFinderURL, eventDateFinderURL, flightDateFinderURL, nightURL } from "../Datas/urls"
+import { HolidaysRow } from "../Articles/HolidaysRow"
+import {
+	alertDateFinderURL,
+	eventDateFinderURL,
+	flightDateFinderURL,
+	holidayDateFinderURL,
+	nightURL,
+} from "../Datas/urls"
 import { currentMonday, days, inDays } from "../Datas/constants"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { Alert, Event, Flight, Nights } from "../types/Objects"
+import { Alert, Event, Flight, Holiday, Nights } from "../types/Objects"
 import { WeekNavBar } from "./WeekNavBar"
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
 import { Button } from "../BasicComponents/Button"
 import { FDVButton } from "../BasicComponents/FDVButton"
-import { buildWeekAlerts, buildWeekEvents, buildWeekFlights } from "../tools/buildWeekEvents"
+import { buildWeekAlerts, buildWeekEvents, buildWeekFlights, buildWeekHolidays } from "../tools/buildWeekEvents"
 import { INITIAL_ALERT } from "../Datas/initialObjects"
 import { WeekProps } from "../types/Sections"
 
@@ -25,6 +32,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
 	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([INITIAL_ALERT])
 	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
+	const [weekHolidays, setWeekHolidays] = useState<Array<Array<Holiday>>>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	useAsyncEffect(async () => {
@@ -40,9 +48,14 @@ export const Week = (props: WeekProps): JSX.Element => {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
+		const holidays = await postFetchRequest<Holiday[]>(holidayDateFinderURL, {
+			start: new Date(monday),
+			end: new Date(monday + 7 * inDays),
+		})
 		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
 		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
 		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
+		if (typeof holidays !== "string") setWeekHolidays(buildWeekHolidays(holidays, monday))
 		const nights = await getFetchRequest<Nights[]>(nightURL)
 		if (typeof nights !== "string") setNights(nights[0])
 	}, [monday])
@@ -119,7 +132,8 @@ export const Week = (props: WeekProps): JSX.Element => {
 											nAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
 											date={monday}
 										/>
-										<OtherEvent events={weekEvents[days.indexOf(day)]} />
+										<OtherEvent events={weekEvents[days.indexOf(day)]} date={monday} />
+										<HolidaysRow holidays={weekHolidays[days.indexOf(day)]} date={monday} />
 									</table>
 								</td>
 								<td className='p-0'>

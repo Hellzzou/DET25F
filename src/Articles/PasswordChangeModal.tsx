@@ -15,6 +15,7 @@ import { passwordCheck } from "../tools/validators"
 import { PasswordChangeModalProps } from "../types/Articles"
 import { User } from "../types/Objects"
 import { PasswordInput } from "../BasicComponents/PasswordInput"
+import { Label } from "../BasicComponents/Label"
 
 export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Element => {
 	const [ancientPassword, setAncientPassword] = useState(INITIAL_FALSE_CONTROL)
@@ -73,27 +74,36 @@ export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Elemen
 				<Modal.Title>Changer mon mot de passe</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<PasswordInput
-					type='password'
-					password={ancientPassword}
-					info={{
-						color: "",
-						value: "",
-					}}
-					handleChange={(e) => checkAncientPasswordValidity(e)}
-				/>
-				<PasswordInput
-					type='password'
-					password={newPassword1}
-					info={info}
-					handleChange={(e) => checkPAssword(e, 1)}
-				/>
-				<PasswordInput
-					type='password'
-					password={newPassword2}
-					info={info}
-					handleChange={(e) => checkPAssword(e, 2)}
-				/>
+				<div className='row my-2'>
+					<Label title='Ancien mot de passe :' size={4} />
+					<PasswordInput
+						type='password'
+						password={ancientPassword}
+						info={{
+							color: "",
+							value: "",
+						}}
+						handleChange={(e) => checkAncientPasswordValidity(e)}
+					/>
+				</div>
+				<div className='row my-2'>
+					<Label title='Nouveau mot de passe :' size={4} />
+					<PasswordInput
+						type='password'
+						password={newPassword1}
+						info={info}
+						handleChange={(e) => checkPAssword(e, 1)}
+					/>
+				</div>
+				<div className='row my-2'>
+					<Label title='Confirmer le mot de passe :' size={4} />
+					<PasswordInput
+						type='password'
+						password={newPassword2}
+						info={info}
+						handleChange={(e) => checkPAssword(e, 2)}
+					/>
+				</div>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button

@@ -52,11 +52,13 @@ export const FlightCell = (props: FlightCellProps): JSX.Element => {
 				</div>
 				<div className='row text-center'>
 					<div className='col-md-12'>
-						{props.event.chief +
-							" " +
-							props.event.pilot +
-							" " +
-							props.event.crewMembers.reduce((acc, value) => (acc += value + " "), "")}
+						{props.event.done === "CNL"
+							? props.event.done + " " + props.event.cause
+							: props.event.chief +
+							  " " +
+							  props.event.pilot +
+							  " " +
+							  props.event.crewMembers.reduce((acc, value) => (acc += value + " "), "")}
 					</div>
 				</div>
 			</td>

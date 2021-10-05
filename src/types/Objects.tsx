@@ -79,6 +79,13 @@ export type Event = {
 	type: string
 	members: [string]
 }
+export type Holiday = {
+	_id: string
+	date: string
+	type: string
+	members: string[]
+	status: string
+}
 export type Alert = {
 	_id?: string
 	departureDate: string
@@ -91,6 +98,7 @@ export type Alert = {
 	tech: string
 }
 export type CrewMember = {
+	_id?: string
 	firstName: string
 	surName: string
 	rank: string
@@ -100,6 +108,7 @@ export type CrewMember = {
 	trigram: string
 	tel?: string
 	registration?: string
+	holidays: number
 }
 export type CrewTPA = {
 	TMAHD: { name: string; value: boolean }

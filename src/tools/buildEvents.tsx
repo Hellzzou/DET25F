@@ -32,10 +32,10 @@ export const buildNewFlight = (
 	const mecboTPA: Array<MecboTPA> = []
 	const radioTPA: Array<RadioTPA> = []
 	const denaeTPA: Array<DenaeTPA> = []
-	pilotTPA.push({ name: hooks[13].value, TPA: INITIAL_PILOTTPA })
 	pilotTPA.push({ name: hooks[14].value, TPA: INITIAL_PILOTTPA })
-	pilotEQA.push({ name: hooks[13].value, EQA: INITIAL_PILOTEQA })
+	pilotTPA.push({ name: hooks[15].value, TPA: INITIAL_PILOTTPA })
 	pilotEQA.push({ name: hooks[14].value, EQA: INITIAL_PILOTEQA })
+	pilotEQA.push({ name: hooks[15].value, EQA: INITIAL_PILOTEQA })
 
 	crewMembers.value.forEach((member) => {
 		const onBoardFunction =

@@ -11,7 +11,7 @@ export const NewEventNavBar = (props: NewEventNavBarProps): JSX.Element => {
 				size={3}
 				buttonColor='primary'
 				buttonContent='Nouveau vol'
-				onClick={() => history.push("/newFlight")}
+				onClick={() => history.push(`/newFlight/${props.date}`)}
 			/>
 			<div className='col-md-1'></div>
 			<Button
@@ -19,6 +19,13 @@ export const NewEventNavBar = (props: NewEventNavBarProps): JSX.Element => {
 				buttonColor='primary'
 				buttonContent='Nouvel évènement'
 				onClick={() => history.push(`/newEvent/newOne/${props.date}`)}
+			/>
+			<div className='col-md-1'></div>
+			<Button
+				size={3}
+				buttonColor='primary'
+				buttonContent='Nouvelle perm'
+				onClick={() => history.push(`/newPerm/newOne/${props.date}`)}
 			/>
 		</div>
 	)

@@ -9,6 +9,7 @@ import {
 	MecboDateTPA,
 	RadioDateTPA,
 	DenaeDateTPA,
+	Holiday,
 } from "./Objects"
 
 export type NavButtonProps = {
@@ -49,6 +50,11 @@ export type AlertRowProps = {
 }
 export type OtherEventProps = {
 	events: Array<Event>
+	date: number
+}
+export type HolidaysRowProps = {
+	holidays: Array<Holiday>
+	date: number
 }
 export type LabelProps = {
 	title: string

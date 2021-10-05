@@ -6,7 +6,7 @@ import { OtherEventProps } from "../types/BasicComponents"
 
 export const OtherEvent = (props: OtherEventProps): JSX.Element => {
 	const history = useHistory()
-	const eventClick = (id: string): void => history.push(`/newEvent/${id}`)
+	const eventClick = (id: string): void => history.push(`/newEvent/${id}/${props.date}`)
 	return (
 		<tbody>
 			{typeof props.events !== "undefined" &&

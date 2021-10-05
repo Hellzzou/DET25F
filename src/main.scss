@@ -2,16 +2,22 @@ $custom-colors: (
 	"mutedWarning": rgb(211, 212, 110),
 );
 .bg-simar {
-	background-color: rgb(206, 85, 85);
+	background-color: rgb(206, 158, 85);
 }
 .bg-normalFlight {
-	background-color: rgb(166, 112, 216);
+	background-color: rgb(112, 154, 216);
+}
+.bg-cnl {
+	background-color: rgb(206, 85, 85);
 }
 .bg-alert {
 	background-color: rgb(109, 187, 144);
 }
 .bg-event {
 	background-color: rgb(219, 188, 84);
+}
+.bg-holiday {
+	background-color: rgb(226, 161, 76);
 }
 .card-body-color {
 	background-color: rgb(220, 224, 228);

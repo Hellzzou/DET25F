@@ -28,6 +28,7 @@ import { Stats } from "./Routes/Stats"
 import { Etat400 } from "./Routes/Etat400"
 import { FlightSheet } from "./Routes/FlightSheet"
 import { ConsoManager } from "./Routes/ConsoManager"
+import { NewHoliday } from "./Routes/NewHoliday"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -37,6 +38,7 @@ export const App = (): React.ReactElement => {
 				<Route path='/activities/:toast/:week' component={Activities} />
 				<Route path='/newFlight/:week' component={NewFlightForm} />
 				<Route path='/newEvent/:id/:week' component={NewEventForm} />
+				<Route path='/newPerm/:id/:week' component={NewHoliday} />
 				<Route path='/newAlert/:id/:date/:week' component={NewAlertForm} />
 				<Route path='/debriefFlight/:id/:jAero/:nAero/:week' component={DebriefFlightForm} />
 				<Route path='/allTPAs' component={AllTPAs} />
