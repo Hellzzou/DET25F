@@ -48,6 +48,7 @@ export const DebriefFlightForm = ({
 	const [departureTime, setDepartureTime] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalDate, setArrivalDate] = useState(INITIAL_FALSE_CONTROL)
 	const [arrivalTime, setArrivalTime] = useState(INITIAL_FALSE_CONTROL)
+	const [briefingTime, setBriefingTime] = useState(INITIAL_FALSE_CONTROL)
 	const [dayDuration, setDayDuration] = useState(INITIAL_FALSE_CONTROL)
 	const [nightDuration, setNightDuration] = useState(INITIAL_FALSE_CONTROL)
 	const [aircraft, setAircraft] = useState(INITIAL_FALSE_CONTROL)
@@ -85,6 +86,7 @@ export const DebriefFlightForm = ({
 		departureTime,
 		arrivalDate,
 		arrivalTime,
+		briefingTime,
 		aircraft,
 		fuel,
 		config,
@@ -368,6 +370,8 @@ export const DebriefFlightForm = ({
 								setEndDate={setArrivalDate}
 								endTime={arrivalTime}
 								setEndTime={setArrivalTime}
+								biefingTime={briefingTime}
+								setBriefingTime={setBriefingTime}
 								jAero={match.params.jAero}
 								nAero={match.params.nAero}
 							/>

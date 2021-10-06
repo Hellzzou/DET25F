@@ -291,3 +291,8 @@ export type UpgradedConso = {
 	addUnderGroup: Control
 	deleteUnderGroup: Control
 }
+export type Conflict = {
+	type: string
+	departure: number
+	arrival: number
+}

@@ -11,28 +11,36 @@ import {
 	eventDateFinderURL,
 	flightDateFinderURL,
 	holidayDateFinderURL,
+	memberURL,
 	nightURL,
 } from "../Datas/urls"
 import { currentMonday, days, inDays } from "../Datas/constants"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { Alert, Event, Flight, Holiday, Nights } from "../types/Objects"
+import { Alert, CrewMember, Event, Flight, Holiday, Nights } from "../types/Objects"
 import { WeekNavBar } from "./WeekNavBar"
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
 import { Button } from "../BasicComponents/Button"
 import { FDVButton } from "../BasicComponents/FDVButton"
-import { buildWeekAlerts, buildWeekEvents, buildWeekFlights, buildWeekHolidays } from "../tools/buildWeekEvents"
+import {
+	buildWeekAlerts,
+	buildWeekConflicts,
+	buildWeekEvents,
+	buildWeekFlights,
+	buildWeekHolidays,
+} from "../tools/buildWeekEvents"
 import { INITIAL_ALERT } from "../Datas/initialObjects"
 import { WeekProps } from "../types/Sections"
 
 export const Week = (props: WeekProps): JSX.Element => {
 	const colNumber = Array.from(Array(28), () => "3.4%")
 	const [monday, setMonday] = useState(props.date === "null" ? currentMonday : parseInt(props.date))
-	const [weekFlights, setWeekFlights] = useState<Array<Array<Flight>>>([])
-	const [weekAlerts, setWeekAlerts] = useState<Array<Alert>>([INITIAL_ALERT])
-	const [weekEvents, setWeekEvents] = useState<Array<Array<Event>>>([])
-	const [weekHolidays, setWeekHolidays] = useState<Array<Array<Holiday>>>([])
+	const [weekFlights, setWeekFlights] = useState<Flight[][]>([])
+	const [weekAlerts, setWeekAlerts] = useState<Alert[]>([INITIAL_ALERT])
+	const [weekEvents, setWeekEvents] = useState<Event[][]>([])
+	const [weekHolidays, setWeekHolidays] = useState<Holiday[][]>([])
+	const [weekConflicts, setWeekConflicts] = useState<Record<string, string[]>[]>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	useAsyncEffect(async () => {
@@ -52,10 +60,28 @@ export const Week = (props: WeekProps): JSX.Element => {
 			start: new Date(monday),
 			end: new Date(monday + 7 * inDays),
 		})
+		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
 		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
 		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
 		if (typeof holidays !== "string") setWeekHolidays(buildWeekHolidays(holidays, monday))
+		if (
+			typeof flights !== "string" &&
+			typeof alerts !== "string" &&
+			typeof events !== "string" &&
+			typeof holidays !== "string" &&
+			typeof members !== "string"
+		)
+			setWeekConflicts(
+				buildWeekConflicts(
+					members,
+					buildWeekFlights(flights, monday),
+					buildWeekEvents(events, monday),
+					buildWeekAlerts(alerts, monday),
+					buildWeekHolidays(holidays, monday)
+				)
+			)
+
 		const nights = await getFetchRequest<Nights[]>(nightURL)
 		if (typeof nights !== "string") setNights(nights[0])
 	}, [monday])
@@ -138,7 +164,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 								</td>
 								<td className='p-0'>
 									<AlertRow
-										events={weekAlerts[days.indexOf(day) - 1]}
+										events={weekAlerts[days.indexOf(day)]}
 										date={monday + days.indexOf(day) * inDays}
 									/>
 								</td>
