@@ -76,7 +76,13 @@ export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetSta
 	setters[6]({ value: alert.radio, validity: true, disabled: false })
 	setters[7]({ value: alert.tech, validity: true, disabled: false })
 }
-export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetStateAction<Control>>[]): void => {
+export const fullfillEvent = (
+	event: Event,
+	setters: React.Dispatch<React.SetStateAction<Control>>[],
+	setAddableMembers: React.Dispatch<React.SetStateAction<string[]>>,
+	setMembers: React.Dispatch<React.SetStateAction<ControlArray>>,
+	members: CrewMember[]
+): void => {
 	const departureTime = event.departureDate.split("T")[1].split("Z")[0]
 	const arrivalTime = event.arrivalDate.split("T")[1].split("Z")[0]
 	setters[0]({ value: event.departureDate.split("T")[0], validity: true, disabled: false })
@@ -85,6 +91,8 @@ export const fullfillEvent = (event: Event, setters: React.Dispatch<React.SetSta
 	setters[3]({ value: arrivalTime, validity: true, disabled: false })
 	setters[4]({ value: event.event, validity: true, disabled: false })
 	setters[5]({ value: event.type, validity: true, disabled: false })
+	setMembers({ value: event.members, validity: true, disabled: false })
+	setAddableMembers(members.filter(({ trigram }) => !event.members.includes(trigram)).map(({ trigram }) => trigram))
 }
 export const fullfillHoliday = (
 	event: Holiday,

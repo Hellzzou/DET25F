@@ -135,12 +135,13 @@ export const buildDebriefedFlight = (
 	return debriefedFlight
 }
 
-export const buildNewEvent = (hooks: Array<Control>): unknown => {
+export const buildNewEvent = (hooks: Array<Control>, members: ControlArray): unknown => {
 	return {
 		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value) + 11 * 3600000),
 		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value) + 11 * 3600000),
 		event: hooks[4].value,
 		type: hooks[5].value,
+		members: members.value,
 	}
 }
 export const buildNewAlert = (hooks: Array<Control>): unknown => {

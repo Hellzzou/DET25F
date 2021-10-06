@@ -24,7 +24,7 @@ export const NewEventNavBar = (props: NewEventNavBarProps): JSX.Element => {
 			<Button
 				size={3}
 				buttonColor='primary'
-				buttonContent='Nouvelle perm'
+				buttonContent='Nouvelle permission'
 				onClick={() => history.push(`/newPerm/newOne/${props.date}`)}
 			/>
 		</div>
