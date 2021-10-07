@@ -46,6 +46,14 @@
   background-color: #a4d0fc;
 }
 
+.pointer:hover {
+  cursor: pointer;
+}
+
+html {
+  font-size: 1.5vh;
+}
+
 /*!
  * Bootstrap v5.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

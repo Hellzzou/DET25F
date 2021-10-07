@@ -17,7 +17,7 @@ export const OtherEvent = (props: OtherEventProps): JSX.Element => {
 								<td colSpan={getBetweenColSpan(event, eventRow)}></td>
 								<td
 									key={props.events.indexOf(event)}
-									className='rounded bg-event align-middle container px-1'
+									className='rounded bg-event align-middle container px-1 pointer'
 									colSpan={getColSpan(event)}
 									onClick={() => eventClick(event._id)}>
 									<div className='row justify-content-center'>

@@ -16,7 +16,7 @@ export const HolidaysRow = (props: HolidaysRowProps): JSX.Element => {
 								<td colSpan={getBetweenColSpanHoliday(holiday, holidayRow)}></td>
 								<td
 									key={props.holidays.indexOf(holiday)}
-									className='rounded bg-holiday align-middle container px-1'
+									className='rounded bg-holiday align-middle container px-1 pointer'
 									colSpan={getColSpanHoliday(holiday)}
 									onClick={() => history.push(`/newPerm/${holiday._id}/${props.date}`)}>
 									<div className='row justify-content-center'>

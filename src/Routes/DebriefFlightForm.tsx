@@ -38,6 +38,7 @@ import {
 	RadioTPA,
 } from "../types/Objects"
 import { INITIAL_GROUP } from "../Datas/initialObjects"
+import { getBriefingTime } from "../tools/dateManager"
 
 export const DebriefFlightForm = ({
 	match,
@@ -80,6 +81,7 @@ export const DebriefFlightForm = ({
 	const [denaeTPA, setDenaeTPA] = useState<Array<DenaeTPA>>([])
 	const [pilotEQA, setPilotEQA] = useState<Array<PilotEQA>>([])
 	const [allMembers, setAllMembers] = useState<Array<CrewMember>>([])
+	const [flight, setFlight] = useState<Flight>()
 
 	const modifyHooks = [
 		departureDate,
@@ -104,6 +106,7 @@ export const DebriefFlightForm = ({
 		departureTime,
 		arrivalDate,
 		arrivalTime,
+		briefingTime,
 		aircraft,
 		fuel,
 		config,
@@ -127,6 +130,7 @@ export const DebriefFlightForm = ({
 		setDepartureTime,
 		setArrivalDate,
 		setArrivalTime,
+		setBriefingTime,
 		setAircraft,
 		setFuel,
 		setConfig,
@@ -199,10 +203,10 @@ export const DebriefFlightForm = ({
 	}
 	async function modifyFlightClick() {
 		const newFlight = await buildNewFlight(modifyHooks, crewMembers, allGroups, allMembers)
-		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-		if (deleted === "success") {
-			const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
-			if (res === "success") history.push(`/activities/modifyFlight/${match.params.week}`)
+		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
+		if (res === "success") {
+			const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
+			if (deleted === "success") history.push(`/activities/modifyFlight/${match.params.week}`)
 		}
 	}
 	async function addFlightClick() {
@@ -234,6 +238,7 @@ export const DebriefFlightForm = ({
 		setToken(token)
 		if (token) {
 			const flight = await postFetchRequest<Flight[]>(DB_URL + "flights/getOne", { id: match.params.id })
+			if (typeof flight !== "string") setFlight(flight[0])
 			const CDA = await postFetchRequest<CrewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
 				function: "CDA",
 			})
@@ -352,6 +357,7 @@ export const DebriefFlightForm = ({
 			})
 		)
 	}, [departureTime.value, arrivalTime.value, done.value])
+	useEffect(() => setBriefingTime(getBriefingTime(departureTime)), [departureTime.value])
 	return !token ? (
 		<Redirect to='/' />
 	) : (
@@ -462,7 +468,7 @@ export const DebriefFlightForm = ({
 					buttonColor='primary'
 					buttonContent='Modifier'
 					onClick={modifyFlightClick}
-					disabled={!formValidity(modifyHooks)}
+					disabled={!formValidity(modifyHooks) || flight?.status === "Debriefed"}
 				/>
 				<div className='col-md-1'></div>
 				<Button

@@ -32,9 +32,10 @@ import {
 } from "../tools/buildWeekEvents"
 import { INITIAL_ALERT } from "../Datas/initialObjects"
 import { WeekProps } from "../types/Sections"
+import { ConflictsRow } from "../Articles/ConflictsRow"
 
 export const Week = (props: WeekProps): JSX.Element => {
-	const colNumber = Array.from(Array(28), () => "3.4%")
+	const colNumber = Array.from(Array(34), () => "3.4%")
 	const [monday, setMonday] = useState(props.date === "null" ? currentMonday : parseInt(props.date))
 	const [weekFlights, setWeekFlights] = useState<Flight[][]>([])
 	const [weekAlerts, setWeekAlerts] = useState<Alert[]>([INITIAL_ALERT])
@@ -106,7 +107,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 							<tr key={days.indexOf(day)}>
 								<td>
 									<div className='row'>
-										<div className='col-md-6'>
+										<div className='col-md-5'>
 											<div className='text-center'>{day}</div>
 											<div className='text-center'>
 												{new Date(monday + days.indexOf(day) * inDays).toLocaleDateString()}
@@ -125,7 +126,16 @@ export const Week = (props: WeekProps): JSX.Element => {
 												/>
 											</div>
 										</div>
-										<div className='col-md-6'>
+										<div className='col-md-2 align-middle'>
+											{weekConflicts[days.indexOf(day)] && (
+												<ConflictsRow
+													conflicts={weekConflicts[days.indexOf(day)]}
+													date={monday}
+													day={day}
+												/>
+											)}
+										</div>
+										<div className='col-md-5'>
 											<div className='row'>
 												<div className='col-md-4'>
 													<img src={sun} className='d-inline mx-1 align-bottom' />
@@ -166,6 +176,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 									<AlertRow
 										events={weekAlerts[days.indexOf(day)]}
 										date={monday + days.indexOf(day) * inDays}
+										week={monday}
 									/>
 								</td>
 							</tr>

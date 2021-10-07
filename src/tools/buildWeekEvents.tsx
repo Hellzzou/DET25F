@@ -87,7 +87,7 @@ export const buildWeekConflicts = (
 				alerts[i].rdr,
 				alerts[i].tech,
 			].reduce<Record<string, Conflict[]>>((acc, member) => {
-				acc[member] = [...acc[member], { type: "alert", departure: 0, arrival: 23.9 }]
+				if (member) acc[member] = [...acc[member], { type: "alert", departure: 0, arrival: 23.9 }]
 				return acc
 			}, conflicts[i])
 		if (holidays[i])
@@ -159,7 +159,6 @@ export const buildWeekConflicts = (
 			return acc
 		}, {})
 	}
-	console.log(allConflicts)
 	return allConflicts
 }
 export const sortEventByRow = (events: Event[]): Event[][] => {

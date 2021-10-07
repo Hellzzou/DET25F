@@ -19,7 +19,7 @@ export const DBCard = (props: DBCardProps): JSX.Element => {
 				<h5 className='card-title text-center py-0'>{props.title}</h5>
 				<hr className='m-2'></hr>
 				<div className='text-center'>{props.infos}</div>
-				<div className='mutedWarning'>{props.warning}</div>
+				<div className='mutedWarning text-center'>{props.warning}</div>
 			</div>
 			<Nav.Link
 				href={props.url}

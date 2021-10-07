@@ -29,30 +29,33 @@ export const fullfillFlightForm = (
 ): void => {
 	const departureTime = flight.departureDate.split("T")[1].split("Z")[0]
 	const arrivalTime = flight.arrivalDate.split("T")[1].split("Z")[0]
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	const briefingTime = flight.briefingTime!.split("T")[1].split("Z")[0]
 	setters[0]({ value: flight.departureDate.split("T")[0], validity: true, disabled: false })
 	setters[1]({ value: departureTime, validity: true, disabled: false })
 	setters[2]({ value: flight.arrivalDate.split("T")[0], validity: true, disabled: false })
 	setters[3]({ value: arrivalTime, validity: true, disabled: false })
-	setters[4]({ value: flight.aircraft, validity: true, disabled: false })
-	setters[5]({ value: flight.fuel, validity: true, disabled: false })
-	setters[6]({ value: flight.config, validity: true, disabled: false })
-	setters[7]({ value: flight.type, validity: true, disabled: false })
-	setters[8]({ value: flight.mission, validity: true, disabled: false })
-	setters[9]({ value: flight.area, validity: true, disabled: false })
-	setters[10]({
+	setters[4]({ value: briefingTime, validity: true, disabled: false })
+	setters[5]({ value: flight.aircraft, validity: true, disabled: false })
+	setters[6]({ value: flight.fuel, validity: true, disabled: false })
+	setters[7]({ value: flight.config, validity: true, disabled: false })
+	setters[8]({ value: flight.type, validity: true, disabled: false })
+	setters[9]({ value: flight.mission, validity: true, disabled: false })
+	setters[10]({ value: flight.area, validity: true, disabled: false })
+	setters[11]({
 		value: flight.NCArea,
 		validity: flight.area === "ZEENC" || flight.NCArea !== "Choix...",
 		disabled: false,
 	})
-	setters[11]({ value: flight.group, validity: selectChoiceIsDone(flight.group), disabled: false })
-	setters[12]({ value: flight.belonging, validity: selectChoiceIsDone(flight.belonging), disabled: false })
-	setters[13]({ value: flight.chief, validity: true, disabled: false })
-	setters[14]({ value: flight.pilot, validity: true, disabled: false })
+	setters[12]({ value: flight.group, validity: selectChoiceIsDone(flight.group), disabled: false })
+	setters[13]({ value: flight.belonging, validity: selectChoiceIsDone(flight.belonging), disabled: false })
+	setters[14]({ value: flight.chief, validity: true, disabled: false })
+	setters[15]({ value: flight.pilot, validity: true, disabled: false })
 	setCrewMembers({ value: flight.crewMembers, validity: true, disabled: false })
-	setters[15]({ value: flight.onTime, validity: timeIsCorrect(flight.onTime), disabled: false })
-	setters[16]({ value: flight.offTime, validity: timeIsCorrect(flight.offTime), disabled: false })
-	setters[17]({ value: flight.done, validity: selectChoiceIsDone(flight.done), disabled: false })
-	setters[18]({
+	setters[16]({ value: flight.onTime, validity: timeIsCorrect(flight.onTime), disabled: false })
+	setters[17]({ value: flight.offTime, validity: timeIsCorrect(flight.offTime), disabled: false })
+	setters[18]({ value: flight.done, validity: selectChoiceIsDone(flight.done), disabled: false })
+	setters[19]({
 		value: flight.cause,
 		validity: flight.done === "ME" || flight.cause !== "Choix...",
 		disabled: flight.done === "ME",
@@ -63,8 +66,8 @@ export const fullfillFlightForm = (
 	setRadioTPA(flight.radioTPA)
 	setDenaeTPA(flight.denaeTPA)
 	setPilotEQA(flight.pilotEQA)
-	setters[19]({ value: returnZeroOrValue(flight.dayDuration).toString(), validity: true, disabled: false })
-	setters[20]({ value: returnZeroOrValue(flight.nightDuration).toString(), validity: true, disabled: false })
+	setters[20]({ value: returnZeroOrValue(flight.dayDuration).toString(), validity: true, disabled: false })
+	setters[21]({ value: returnZeroOrValue(flight.nightDuration).toString(), validity: true, disabled: false })
 }
 export const fullfillAlert = (alert: Alert, setters: React.Dispatch<React.SetStateAction<Control>>[]): void => {
 	setters[0]({ value: alert.departureDate.split("T")[0], validity: true, disabled: false })

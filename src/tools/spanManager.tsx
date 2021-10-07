@@ -6,9 +6,10 @@ export const getBetweenColSpan = (event: Flight | Event, events: Array<Flight | 
 	if (events.indexOf(event) !== 0) {
 		if (arrival >= 20) {
 			return (
-				28 -
-				new Date(events[events.indexOf(event) - 1].arrivalDate).getUTCHours() * 2 -
-				Math.max(arrival - departure, 3) * 2
+				34 -
+				Math.max(arrival - departure, 3) * 2 -
+				new Date(events[events.indexOf(event) - 1].arrivalDate).getUTCHours() -
+				7
 			)
 		}
 		return (
@@ -18,15 +19,15 @@ export const getBetweenColSpan = (event: Flight | Event, events: Array<Flight | 
 			2
 		)
 	}
-	if (arrival >= 20 && events.indexOf(event) === 0) return 28 - Math.max(arrival - departure, 3) * 2
-	return Math.ceil((departure - 6) * 2)
+	if (arrival >= 20 && events.indexOf(event) === 0) return 27 - Math.max(arrival - departure, 3) * 2
+	return Math.ceil((departure - 7) * 2)
 }
 export const getBetweenColSpanHoliday = (event: Holiday, events: Array<Holiday>): number => {
 	const departure = event.type === "Perm PM" ? 12 : 8
 	if (events.indexOf(event) !== 0) {
 		return (departure - (events[events.indexOf(event) - 1].type === "Perm AM" ? 12 : 16)) * 2
 	}
-	return (departure - 6) * 2
+	return (departure - 7) * 2
 }
 export const getColSpan = (event: Flight | Event): number => {
 	const departure = new Date(event.departureDate).getUTCHours() + new Date(event.departureDate).getUTCMinutes() / 60

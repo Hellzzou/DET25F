@@ -37,6 +37,12 @@ $custom-colors: (
 .blueGroup {
 	background-color: rgb(164, 208, 252);
 }
+.pointer:hover {
+	cursor: pointer;
+}
+html {
+	font-size: 1.5vh;
+}
 $primary: rgb(88, 160, 231);
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";

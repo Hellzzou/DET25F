@@ -111,3 +111,8 @@ export type PasswordChangeModalProps = {
 	onShow: () => void
 	setAddUserShow: React.Dispatch<React.SetStateAction<boolean>>
 }
+export type ConflictsRowProps = {
+	conflicts: Record<string, string[]>
+	date: number
+	day: string
+}

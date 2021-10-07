@@ -69,14 +69,18 @@ export const INITIAL_ENDDATE_CONTROL = {
 	disabled: false,
 }
 export const getBriefingTime = (departureTime: Control): Control => {
-	const briefingHour = new Date().setHours(
-		parseInt(departureTime.value.split(":")[0]) - 1,
-		parseInt(departureTime.value.split(":")[1]) - 30
-	)
-	const briefingTime =
-		new Date(briefingHour).getHours().toString() + ":" + new Date(briefingHour).getMinutes().toString()
+	console.log(departureTime.value)
+	let hours = 0
+	let minutes = 0
+	if (parseInt(departureTime.value.split(":")[1]) < 30) {
+		hours = parseInt(departureTime.value.split(":")[0]) - 2
+		minutes = parseInt(departureTime.value.split(":")[1]) + 30
+	} else {
+		hours = parseInt(departureTime.value.split(":")[0]) - 1
+		minutes = parseInt(departureTime.value.split(":")[1]) - 30
+	}
 	return {
-		value: briefingTime,
+		value: (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? minutes + "0" : minutes),
 		validity: true,
 		disabled: false,
 	}

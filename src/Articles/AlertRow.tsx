@@ -9,8 +9,8 @@ export const AlertRow = (props: AlertRowProps): JSX.Element => {
 		<div>
 			{props.events ? (
 				<div
-					onClick={() => history.push(`/newAlert/${props.events._id}/modify/${props.date}`)}
-					className='text-center bg-alert rounded'>
+					onClick={() => history.push(`/newAlert/${props.events._id}/modify/${props.week}`)}
+					className='text-center bg-alert rounded pointer'>
 					<div className='row'>
 						<div className='col-md-6'>{props.events.chief}</div>
 						<div className='col-md-6'>{props.events.pilot}</div>
@@ -32,7 +32,7 @@ export const AlertRow = (props: AlertRowProps): JSX.Element => {
 					size={12}
 					buttonColor='primary'
 					buttonContent='Ajouter une nouvelle alerte'
-					onClick={() => history.push(`/newAlert/newOne/${props.date}/${props.date}`)}
+					onClick={() => history.push(`/newAlert/newOne/${props.date}/${props.week}`)}
 				/>
 			)}
 		</div>
