@@ -7,6 +7,7 @@ import { FlightRow } from "../Articles/FlightRow"
 import { OtherEvent } from "../Articles/OtherEventRow"
 import { HolidaysRow } from "../Articles/HolidaysRow"
 import {
+	aircraftURL,
 	alertDateFinderURL,
 	eventDateFinderURL,
 	flightDateFinderURL,
@@ -17,7 +18,7 @@ import {
 import { currentMonday, days, inDays } from "../Datas/constants"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { Alert, CrewMember, Event, Flight, Holiday, Nights } from "../types/Objects"
+import { Aircraft, Alert, CrewMember, Event, Flight, Holiday, Nights } from "../types/Objects"
 import { WeekNavBar } from "./WeekNavBar"
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
@@ -29,6 +30,7 @@ import {
 	buildWeekEvents,
 	buildWeekFlights,
 	buildWeekHolidays,
+	sortFlightByPlane,
 } from "../tools/buildWeekEvents"
 import { INITIAL_ALERT } from "../Datas/initialObjects"
 import { WeekProps } from "../types/Sections"
@@ -42,6 +44,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 	const [weekEvents, setWeekEvents] = useState<Event[][]>([])
 	const [weekHolidays, setWeekHolidays] = useState<Holiday[][]>([])
 	const [weekConflicts, setWeekConflicts] = useState<Record<string, string[]>[]>([])
+	const [aircrafts, setAircrafts] = useState<Aircraft[]>([])
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	useAsyncEffect(async () => {
@@ -62,6 +65,8 @@ export const Week = (props: WeekProps): JSX.Element => {
 			end: new Date(monday + 7 * inDays),
 		})
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
+		const aircrafts = await getFetchRequest<Aircraft[]>(aircraftURL)
+		if (typeof aircrafts !== "string") setAircrafts(aircrafts)
 		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
 		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
 		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
@@ -71,7 +76,8 @@ export const Week = (props: WeekProps): JSX.Element => {
 			typeof alerts !== "string" &&
 			typeof events !== "string" &&
 			typeof holidays !== "string" &&
-			typeof members !== "string"
+			typeof members !== "string" &&
+			typeof aircrafts !== "string"
 		)
 			setWeekConflicts(
 				buildWeekConflicts(
@@ -79,7 +85,8 @@ export const Week = (props: WeekProps): JSX.Element => {
 					buildWeekFlights(flights, monday),
 					buildWeekEvents(events, monday),
 					buildWeekAlerts(alerts, monday),
-					buildWeekHolidays(holidays, monday)
+					buildWeekHolidays(holidays, monday),
+					aircrafts
 				)
 			)
 
@@ -96,7 +103,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 					newEventClick={() => history.push(`/newFlight/${monday}`)}
 					firstDay={monday}
 				/>
-				<table className='col-md-12 table table-secondary table-sm align-middle my-1'>
+				<table className='col-md-12 table table-secondary table-striped table-sm align-middle my-1'>
 					<colgroup>
 						<col width='11%'></col>
 						<col width='82%'></col>
@@ -126,7 +133,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 												/>
 											</div>
 										</div>
-										<div className='col-md-2 align-middle'>
+										<div className='col-md-2'>
 											{weekConflicts[days.indexOf(day)] && (
 												<ConflictsRow
 													conflicts={weekConflicts[days.indexOf(day)]}
@@ -138,7 +145,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 										<div className='col-md-5'>
 											<div className='row'>
 												<div className='col-md-4'>
-													<img src={sun} className='d-inline mx-1 align-bottom' />
+													<img src={sun} className='d-inline mx-1' />
 												</div>
 												<div className='col-md-8'>
 													{getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
@@ -146,7 +153,7 @@ export const Week = (props: WeekProps): JSX.Element => {
 											</div>
 											<div className='row'>
 												<div className='col-md-4'>
-													<img src={moon} className='d-inline mx-1 align-bottom' />
+													<img src={moon} className='d-inline mx-1' />
 												</div>
 												<div className='col-md-8'>
 													{getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
@@ -162,12 +169,31 @@ export const Week = (props: WeekProps): JSX.Element => {
 												<col key={index} width={col}></col>
 											))}
 										</colgroup>
-										<FlightRow
-											events={weekFlights[days.indexOf(day)]}
-											jAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "jour")}
-											nAero={getSunsets(nights, monday + days.indexOf(day) * inDays, "nuit")}
-											date={monday}
-										/>
+										{aircrafts &&
+											weekFlights[days.indexOf(day)] &&
+											sortFlightByPlane(weekFlights[days.indexOf(day)], aircrafts).map(
+												(flights) => (
+													<FlightRow
+														key={sortFlightByPlane(
+															weekFlights[days.indexOf(day)],
+															aircrafts
+														).indexOf(flights)}
+														events={flights}
+														jAero={getSunsets(
+															nights,
+															monday + days.indexOf(day) * inDays,
+															"jour"
+														)}
+														nAero={getSunsets(
+															nights,
+															monday + days.indexOf(day) * inDays,
+															"nuit"
+														)}
+														date={monday}
+													/>
+												)
+											)}
+
 										<OtherEvent events={weekEvents[days.indexOf(day)]} date={monday} />
 										<HolidaysRow holidays={weekHolidays[days.indexOf(day)]} date={monday} />
 									</table>

@@ -8,10 +8,10 @@ export const FlightCell = (props: FlightCellProps): JSX.Element => {
 	const history = useHistory()
 	return (
 		<>
-			{getBetweenColSpan(props.event, props.events) > 0 && props.event.status !== "Debriefed" && (
+			{getBetweenColSpan(props.event, props.events) > 3 && props.event.status !== "Debriefed" && (
 				<td colSpan={getBetweenColSpan(props.event, props.events) - 3}></td>
 			)}
-			{getBetweenColSpan(props.event, props.events) > 0 && props.event.status === "Debriefed" && (
+			{getBetweenColSpan(props.event, props.events) > 3 && props.event.status === "Debriefed" && (
 				<td colSpan={getBetweenColSpan(props.event, props.events)}></td>
 			)}
 			{props.event.status !== "Debriefed" && (

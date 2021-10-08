@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from "react"
 import { Redirect } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { PilotEQAMiniCArd } from "../Articles/pilotEQAMiniCard"
+import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
 import { DebriefedflightDateFinderURL, memberURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { NavBarTPAEQA } from "../Sections/NavBarTPAEQA"
@@ -16,6 +18,10 @@ export const PilotEQA = (): JSX.Element => {
 	const [token, setToken] = useState(true)
 	const [dateTocompare, setDateToCompare] = useState(endOfMonth)
 	const [pilotEQAs, setPilotEQAs] = useState<AllEQAs>([])
+	const [cdt, setCdt] = useState<CrewMember>(INITIAL_CREWMEMBER)
+	const [second, setSecond] = useState<CrewMember>(INITIAL_CREWMEMBER)
+	const [ops, setOps] = useState<CrewMember>(INITIAL_CREWMEMBER)
+	const [csve, setCsve] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const nextMonthClick = () => setDateToCompare(getEndOfNextMonth(dateTocompare))
 	const previousMonthClick = () => setDateToCompare(getEndOfPreviousMonth(dateTocompare))
 	useAsyncEffect(async () => {
@@ -29,6 +35,12 @@ export const PilotEQA = (): JSX.Element => {
 				endDate,
 			})
 			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
+			if (typeof allMembers !== "string") {
+				setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
+				setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
+				setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
+				setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
+			}
 			if (typeof allMembers !== "string" && typeof lastFourYearsFlights !== "string") {
 				const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
 				setPilotEQAs(EQAs)
@@ -42,11 +54,34 @@ export const PilotEQA = (): JSX.Element => {
 			<MainNavBar />
 			<NavBarTPAEQA date={dateTocompare} next={nextMonthClick} prev={previousMonthClick} />
 			<div className='row'>
-				{pilotEQAs.map((pilot) => (
-					<div key={pilotEQAs.indexOf(pilot)} className='col-md-3 mt-2 m-0'>
-						<PilotEQAMiniCArd pilot={pilot} date={dateTocompare} />
-					</div>
-				))}
+				{pilotEQAs.length > 0 && (
+					<>
+						<div className='col-md-3 mt-2 m-0'>
+							<PilotEQAMiniCArd
+								pilot={pilotEQAs.find((pilot) => pilot.name === cdt.trigram)!}
+								date={dateTocompare}
+							/>
+						</div>
+						<div className='col-md-3 mt-2 m-0'>
+							<PilotEQAMiniCArd
+								pilot={pilotEQAs.find((pilot) => pilot.name === second.trigram)!}
+								date={dateTocompare}
+							/>
+						</div>
+						<div className='col-md-3 mt-2 m-0'>
+							<PilotEQAMiniCArd
+								pilot={pilotEQAs.find((pilot) => pilot.name === ops.trigram)!}
+								date={dateTocompare}
+							/>
+						</div>
+						<div className='col-md-3 mt-2 m-0'>
+							<PilotEQAMiniCArd
+								pilot={pilotEQAs.find((pilot) => pilot.name === csve.trigram)!}
+								date={dateTocompare}
+							/>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	)

@@ -15,11 +15,11 @@
 }
 
 .bg-event {
-  background-color: #dbbc54;
+  background-color: #54dbb3;
 }
 
 .bg-holiday {
-  background-color: #e2a14c;
+  background-color: #b56fdd;
 }
 
 .card-body-color {
@@ -48,6 +48,10 @@
 
 .pointer:hover {
   cursor: pointer;
+}
+
+.fullHeight {
+  height: 100%;
 }
 
 html {

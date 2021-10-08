@@ -6,11 +6,11 @@ import { AlertRowProps } from "../types/BasicComponents"
 export const AlertRow = (props: AlertRowProps): JSX.Element => {
 	const history = useHistory()
 	return (
-		<div>
+		<>
 			{props.events ? (
 				<div
 					onClick={() => history.push(`/newAlert/${props.events._id}/modify/${props.week}`)}
-					className='text-center bg-alert rounded pointer'>
+					className='text-center bg-alert rounded pointer m-0 p-2 fullHeight'>
 					<div className='row'>
 						<div className='col-md-6'>{props.events.chief}</div>
 						<div className='col-md-6'>{props.events.pilot}</div>
@@ -35,6 +35,6 @@ export const AlertRow = (props: AlertRowProps): JSX.Element => {
 					onClick={() => history.push(`/newAlert/newOne/${props.date}/${props.week}`)}
 				/>
 			)}
-		</div>
+		</>
 	)
 }

@@ -1,5 +1,5 @@
 import { inDays } from "../Datas/constants"
-import { Alert, Conflict, CrewMember, Event, Flight, Holiday } from "../types/Objects"
+import { Aircraft, Alert, Conflict, CrewMember, Event, Flight, Holiday } from "../types/Objects"
 import { returnHoursInInteger } from "./dateManager"
 
 export const buildWeekFlights = (events: Flight[], startDate: number): Flight[][] =>
@@ -42,7 +42,8 @@ export const buildWeekConflicts = (
 	flights: Flight[][],
 	events: Event[][],
 	alerts: Alert[],
-	holidays: Holiday[][]
+	holidays: Holiday[][],
+	planes: Aircraft[]
 ): Record<string, string[]>[] => {
 	const conflicts = Array.from(Array(7), () =>
 		allMembers.reduce<Record<string, Conflict[]>>((acc, member) => {
@@ -52,18 +53,20 @@ export const buildWeekConflicts = (
 	)
 	for (let i = 0; i < conflicts.length; i++) {
 		if (flights[i])
-			flights[i].reduce<Record<string, Conflict[]>>((acc, event) => {
-				const departure =
-					parseInt(event.departureDate.split("T")[1].split(":")[0]) +
-					parseInt(event.departureDate.split("T")[1].split(":")[1]) / 60
-				const arrival =
-					parseInt(event.arrivalDate.split("T")[1].split(":")[0]) +
-					parseInt(event.arrivalDate.split("T")[1].split(":")[1]) / 60
-				;[event.chief, event.pilot, ...event.crewMembers].map((member) => {
-					acc[member] = [...acc[member], { type: "flight", departure, arrival }]
-				})
-				return acc
-			}, conflicts[i])
+			sortFlightByPlane(flights[i], planes).map((flightRow) =>
+				flightRow.reduce<Record<string, Conflict[]>>((acc, event) => {
+					const departure =
+						parseInt(event.departureDate.split("T")[1].split(":")[0]) +
+						parseInt(event.departureDate.split("T")[1].split(":")[1]) / 60
+					const arrival =
+						parseInt(event.arrivalDate.split("T")[1].split(":")[0]) +
+						parseInt(event.arrivalDate.split("T")[1].split(":")[1]) / 60
+					;[event.chief, event.pilot, ...event.crewMembers].map((member) => {
+						acc[member] = [...acc[member], { type: "flight", departure, arrival }]
+					})
+					return acc
+				}, conflicts[i])
+			)
 		if (events[i])
 			events[i].reduce<Record<string, Conflict[]>>((acc, event) => {
 				const departure =
@@ -120,7 +123,7 @@ export const buildWeekConflicts = (
 				acc[trigram].push("Rupture d'alerte")
 			conflicts[i][trigram]
 				.filter((event) => event.type === "flight")
-				.map((flight) => {
+				.map((flight, index) => {
 					conflicts[i][trigram]
 						.filter((event) => event.type === "event")
 						.map((event) => {
@@ -141,6 +144,17 @@ export const buildWeekConflicts = (
 							)
 								acc[trigram].push("vacances pendant un vol")
 						})
+					const restOfFlights = conflicts[i][trigram].filter((event) => event.type === "flight")
+					for (let i = index; i < restOfFlights.length; i++) {
+						const event = restOfFlights[i]
+						if (
+							((event.departure > flight.departure && event.departure < flight.arrival) ||
+								(event.arrival > flight.departure && event.arrival < flight.arrival) ||
+								(event.departure <= flight.departure && event.arrival >= flight.arrival)) &&
+							event !== flight
+						)
+							acc[trigram].push("2 vols en même temps")
+					}
 				})
 			conflicts[i][trigram]
 				.filter((event) => event.type === "event")
@@ -172,6 +186,13 @@ export const sortEventByRow = (events: Event[]): Event[][] => {
 		departureTime = returnHoursInInteger(event.arrivalDate.split("T")[1].split(":")[0])
 	})
 	return newRow.length === 0 ? [currentRow] : [currentRow, ...sortEventByRow(newRow)]
+}
+export const sortFlightByPlane = (events: Flight[], planes: Aircraft[]): Flight[][] => {
+	const sortedFlights = Array.from(Array(planes.length), () => [] as Flight[])
+	events.map((event) => {
+		sortedFlights[planes.findIndex((plane) => plane.number === event.aircraft)].push(event)
+	})
+	return sortedFlights
 }
 export const sortHolidaysByRow = (events: Holiday[]): Holiday[][] => {
 	let departureTime = 0

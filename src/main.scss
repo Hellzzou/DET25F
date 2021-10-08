@@ -14,10 +14,10 @@ $custom-colors: (
 	background-color: rgb(109, 187, 144);
 }
 .bg-event {
-	background-color: rgb(219, 188, 84);
+	background-color: rgb(84, 219, 179);
 }
 .bg-holiday {
-	background-color: rgb(226, 161, 76);
+	background-color: rgb(181, 111, 221);
 }
 .card-body-color {
 	background-color: rgb(220, 224, 228);
@@ -39,6 +39,9 @@ $custom-colors: (
 }
 .pointer:hover {
 	cursor: pointer;
+}
+.fullHeight {
+	height: 100%;
 }
 html {
 	font-size: 1.5vh;
