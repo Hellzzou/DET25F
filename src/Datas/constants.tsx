@@ -85,6 +85,10 @@ export const DBInfos = {
 		infos: "Vous pourrez ici, modifier les groupes pour les courbes de consommation",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
 	},
+	holidays: {
+		infos: "Vous pourrez ici, modifier les permissions des membres de la flottille",
+		warning: "Attention vous devez être de l'adjudanant pour pouvoir les modifier",
+	},
 }
 export const eventType = [
 	"REPOS",

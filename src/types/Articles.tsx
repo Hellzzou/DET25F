@@ -7,6 +7,7 @@ import {
 	Group,
 	MecboDateTPA,
 	MecboTPA,
+	PermHistory,
 	PilotDateEQA,
 	PilotDateTPA,
 	PilotEQA,
@@ -115,4 +116,13 @@ export type ConflictsRowProps = {
 	conflicts: Record<string, string[]>
 	date: number
 	day: string
+}
+export type CreditHolidayModalProps = {
+	member: string
+	show: boolean
+	handleClose: () => void
+	creditHoliday: (arg0: string, arg1: string, arg2: string) => void
+}
+export type HolidayHistoryDetailsProps = {
+	holidayHistory: PermHistory[]
 }

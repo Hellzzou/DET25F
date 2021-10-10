@@ -19,6 +19,7 @@ export const INITIAL_CREWMEMBER = {
 	tel: "",
 	registration: "",
 	holidays: 0,
+	recoveries: 0,
 }
 export const INITIAL_USER = {
 	rank: "",

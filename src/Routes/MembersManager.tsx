@@ -11,6 +11,7 @@ import { crews, groundFunction, ranks, specialities } from "../Datas/constants"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
 import { CrewMember } from "../types/Objects"
+import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
 
 export const membersManager = (): JSX.Element => {
 	const history = useHistory()
@@ -36,26 +37,12 @@ export const membersManager = (): JSX.Element => {
 					groundFunction: prop === "groundFunction" ? e.target.value : member.groundFunction,
 					tel: prop === "tel" ? e.target.value : member.tel,
 					holidays: member.holidays,
+					recoveries: member.recoveries,
 				}
 		})
 		setMembers(membersMod)
 	}
-	const addNew = () =>
-		setMembers([
-			...members,
-			{
-				rank: "",
-				firstName: "",
-				surName: "",
-				registration: "",
-				trigram: "",
-				crew: "",
-				onBoardFunction: "",
-				groundFunction: "",
-				tel: "",
-				holidays: 0,
-			},
-		])
+	const addNew = () => setMembers([...members, INITIAL_CREWMEMBER])
 	const allNonNull = () => {
 		return members.reduce(
 			(acc, member) =>

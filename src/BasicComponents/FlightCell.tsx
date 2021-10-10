@@ -9,9 +9,9 @@ export const FlightCell = (props: FlightCellProps): JSX.Element => {
 	return (
 		<>
 			{getBetweenColSpan(props.event, props.events) > 3 && props.event.status !== "Debriefed" && (
-				<td colSpan={getBetweenColSpan(props.event, props.events) - 3}></td>
+				<td colSpan={getBetweenColSpan(props.event, props.events) - 2.5}></td>
 			)}
-			{getBetweenColSpan(props.event, props.events) > 3 && props.event.status === "Debriefed" && (
+			{getBetweenColSpan(props.event, props.events) > 1.5 && props.event.status === "Debriefed" && (
 				<td colSpan={getBetweenColSpan(props.event, props.events)}></td>
 			)}
 			{props.event.status !== "Debriefed" && (

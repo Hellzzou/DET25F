@@ -58,7 +58,7 @@ export const MainNavBar = (): JSX.Element => {
 					<NavDropdown id='' title={user.rank + " " + user.name} menuVariant='dark'>
 						<NavDropdown.Item>
 							<Link to='/myAccount' className='text-primary text-decoration-none mx-2'>
-								mon compte
+								Mon compte
 							</Link>
 						</NavDropdown.Item>
 						<NavDropdown.Divider />

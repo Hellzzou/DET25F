@@ -20,7 +20,10 @@ export const HolidaysRow = (props: HolidaysRowProps): JSX.Element => {
 									colSpan={getColSpanHoliday(holiday)}
 									onClick={() => history.push(`/newPerm/${holiday._id}/${props.date}`)}>
 									<div className='row justify-content-center'>
-										{`PERM : ${holiday.members.reduce((acc, value) => (acc += value + " "), "")}`}
+										{holiday.type === ("Perm AM" || "Perm PM" || "Perm journée")
+											? "PERM : "
+											: "RECUP : "}{" "}
+										{holiday.members.reduce((acc, value) => (acc += value + " "), "")}
 									</div>
 								</td>
 							</>

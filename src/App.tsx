@@ -29,6 +29,8 @@ import { Etat400 } from "./Routes/Etat400"
 import { FlightSheet } from "./Routes/FlightSheet"
 import { ConsoManager } from "./Routes/ConsoManager"
 import { NewHoliday } from "./Routes/NewHoliday"
+import { HolidayManager } from "./Routes/HolidayManager"
+import { HolidayHistory } from "./Routes/HolidayHistory"
 
 export const App = (): React.ReactElement => {
 	return (
@@ -59,10 +61,12 @@ export const App = (): React.ReactElement => {
 				<Route path='/crewMembers' component={membersManager} />
 				<Route path='/users' component={UsersManager} />
 				<Route path='/conso' component={ConsoManager} />
+				<Route path='/holiday' component={HolidayManager} />
 				<Route path='/myAccount' component={MyAccount} />
 				<Route path='/stats' component={Stats} />
 				<Route path='/etat400/:monday' component={Etat400} />
 				<Route path='/fdv/:monday' component={FlightSheet} />
+				<Route path='/holidayHistory/:id/:where' component={HolidayHistory} />
 			</Switch>
 		</BrowserRouter>
 	)

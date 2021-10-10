@@ -3,7 +3,6 @@ import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
 import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
-import { Label } from "../BasicComponents/Label"
 import { SimpleSelect } from "../BasicComponents/SimpleSelect"
 import { TextArea } from "../BasicComponents/TextArea"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
@@ -164,12 +163,17 @@ export const ConsoManager = (): JSX.Element => {
 							onClick={() => addNew()}
 						/>
 					</div>
+					<div className='row'>
+						<span className='col-md-3 text-center'>Nom du regroupement</span>
+						<span className='col-md-2 text-center'>Ajouter un sous-groupe</span>
+						<span className='col-md-3 text-center'>Liste des sous-groupes</span>
+						<span className='col-md-2 text-center'>Supprimer un sous-groupe</span>
+					</div>
 					{consos &&
 						consos.map((conso) => (
 							<div key={consos.indexOf(conso)} className='row my-2'>
-								<Label title='Nom du regroupement : ' size={2} />
 								<UnvalidateInput
-									size={2}
+									size={3}
 									backgroundColor='dark'
 									textColor='white'
 									type='number'
@@ -194,7 +198,7 @@ export const ConsoManager = (): JSX.Element => {
 									disabled={!conso.addUnderGroup.validity}
 								/>
 								<TextArea
-									size={2}
+									size={3}
 									backgroundColor='dark'
 									textColor='white'
 									control={{

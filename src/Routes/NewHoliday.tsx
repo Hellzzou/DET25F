@@ -9,7 +9,7 @@ import { Select } from "../BasicComponents/Select"
 import { TextArea } from "../BasicComponents/TextArea"
 import { UnvalidateSelect } from "../BasicComponents/UnvalidateSelect"
 import { INITIAL_FALSE_CONTROL, INITIAL_FALSE_SELECT } from "../Datas/initialObjects"
-import { holidayDelete, holidayIDFinder, memberURL, saveHolidayURL } from "../Datas/urls"
+import { holidayDateFinder, holidayDelete, holidayIDFinder, memberURL, saveHolidayURL } from "../Datas/urls"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { NewEventNavBar } from "../Sections/NewEventNavBar"
 import { getFetchRequest, postFetchRequest, putFetchRequest } from "../tools/fetch"
@@ -27,6 +27,7 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 	const [members, setMembers] = useState<ControlArray>({ value: [], validity: false, disabled: false })
 	const [deleteSelect, setDeleteSelect] = useState(INITIAL_FALSE_SELECT)
 	const [holiday, setHoliday] = useState<Holiday>()
+	const [exists, setExists] = useState(false)
 	const addMember = () => {
 		setMembers({ value: [...members.value, addSelect.value], validity: false, disabled: false })
 		setAddableMembers(addableMembers.filter((member) => member !== addSelect.value))
@@ -59,7 +60,11 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 				if (saved === "success") history.push(`/activities/modifyPerm/${match.params.week}`)
 			}
 		} else {
-			const perm = holiday?.type === "Perm journée" ? 1 : 0.5
+			let type = "perm"
+			let perm = 0.5
+			if (holiday?.type === "Recup AM" || holiday?.type === "Recup PM" || holiday?.type === "Recup journée")
+				type = "recup"
+			if (holiday?.type === "Perm journée" || holiday?.type === "Recup journée") perm = 1
 			allMembers
 				.filter(({ trigram }) => holiday?.members.includes(trigram))
 				.map(async (member) => {
@@ -74,7 +79,8 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 						trigram: member.trigram,
 						tel: member.tel,
 						registration: member.registration,
-						holidays: (member.holidays += perm),
+						holidays: type === "perm" ? (member.holidays += perm) : member.holidays,
+						recoveries: type === "recup" ? (member.recoveries += perm) : member.recoveries,
 					})
 				})
 			validateHoliday()
@@ -87,7 +93,11 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 				holiday: { date: date.value, type: permType.value, members: members.value, status: "validated" },
 			})
 			if (saved === "success") {
-				const perm = holiday?.type === "Perm journée" ? 1 : 0.5
+				let type = "perm"
+				let perm = 0.5
+				if (holiday?.type === "Recup AM" || holiday?.type === "Recup PM" || holiday?.type === "Recup journée")
+					type = "recup"
+				if (holiday?.type === "Perm journée" || holiday?.type === "Recup journée") perm = 1
 				allMembers
 					.filter(({ trigram }) => members.value.includes(trigram))
 					.map(async (member) => {
@@ -102,7 +112,8 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 							trigram: member.trigram,
 							tel: member.tel,
 							registration: member.registration,
-							holidays: (member.holidays -= perm),
+							holidays: type === "perm" ? (member.holidays -= perm) : member.holidays,
+							recoveries: type === "recup" ? (member.recoveries -= perm) : member.recoveries,
 						})
 					})
 
@@ -112,7 +123,11 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 	}
 	const deleteHoliday = async () => {
 		if (holiday?.status === "validated") {
-			const perm = holiday?.type === "Perm journée" ? 1 : 0.5
+			let type = "perm"
+			let perm = 0.5
+			if (holiday?.type === "Recup AM" || holiday?.type === "Recup PM" || holiday?.type === "Recup journée")
+				type = "recup"
+			if (holiday?.type === "Perm journée" || holiday?.type === "Recup journée") perm = 1
 			allMembers
 				.filter(({ trigram }) => holiday.members.includes(trigram))
 				.map(async (member) => {
@@ -127,7 +142,8 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 						trigram: member.trigram,
 						tel: member.tel,
 						registration: member.registration,
-						holidays: (member.holidays += perm),
+						holidays: type === "perm" ? (member.holidays += perm) : member.holidays,
+						recoveries: type === "recup" ? (member.recoveries += perm) : member.recoveries,
 					})
 				})
 		}
@@ -151,6 +167,13 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 			}
 		}
 	}, [])
+	useAsyncEffect(async () => {
+		const holidays = await postFetchRequest<Holiday[]>(holidayDateFinder, { startDate: date.value })
+		if (typeof holidays !== "string" && date.value !== "" && permType.value !== "")
+			setExists(
+				holidays.filter(({ type }) => type === permType.value).length !== 0 && match.params.id === "newOne"
+			)
+	}, [date.value, permType.value])
 	return (
 		<>
 			<MainNavBar />
@@ -181,9 +204,15 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 							textColor='white'
 							control={permType}
 							setControl={setPermType}
-							options={["Perm AM", "Perm PM", "Perm journée"]}
+							options={["Perm AM", "Perm PM", "Perm journée", "Recup AM", "Recup PM", "Recup journée"]}
 							validator={selectChoiceIsDone}
 						/>
+					</div>
+					<div className='row'>
+						<div className='col-md-5'></div>
+						{exists && (
+							<small className='col-md-7 text-danger'>Il existe déjà une perm de ce genre ce jour</small>
+						)}
 					</div>
 					<div className='form-group row m-1'>
 						<Label size={4} title='' />
@@ -242,7 +271,10 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 								buttonColor='primary'
 								buttonContent={match.params.id === "newOne" ? "Ajouter" : "Modifier"}
 								onClick={match.params.id === "newOne" ? addHoliday : modifyHoliday}
-								disabled={!(date.validity && permType.validity && members.value.length !== 0)}
+								disabled={
+									!(date.validity && permType.validity && members.value.length !== 0) ||
+									(match.params.id === "newOne" && exists)
+								}
 							/>
 							<div className='col-md-1'></div>
 							<Button

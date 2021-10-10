@@ -109,6 +109,7 @@ export type CrewMember = {
 	tel?: string
 	registration?: string
 	holidays: number
+	recoveries: number
 }
 export type CrewTPA = {
 	TMAHD: { name: string; value: boolean }
@@ -295,4 +296,24 @@ export type Conflict = {
 	type: string
 	departure: number
 	arrival: number
+}
+export type CreditHoliday = {
+	date: string
+	type: string
+	number: number
+	reason: string
+	trigram: string
+}
+export type PermHistory = {
+	date: string
+	credit: string
+	number: number
+	reason: string
+}
+export type PermHistoryRemainder = {
+	date: string
+	credit: string
+	number: number
+	reason: string
+	remainder: number
 }

@@ -55,7 +55,7 @@ export const Stats = (): JSX.Element => {
 		setChart("bar")
 	}
 	useAsyncEffect(async () => {
-		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
+		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
 		const startDate = new Date(endDate.getFullYear(), 0, 1)
 		const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 			startDate,

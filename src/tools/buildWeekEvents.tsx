@@ -195,14 +195,24 @@ export const sortFlightByPlane = (events: Flight[], planes: Aircraft[]): Flight[
 	return sortedFlights
 }
 export const sortHolidaysByRow = (events: Holiday[]): Holiday[][] => {
-	let departureTime = 0
+	let departureTime = 8
 	const newRow: Holiday[] = []
 	const currentRow: Holiday[] = []
-	events.map((event) => {
-		const eventDeparture = event.type === "Perm PM" ? 12 : 8
-		if (eventDeparture >= departureTime) currentRow.push(event)
-		else newRow.push(event)
-		departureTime = event.type === "Perm AM" ? 12 : 16
-	})
+	events
+		.sort((e1, e2) => {
+			let e1departure = 8
+			if (e1.type === "Perm PM" || e1.type === "Recup PM") e1departure = 12
+			let e2departure = 8
+			if (e2.type === "Perm PM" || e2.type === "Recup PM") e2departure = 12
+			return e1departure - e2departure
+		})
+		.map((event) => {
+			let eventDeparture = 8
+			if (event.type === "Perm PM" || event.type === "Recup PM") eventDeparture = 12
+			if (eventDeparture >= departureTime) currentRow.push(event)
+			else newRow.push(event)
+			if (event.type === "Perm AM" || event.type === "Recup AM") departureTime = 12
+			else departureTime = 16
+		})
 	return newRow.length === 0 ? [currentRow] : [currentRow, ...sortHolidaysByRow(newRow)]
 }

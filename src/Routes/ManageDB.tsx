@@ -21,7 +21,7 @@ export const ManageDB = (): JSX.Element => {
 				</div>
 				<div className='col-md-4'>
 					<DBCard
-						title='CONFIGS'
+						title='CONFIGURATIONS'
 						infos={DBInfos.configs.infos}
 						warning={DBInfos.configs.warning}
 						url='/configs'
@@ -75,7 +75,20 @@ export const ManageDB = (): JSX.Element => {
 					/>
 				</div>
 				<div className='col-md-4'>
-					<DBCard title='CONSO' infos={DBInfos.conso.infos} warning={DBInfos.conso.warning} url='/conso' />
+					<DBCard
+						title='CONSOMMATIONS'
+						infos={DBInfos.conso.infos}
+						warning={DBInfos.conso.warning}
+						url='/conso'
+					/>
+				</div>
+				<div className='col-md-4'>
+					<DBCard
+						title='PERMISSIONS'
+						infos={DBInfos.holidays.infos}
+						warning={DBInfos.holidays.warning}
+						url='/holiday'
+					/>
 				</div>
 			</div>
 		</div>
