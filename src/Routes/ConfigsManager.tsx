@@ -36,13 +36,11 @@ export const ConfigsManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const configs = await getFetchRequest<Config[]>(configURL)
-		if (typeof configs !== "string") {
-			setConfigs(
-				configs.map((config) => {
-					return { name: config.name, value: config.name }
-				})
-			)
-		}
+		setConfigs(
+			configs.map((config) => {
+				return { name: config.name, value: config.name }
+			})
+		)
 	}, [])
 	return (
 		<>

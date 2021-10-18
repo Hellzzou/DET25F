@@ -22,9 +22,9 @@ export const QOGTable = (props: QOGTableProps): JSX.Element => {
 	const [allDistinctGroups, setAllDistinctGroups] = useState<string[]>([])
 	useAsyncEffect(async () => {
 		const allGroups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof allGroups !== "string") setAllGroups(allGroups)
+		setAllGroups(allGroups)
 		const allDistinctGroups = await getFetchRequest<string[]>(distinctGroupURL)
-		if (typeof allDistinctGroups !== "string") setAllDistinctGroups(allDistinctGroups)
+		setAllDistinctGroups(allDistinctGroups)
 	}, [])
 	return (
 		<table className='table table-sm text-center align-middle border border-dark'>

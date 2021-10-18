@@ -36,13 +36,11 @@ export const FuelManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const fuels = await getFetchRequest<Fuel[]>(fuelURL)
-		if (typeof fuels !== "string") {
-			setFuels(
-				fuels.map((fuel) => {
-					return { name: fuel.quantity, value: fuel.quantity }
-				})
-			)
-		}
+		setFuels(
+			fuels.map((fuel) => {
+				return { name: fuel.quantity, value: fuel.quantity }
+			})
+		)
 	}, [])
 	return (
 		<>

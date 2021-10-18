@@ -20,6 +20,7 @@ import {
 	RadioTPA,
 } from "../types/Objects"
 import { returnDayNightDuration } from "./dateManager"
+import { returnZeroOrValue } from "./maths"
 
 export const buildNewFlight = (
 	hooks: Array<Control>,
@@ -91,14 +92,12 @@ export const buildDebriefedFlight = (
 	nAero: string,
 	allGroups: Group[]
 ): unknown => {
-	const dayDuration =
-		hooks[16].value === "CNL" ? 0 : returnDayNightDuration(hooks[1].value, hooks[3].value, jAero, nAero).jour
-	const nightDuration =
-		hooks[16].value === "CNL" ? 0 : returnDayNightDuration(hooks[1].value, hooks[3].value, jAero, nAero).nuit
-	const onDayDuration =
-		hooks[16].value === "CNL" ? 0 : returnDayNightDuration(hooks[14].value, hooks[15].value, jAero, nAero).jour
-	const onNightDuration =
-		hooks[16].value === "CNL" ? 0 : returnDayNightDuration(hooks[14].value, hooks[15].value, jAero, nAero).nuit
+	let onDayDuration = 0
+	if (hooks[16].value !== "CNL" && hooks[14].value !== "" && hooks[15].value !== "")
+		onDayDuration = returnDayNightDuration(hooks[14].value, hooks[15].value, jAero, nAero).jour
+	let onNightDuration = 0
+	if (hooks[16].value !== "CNL" && hooks[14].value !== "" && hooks[15].value !== "")
+		onNightDuration = returnDayNightDuration(hooks[14].value, hooks[15].value, jAero, nAero).nuit
 	const debriefedFlight = {
 		departureDate: new Date(Date.parse(hooks[0].value + " " + hooks[1].value) + 11 * 3600000),
 		arrivalDate: new Date(Date.parse(hooks[2].value + " " + hooks[3].value) + 11 * 3600000),
@@ -114,8 +113,8 @@ export const buildDebriefedFlight = (
 		pilot: hooks[13].value,
 		crewMembers: crewMembers.value,
 		status: "Debriefed",
-		dayDuration: dayDuration,
-		nightDuration: nightDuration,
+		dayDuration: hooks[16].value === "CNL" ? 0 : returnZeroOrValue(hooks[20].value),
+		nightDuration: hooks[16].value === "CNL" ? 0 : returnZeroOrValue(hooks[21].value),
 		onTime: hooks[14].value,
 		offTime: hooks[15].value,
 		onDayDuration: onDayDuration,

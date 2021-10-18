@@ -34,26 +34,35 @@ export const NewAlertForm = ({
 	async function addEventClick() {
 		const newAlert = buildNewAlert(hooks)
 		const saved = await postFetchRequest(saveAlertURL, { newAlert })
-		if (saved === "success") history.push(`/activities/newAlert/${match.params.week}`)
+		if (saved === "success") {
+			sessionStorage.setItem("activitiesAlert", "newAlert")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	async function modifyAlertClick() {
 		const newAlert = buildNewAlert(hooks)
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveAlertURL, { newAlert })
-			if (res === "success") history.push(`/activities/modifyAlert/${match.params.week}`)
+			if (res === "success") {
+				sessionStorage.setItem("activitiesAlert", "modifyAlert")
+				history.push(`/activities/${match.params.week}`)
+			}
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(alertDeleteURL, { id: match.params.id })
-		if (deleted === "success") history.push(`/activities/deleteAlert/${match.params.week}`)
+		if (deleted === "success") {
+			sessionStorage.setItem("activitiesAlert", "deleteAlert")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (match.params.id !== "newOne") {
 			const alert = await postFetchRequest<Alert[]>(alertIDFinderURL, { id: match.params.id })
-			if (typeof alert !== "string") fullfillAlert(alert[0], setters)
+			fullfillAlert(alert[0], setters)
 		}
 		if (match.params.date !== "modify") {
 			setDepartureDate({
@@ -109,7 +118,7 @@ export const NewAlertForm = ({
 				addClick={match.params.id !== "newOne" ? modifyAlertClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={() => history.push(`/activities/null/${match.params.week}`)}
+				returnClick={() => history.push(`/activities/${match.params.week}`)}
 			/>
 		</div>
 	)

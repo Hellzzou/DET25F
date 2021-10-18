@@ -115,20 +115,18 @@ export const ConsoManager = (): JSX.Element => {
 	useAsyncEffect(async () => {
 		const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
 		const consos = await getFetchRequest<Conso[]>(consoURL)
-		if (typeof consos !== "string" && typeof underGroups !== "string") {
-			setConsos(
-				consos.map((conso) => {
-					return {
-						name: conso.name,
-						underGroups: conso.underGroups,
-						addableUnderGroups: underGroups.filter((underGroup) => !conso.underGroups.includes(underGroup)),
-						addUnderGroup: INITIAL_FALSE_SELECT,
-						deleteUnderGroup: INITIAL_FALSE_SELECT,
-					}
-				})
-			)
-			setUnderGroups(underGroups)
-		}
+		setConsos(
+			consos.map((conso) => {
+				return {
+					name: conso.name,
+					underGroups: conso.underGroups,
+					addableUnderGroups: underGroups.filter((underGroup) => !conso.underGroups.includes(underGroup)),
+					addUnderGroup: INITIAL_FALSE_SELECT,
+					deleteUnderGroup: INITIAL_FALSE_SELECT,
+				}
+			})
+		)
+		setUnderGroups(underGroups)
 	}, [])
 	return (
 		<>

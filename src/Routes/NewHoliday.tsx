@@ -48,7 +48,10 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 		const saved = await postFetchRequest<string>(saveHolidayURL, {
 			holiday: { date: date.value, type: permType.value, members: members.value, status: "inProgress" },
 		})
-		if (saved === "success") history.push(`/activities/newPerm/${match.params.week}`)
+		if (saved === "success") {
+			sessionStorage.setItem("activitiesAlert", "newPerm")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	const modifyHoliday = async () => {
 		if (holiday?.status === "inProgress") {
@@ -57,7 +60,10 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 				const saved = await postFetchRequest<string>(saveHolidayURL, {
 					holiday: { date: date.value, type: permType.value, members: members.value, status: "inProgress" },
 				})
-				if (saved === "success") history.push(`/activities/modifyPerm/${match.params.week}`)
+				if (saved === "success") {
+					sessionStorage.setItem("activitiesAlert", "modifyPerm")
+					history.push(`/activities/modifyPerm/${match.params.week}`)
+				}
 			}
 		} else {
 			let type = "perm"
@@ -116,8 +122,8 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 							recoveries: type === "recup" ? (member.recoveries -= perm) : member.recoveries,
 						})
 					})
-
-				history.push(`/activities/debriefPerm/${match.params.week}`)
+				sessionStorage.setItem("activitiesAlert", "debriefPerm")
+				history.push(`/activities/${match.params.week}`)
 			}
 		}
 	}
@@ -148,28 +154,25 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 				})
 		}
 		const deleted = await postFetchRequest<string>(holidayDelete, { id: match.params.id })
-		if (deleted === "success") history.push(`/activities/deletePerm/${match.params.week}`)
+		if (deleted === "success") {
+			sessionStorage.setItem("activitiesAlert", "deletePerm")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	const disabling = (): boolean =>
 		(match.params.id === "newOne" && !(date.validity && permType.validity && members.validity)) ||
 		holiday?.status === "validated"
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			setAllMembers(members)
-			setAddableMembers(members.map(({ trigram }) => trigram))
-		}
-		if (match.params.id !== "newOne") {
-			const holiday = await postFetchRequest<Holiday[]>(holidayIDFinder, { id: match.params.id })
-			if (typeof holiday !== "string" && typeof members !== "string") {
-				fullfillHoliday(holiday[0], setDate, setPermType, setAddableMembers, setMembers, members)
-				setHoliday(holiday[0])
-			}
-		}
+		const holiday = await postFetchRequest<Holiday[]>(holidayIDFinder, { id: match.params.id })
+		setAllMembers(members)
+		setAddableMembers(members.map(({ trigram }) => trigram))
+		fullfillHoliday(holiday[0], setDate, setPermType, setAddableMembers, setMembers, members)
+		setHoliday(holiday[0])
 	}, [])
 	useAsyncEffect(async () => {
 		const holidays = await postFetchRequest<Holiday[]>(holidayDateFinder, { startDate: date.value })
-		if (typeof holidays !== "string" && date.value !== "" && permType.value !== "")
+		if (date.value !== "" && permType.value !== "")
 			setExists(
 				holidays.filter(({ type }) => type === permType.value).length !== 0 && match.params.id === "newOne"
 			)
@@ -291,7 +294,7 @@ export const NewHoliday = ({ match }: RouteComponentProps<{ id: string; week: st
 								size={2}
 								buttonColor='danger'
 								buttonContent='Annuler'
-								onClick={() => history.push(`/activities/null/${match.params.week}`)}
+								onClick={() => history.push(`/activities/${match.params.week}`)}
 							/>
 						</div>
 					</div>

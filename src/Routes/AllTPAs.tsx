@@ -37,26 +37,22 @@ export const AllTPAs = (): JSX.Element => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate())
+			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate() + 1)
 			const startDate = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
 			const allDebriefedFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate,
 				endDate,
 			})
 			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
-			if (typeof allMembers !== "string") {
-				setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
-				setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
-				setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
-				setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
-			}
-			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
-				const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
-				setPilotTPA(TPAs.pilotTPA)
-				setMecboTPA(TPAs.mecboTPA)
-				setRadioTPA(TPAs.radioTPA)
-				setDenaeTPA(TPAs.denaeTPA)
-			}
+			setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
+			setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
+			setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
+			setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
+			const TPAs = buildAllTPAs(allMembers, allDebriefedFlights)
+			setPilotTPA(TPAs.pilotTPA)
+			setMecboTPA(TPAs.mecboTPA)
+			setRadioTPA(TPAs.radioTPA)
+			setDenaeTPA(TPAs.denaeTPA)
 		}
 	}, [dateTocompare])
 	return !token ? (

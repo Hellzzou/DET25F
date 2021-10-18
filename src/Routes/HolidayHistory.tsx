@@ -20,17 +20,11 @@ export const HolidayHistory = ({ match }: RouteComponentProps<{ id: string; wher
 		match.params.where === "manageDB" ? history.push("/holiday") : history.push("/activities/null/null")
 	useAsyncEffect(async () => {
 		const member = await postFetchRequest<CrewMember>(memberWithIDURL, { id: match.params.id })
-		if (typeof member !== "string") {
-			setMember(member)
-			const perms = await getFetchRequest<Holiday[]>(holidayURL)
-			const credits = await postFetchRequest<CreditHoliday[]>(getCreditTrigramURL, { trigram: member.trigram })
-			if (typeof perms !== "string" && typeof credits !== "string") {
-				console.log(buildPermHistory(perms, credits, member, "Perm"))
-				console.log(buildPermHistory(perms, credits, member, "Recup"))
-				setPermHistory(buildPermHistory(perms, credits, member, "Perm"))
-				setRecupHistory(buildPermHistory(perms, credits, member, "Recup"))
-			}
-		}
+		const perms = await getFetchRequest<Holiday[]>(holidayURL)
+		const credits = await postFetchRequest<CreditHoliday[]>(getCreditTrigramURL, { trigram: member.trigram })
+		setMember(member)
+		setPermHistory(buildPermHistory(perms, credits, member, "Perm"))
+		setRecupHistory(buildPermHistory(perms, credits, member, "Recup"))
 	}, [])
 	return (
 		<>

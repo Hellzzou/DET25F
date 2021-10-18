@@ -23,7 +23,9 @@ export const INITIAL_CREWMEMBER = {
 }
 export const INITIAL_USER = {
 	rank: "",
-	name: "",
+	firstName: "",
+	surName: "",
+	trigram: "",
 	email: "",
 	login: "",
 	responsability: "",

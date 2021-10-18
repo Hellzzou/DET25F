@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import useAsyncEffect from "use-async-effect"
 import { Button } from "../BasicComponents/Button"
-import { DB_URL } from "../Datas/urls"
+import { DB_URL, flightIDFinderURL, onBoardFunctionURL } from "../Datas/urls"
 import { INITIAL_FALSE_CONTROL } from "../Datas/initialObjects"
 import {
 	INITIAL_CREWTPA,
@@ -19,7 +19,7 @@ import { MissionFieldset } from "../Sections/MissionFieldset"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { TimingFieldset } from "../Sections/TimingFieldset"
 import { getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { manageDuration, manageNCAreas } from "../tools/formManager"
+import { manageNCAreas } from "../tools/formManager"
 import { fullfillFlightForm } from "../tools/fullfillForms"
 import { buildDebriefedFlight, buildNewFlight } from "../tools/buildEvents"
 import { returnZeroOrValue } from "../tools/maths"
@@ -81,6 +81,8 @@ export const DebriefFlightForm = ({
 	const [denaeTPA, setDenaeTPA] = useState<Array<DenaeTPA>>([])
 	const [pilotEQA, setPilotEQA] = useState<Array<PilotEQA>>([])
 	const [allMembers, setAllMembers] = useState<Array<CrewMember>>([])
+	const [dayCheck, setDayCheck] = useState(INITIAL_FALSE_CONTROL)
+	const [nightCheck, setNightCheck] = useState(INITIAL_FALSE_CONTROL)
 	const [flight, setFlight] = useState<Flight>()
 
 	const modifyHooks = [
@@ -100,6 +102,27 @@ export const DebriefFlightForm = ({
 		NCArea,
 		chief,
 		pilot,
+	]
+	const validHooks = [
+		departureDate,
+		departureTime,
+		arrivalDate,
+		arrivalTime,
+		aircraft,
+		fuel,
+		config,
+		type,
+		mission,
+		area,
+		NCArea,
+		chief,
+		pilot,
+		done,
+		cause,
+		group,
+		belonging,
+		dayCheck,
+		nightCheck,
 	]
 	const hooks = [
 		departureDate,
@@ -146,6 +169,8 @@ export const DebriefFlightForm = ({
 		setOnNightDuration,
 		setDone,
 		setCause,
+		setDayDuration,
+		setNightDuration,
 		setDayDuration,
 		setNightDuration,
 	]
@@ -206,7 +231,10 @@ export const DebriefFlightForm = ({
 		const res = await postFetchRequest(DB_URL + "flights/save", { newFlight: newFlight })
 		if (res === "success") {
 			const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-			if (deleted === "success") history.push(`/activities/modifyFlight/${match.params.week}`)
+			if (deleted === "success") {
+				sessionStorage.setItem("activitiesAlert", "modifyFlight")
+				history.push(`/activities/${match.params.week}`)
+			}
 		}
 	}
 	async function addFlightClick() {
@@ -226,55 +254,55 @@ export const DebriefFlightForm = ({
 		const saved = await postFetchRequest(DB_URL + "flights/save", { newFlight: debriefedFlight })
 		if (saved === "success") {
 			const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-			if (deleted === "success") history.push(`/activities/debriefFlight/${match.params.week}`)
+			if (deleted === "success") {
+				sessionStorage.setItem("activitiesAlert", "debriefFlight")
+				history.push(`/activities/${match.params.week}`)
+			}
 		}
 	}
 	async function deleteFlight() {
 		const deleted = await postFetchRequest(DB_URL + "flights/deleteOne", { id: match.params.id })
-		if (deleted === "success") history.push(`/activities/deleteFlight/${match.params.week}`)
+		if (deleted === "success") {
+			sessionStorage.setItem("activitiesAlert", "deleteFlight")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const flight = await postFetchRequest<Flight[]>(DB_URL + "flights/getOne", { id: match.params.id })
-			if (typeof flight !== "string") setFlight(flight[0])
-			const CDA = await postFetchRequest<CrewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
-				function: "CDA",
-			})
-			const pilots = await postFetchRequest<CrewMember[]>(DB_URL + "crewMembers/findByOnboardFunction", {
-				function: "pilote",
-			})
+			const flight = await postFetchRequest<Flight[]>(flightIDFinderURL, { id: match.params.id })
+			const CDA = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "CDA" })
+			const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "pilote" })
 			const crewMembers = await getFetchRequest<CrewMember[]>(DB_URL + "crewMembers")
 			const allGroups = await getFetchRequest<Group[]>(DB_URL + "groups")
-			if (typeof allGroups !== "string") setAllGroups(allGroups)
-			if (typeof CDA !== "string") setCDAList(CDA.map(({ trigram }) => trigram))
-			if (typeof pilots !== "string") setPilotList(pilots.map(({ trigram }) => trigram))
-			if (typeof crewMembers !== "string" && typeof flight !== "string") {
-				fullfillFlightForm(
-					setters,
-					setCrewMembers,
-					setCrewTPA,
-					setPilotTPA,
-					setMecboTPA,
-					setRadioTPA,
-					setDenaeTPA,
-					setPilotEQA,
-					flight[0]
-				)
-				setAllMembers(crewMembers)
-				setAddableCrewMembers(
-					crewMembers
-						.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
-						.map(({ trigram }) => trigram)
-						.filter(
-							(member) =>
-								!flight[0].crewMembers.includes(member) &&
-								member !== flight[0].chief &&
-								member !== flight[0].pilot
-						)
-				)
-			}
+			setFlight(flight[0])
+			setAllGroups(allGroups)
+			setCDAList(CDA.map(({ trigram }) => trigram))
+			setPilotList(pilots.map(({ trigram }) => trigram))
+			fullfillFlightForm(
+				setters,
+				setCrewMembers,
+				setCrewTPA,
+				setPilotTPA,
+				setMecboTPA,
+				setRadioTPA,
+				setDenaeTPA,
+				setPilotEQA,
+				flight[0]
+			)
+			setAllMembers(crewMembers)
+			setAddableCrewMembers(
+				crewMembers
+					.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
+					.map(({ trigram }) => trigram)
+					.filter(
+						(member) =>
+							!flight[0].crewMembers.includes(member) &&
+							member !== flight[0].chief &&
+							member !== flight[0].pilot
+					)
+			)
 		}
 	}, [])
 	useEffect(() => {
@@ -323,7 +351,6 @@ export const DebriefFlightForm = ({
 		manageNCAreas(area.value, setNCArea, NCArea.value)
 	}, [area.value, NCArea.value])
 	useEffect(() => {
-		const durations = manageDuration(departureTime, arrivalTime, match.params.jAero, match.params.nAero, done.value)
 		let day = 0
 		let night = 0
 		if (pilotEQA.length > 0) {
@@ -334,15 +361,31 @@ export const DebriefFlightForm = ({
 				.map((eqa) => returnZeroOrValue(eqa.EQA.PILN.value))
 				.reduce((previous, current) => previous + current)
 		}
-		setDayDuration({ value: durations.jour.toString(), validity: 2 * durations.jour === day, disabled: false })
-		setNightDuration({ value: durations.nuit.toString(), validity: 2 * durations.nuit === night, disabled: false })
+		setDayCheck({
+			value: dayDuration.value,
+			validity: 2 * returnZeroOrValue(dayDuration.value) === day,
+			disabled: false,
+		})
+		setNightCheck({
+			value: nightDuration.value,
+			validity: 2 * returnZeroOrValue(nightDuration.value) === night,
+			disabled: false,
+		})
 		setPilotEQA(
 			pilotEQA.map((eqa) => {
 				return {
 					name: eqa.name,
 					EQA: {
-						PILJ: { name: "pil jour", value: eqa.EQA.PILJ.value, validity: 2 * durations.jour === day },
-						PILN: { name: "pil nuit", value: eqa.EQA.PILN.value, validity: 2 * durations.nuit === night },
+						PILJ: {
+							name: "pil jour",
+							value: eqa.EQA.PILJ.value,
+							validity: 2 * returnZeroOrValue(dayDuration.value) === day,
+						},
+						PILN: {
+							name: "pil nuit",
+							value: eqa.EQA.PILN.value,
+							validity: 2 * returnZeroOrValue(nightDuration.value) === night,
+						},
 						ATTJ: { name: "att jour", value: eqa.EQA.ATTJ.value },
 						BAN: { name: "ba nuit", value: eqa.EQA.BAN.value },
 						ATTN1: { name: "att n-1", value: eqa.EQA.ATTN1.value },
@@ -356,7 +399,7 @@ export const DebriefFlightForm = ({
 				}
 			})
 		)
-	}, [departureTime.value, arrivalTime.value, done.value])
+	}, [dayDuration.value, nightDuration.value, done.value])
 	useEffect(() => setBriefingTime(getBriefingTime(departureTime)), [departureTime.value])
 	return !token ? (
 		<Redirect to='/' />
@@ -433,6 +476,10 @@ export const DebriefFlightForm = ({
 								setDone={setDone}
 								cause={cause}
 								setCause={setCause}
+								dayDuration={dayDuration}
+								setDayDuration={setDayDuration}
+								nightDuration={nightDuration}
+								setNightDuration={setNightDuration}
 							/>
 						</div>
 					</div>
@@ -453,10 +500,10 @@ export const DebriefFlightForm = ({
 								setDenaeTPA={setDenaeTPA}
 								pilotEQA={pilotEQA}
 								setPilotEQA={setPilotEQA}
-								dayDuration={dayDuration}
-								setDayDuration={setDayDuration}
-								nightDuration={nightDuration}
-								setNightDuration={setNightDuration}
+								dayDuration={dayCheck}
+								setDayDuration={setDayCheck}
+								nightDuration={nightCheck}
+								setNightDuration={setNightCheck}
 							/>
 						</div>
 					</div>
@@ -476,7 +523,7 @@ export const DebriefFlightForm = ({
 					buttonColor='primary'
 					buttonContent='Debriefer'
 					onClick={addFlightClick}
-					disabled={!formValidity(hooks)}
+					disabled={!formValidity(validHooks)}
 				/>
 				<div className='col-md-1'></div>
 				<Button size={2} buttonColor='danger' buttonContent='Supprimer' onClick={deleteFlight} />
@@ -485,7 +532,7 @@ export const DebriefFlightForm = ({
 					size={2}
 					buttonColor='danger'
 					buttonContent='Annuler'
-					onClick={() => history.push(`/activities/null/${match.params.week}`)}
+					onClick={() => history.push(`/activities/${match.params.week}`)}
 				/>
 			</div>
 		</div>

@@ -29,7 +29,9 @@ export type Config = {
 export type User = {
 	_id?: string
 	rank: string
-	name: string
+	firstName: string
+	surName: string
+	trigram: string
 	responsability: string
 	email: string
 	login?: string

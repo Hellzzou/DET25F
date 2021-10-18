@@ -39,19 +39,28 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string; week: 
 	async function addEventClick() {
 		const newEvent = buildNewEvent(hooks, members)
 		const saved = await postFetchRequest<string>(saveEventURL, { newEvent })
-		if (saved === "success") history.push(`/activities/newEvent/${match.params.week}`)
+		if (saved === "success") {
+			sessionStorage.setItem("activitiesAlert", "newEvent")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	async function modifyEventClick() {
 		const newEvent = buildNewEvent(hooks, members)
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
 		if (deleted === "success") {
 			const res = await postFetchRequest<string>(saveEventURL, { newEvent })
-			if (res === "success") history.push(`/activities/modifyEvent/${match.params.week}`)
+			if (res === "success") {
+				sessionStorage.setItem("activitiesAlert", "modifyAlert")
+				history.push(`/activities/${match.params.week}`)
+			}
 		}
 	}
 	async function deleteClick() {
 		const deleted = await postFetchRequest<string>(eventDelete, { id: match.params.id })
-		if (deleted === "success") history.push(`/activities/deleteEvent/${match.params.week}`)
+		if (deleted === "success") {
+			sessionStorage.setItem("activitiesAlert", "deleteAlert")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	const addMember = () => {
 		setMembers({ value: [...members.value, addMemberSelect.value], validity: false, disabled: false })
@@ -87,13 +96,11 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string; week: 
 		setToken(token)
 		if (match.params.id !== "newOne") {
 			const event = await postFetchRequest<Event[]>(eventIDFinder, { id: match.params.id })
-			if (typeof event !== "string") fullfillEvent(event[0], setters, setAddableMembers, setMembers, allMembers)
+			fullfillEvent(event[0], setters, setAddableMembers, setMembers, allMembers)
 		}
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			setAllMembers(members)
-			setAddableMembers(members.map(({ trigram }) => trigram))
-		}
+		setAllMembers(members)
+		setAddableMembers(members.map(({ trigram }) => trigram))
 	}, [])
 	return !token ? (
 		<Redirect to='/' />
@@ -193,7 +200,7 @@ export const NewEventForm = ({ match }: RouteComponentProps<{ id: string; week: 
 				addClick={match.params.id !== "newOne" ? modifyEventClick : addEventClick}
 				deleteClick={deleteClick}
 				disableDelete={match.params.id === "newOne"}
-				returnClick={() => history.push(`/activities/null/${match.params.week}`)}
+				returnClick={() => history.push(`/activities/${match.params.week}`)}
 			/>
 		</div>
 	)

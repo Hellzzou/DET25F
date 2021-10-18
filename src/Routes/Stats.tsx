@@ -51,7 +51,12 @@ export const Stats = (): JSX.Element => {
 		setChart("doughnut")
 	}
 	const alertByMember = async () => {
-		setData(buildAlertByMember(alerts, members))
+		setData(
+			buildAlertByMember(
+				alerts,
+				members.filter(({ groundFunction }) => groundFunction !== "Inactif")
+			)
+		)
 		setChart("bar")
 	}
 	useAsyncEffect(async () => {
@@ -61,26 +66,21 @@ export const Stats = (): JSX.Element => {
 			startDate,
 			endDate,
 		})
-		if (typeof allDebriefedFlights !== "string") setFlights(allDebriefedFlights)
+		setFlights(allDebriefedFlights)
 		const groups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof groups !== "string") setGroups(groups)
-		if (typeof groups !== "string" && typeof allDebriefedFlights !== "string")
-			setData(buildConsoChart(groups, allDebriefedFlights))
+		setGroups(groups)
+		setData(buildConsoChart(groups, allDebriefedFlights))
 		const consos = await getFetchRequest<Conso[]>(consoURL)
-		if (typeof consos !== "string") {
-			setConsos(
-				consos.sort(
-					(conso1, conso2) => parseInt(conso1.name.split(" ")[1]) - parseInt(conso2.name.split(" ")[1])
-				)
-			)
-		}
+		setConsos(
+			consos.sort((conso1, conso2) => parseInt(conso1.name.split(" ")[1]) - parseInt(conso2.name.split(" ")[1]))
+		)
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") setMembers(members)
+		setMembers(members)
 		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
 			start: startDate,
 			end: endDate,
 		})
-		if (typeof alerts !== "string") setAlerts(alerts)
+		setAlerts(alerts)
 		setChart("line")
 	}, [])
 	useAsyncEffect(async () => {
@@ -88,12 +88,12 @@ export const Stats = (): JSX.Element => {
 			startDate: startDate.value,
 			endDate: endDate.value,
 		})
-		if (typeof allDebriefedFlights !== "string") setFlights(allDebriefedFlights)
+		setFlights(allDebriefedFlights)
 		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
 			start: startDate.value,
 			end: endDate.value,
 		})
-		if (typeof alerts !== "string") setAlerts(alerts)
+		setAlerts(alerts)
 	}, [startDate.value, endDate.value])
 	return (
 		<>

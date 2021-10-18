@@ -4,7 +4,7 @@ import { Label } from "../BasicComponents/Label"
 import { Legend } from "../BasicComponents/Legend"
 import { Select } from "../BasicComponents/Select"
 import { manageCNL } from "../tools/formManager"
-import { selectChoiceIsDone, timeIsCorrect } from "../tools/validators"
+import { durationIsCorrect, selectChoiceIsDone, timeIsCorrect } from "../tools/validators"
 import { debriefTimingFieldsetProps } from "../types/Sections"
 
 export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.Element => {
@@ -70,6 +70,33 @@ export const DebriefTimingFieldset = (props: debriefTimingFieldsetProps): JSX.El
 					validator={timeIsCorrect}
 				/>
 			</div>
+			{!!props.dayDuration && !!props.setDayDuration && !!props.nightDuration && !!props.setNightDuration && (
+				<div className='form-group row m-1'>
+					<Label size={4} title='Durée du vol Jour/Nuit :' />
+					<Input
+						size={4}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						min={0}
+						max={0}
+						control={props.dayDuration}
+						setControl={props.setDayDuration}
+						validator={durationIsCorrect}
+					/>
+					<Input
+						size={4}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						min={0}
+						max={0}
+						control={props.nightDuration}
+						setControl={props.setNightDuration}
+						validator={durationIsCorrect}
+					/>
+				</div>
+			)}
 		</fieldset>
 	)
 }

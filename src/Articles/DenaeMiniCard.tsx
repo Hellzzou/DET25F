@@ -15,10 +15,8 @@ export const DenaeMiniCard = (props: DenaeMiniCardProps): JSX.Element => {
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			const member = members.find(({ trigram }) => trigram === props.denae.name)
-			if (member) sertFullName(member)
-		}
+		const member = members.find(({ trigram }) => trigram === props.denae.name)
+		if (member) sertFullName(member)
 		const purcentage = buildDenaePurcentage(props.denae.TPA, props.date)
 		setPurcentage({
 			value: purcentage + " %",

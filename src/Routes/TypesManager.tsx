@@ -36,13 +36,11 @@ export const TypesManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const types = await getFetchRequest<FlightType[]>(typeURL)
-		if (typeof types !== "string") {
-			setTypes(
-				types.map((type) => {
-					return { name: type.name, value: type.name }
-				})
-			)
-		}
+		setTypes(
+			types.map((type) => {
+				return { name: type.name, value: type.name }
+			})
+		)
 	}, [])
 	return (
 		<>

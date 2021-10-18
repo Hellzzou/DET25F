@@ -32,8 +32,15 @@ export const FlightSearch = (): JSX.Element => {
 			let CDAName = "Choix..."
 			if (crew.value !== "Choix...") {
 				const CDA = await postFetchRequest<CrewMember[]>(CDAURL, { crew: crew.value })
-				if (typeof CDA !== "string") CDAName = CDA[0].trigram
+				CDAName = CDA[0].trigram
 			}
+			let cause = "Choix..."
+			let modifiedDone = "Choix..."
+			if (done.value !== "ME" && done.value !== "Choix...") {
+				modifiedDone = done.value.split(" ")[0]
+				cause = done.value.split(" ")[1]
+			}
+			if (done.value === "ME") modifiedDone = done.value
 			const filteredFlights = await postFetchRequest<Flight[]>(DB_URL + "flights/filteredFlights", {
 				date: { startDate: new Date(startDate.value), endDate: new Date(endDate.value) },
 				aircraft: aircraft.value,
@@ -43,11 +50,11 @@ export const FlightSearch = (): JSX.Element => {
 				belonging: belonging.value,
 				area: area.value,
 				NCArea: NCArea.value,
-				done: done.value,
+				done: modifiedDone,
+				cause: cause,
 				time: time.value,
 			})
-			if (typeof filteredFlights !== "string")
-				setFlights(filteredFlights.sort((a, b) => Date.parse(a.departureDate) - Date.parse(b.departureDate)))
+			setFlights(filteredFlights.sort((a, b) => Date.parse(a.departureDate) - Date.parse(b.departureDate)))
 		}
 	}, [
 		startDate.value,

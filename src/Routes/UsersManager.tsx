@@ -25,7 +25,7 @@ export const UsersManager = (): JSX.Element => {
 	const handleClose = () => setShow(false)
 	const handleShow = () => setShow(true)
 	const Delete = async (userTarget: User) => {
-		const deleted = await deleteFetchRequest(userDeleteURL, { name: userTarget.name })
+		const deleted = await deleteFetchRequest(userDeleteURL, { name: userTarget.firstName })
 		if (deleted === "success") {
 			setUsers(users.filter((user) => user !== userTarget))
 			setDeleteUserShow(true)
@@ -42,7 +42,9 @@ export const UsersManager = (): JSX.Element => {
 				return {
 					_id: user._id,
 					rank: prop === "rank" ? e.target.value : user.rank,
-					name: prop === "name" ? e.target.value : user.name,
+					firstName: prop === "firstName" ? e.target.value : user.firstName,
+					surName: prop === "surName" ? e.target.value : user.surName,
+					trigram: prop === "trigram" ? e.target.value : user.trigram,
 					responsability: prop === "responsability" ? e.target.value : user.responsability,
 					email: prop === "email" ? e.target.value : user.email,
 					login: user.login,
@@ -53,17 +55,24 @@ export const UsersManager = (): JSX.Element => {
 	}
 	const allowDelete = (user: User) => (currentUser?.email === user.email ? true : false)
 	const allNonNull = (user: User) =>
-		user.rank !== "" && user.name !== "" && user.responsability !== "" && user.email !== ""
+		user.rank !== "" &&
+		user.firstName !== "" &&
+		user.surName !== "" &&
+		user.trigram !== "" &&
+		user.responsability !== "" &&
+		user.email !== ""
 	const modifyUser = async (user: User) => {
 		const modify = await putFetchRequest(userURL, user)
 		if (modify === "success") setModifyUserShow(true)
 	}
 	const reinitLogins = async (user: User) => {
-		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.name })
+		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.firstName })
 		if (deleted === "success") {
 			const signup = await postFetchRequest(signupURL, {
 				rank: user.rank,
-				name: user.name,
+				firstName: user.firstName,
+				surName: user.surName,
+				trigram: user.trigram,
 				responsability: user.responsability,
 				email: user.email,
 				login: user.email,
@@ -75,8 +84,8 @@ export const UsersManager = (): JSX.Element => {
 	useAsyncEffect(async () => {
 		const users = await getFetchRequest<User[]>(getAllUserURL)
 		const user = await getFetchRequest<User>(getOneUserURL)
-		if (typeof user !== "string") setCurrentUser(user)
-		if (typeof users !== "string") setUsers(users)
+		setCurrentUser(user)
+		setUsers(users)
 	}, [])
 	return (
 		<>
@@ -145,7 +154,9 @@ export const UsersManager = (): JSX.Element => {
 					<h4 className='text-center'>Liste des utlisateurs</h4>
 					<div className='row'>
 						<div className='col-md-1 text-center'>Grade</div>
-						<div className='col-md-2 text-center'>Nom</div>
+						<div className='col-md-1 text-center'>Prénom</div>
+						<div className='col-md-1 text-center'>Nom</div>
+						<div className='col-md-1 text-center'>Trigramme</div>
 						<div className='col-md-1 text-center'>Accès</div>
 						<div className='col-md-2 text-center'>Email</div>
 					</div>
@@ -161,12 +172,28 @@ export const UsersManager = (): JSX.Element => {
 									options={ranks}
 								/>
 								<UnvalidateInput
-									size={2}
+									size={1}
+									backgroundColor='dark'
+									textColor='white'
+									type='text'
+									control={{ name: user.firstName, value: user.firstName }}
+									handleChange={(e) => handleChange(e, user, "firstName")}
+								/>
+								<UnvalidateInput
+									size={1}
 									backgroundColor='dark'
 									textColor='white'
 									type='number'
-									control={{ name: user.name, value: user.name }}
-									handleChange={(e) => handleChange(e, user, "name")}
+									control={{ name: user.surName, value: user.surName }}
+									handleChange={(e) => handleChange(e, user, "surName")}
+								/>
+								<UnvalidateInput
+									size={1}
+									backgroundColor='dark'
+									textColor='white'
+									type='number'
+									control={{ name: user.trigram, value: user.trigram }}
+									handleChange={(e) => handleChange(e, user, "trigram")}
 								/>
 								<SimpleSelect
 									size={1}
@@ -190,7 +217,7 @@ export const UsersManager = (): JSX.Element => {
 										buttonColor='primary'
 										buttonContent='Modifier cet utilisateur'
 										onClick={() => modifyUser(user)}
-										disabled={!allNonNull(user)}
+										disabled={!allNonNull(user) || allowDelete(user)}
 									/>
 								</div>
 								<div className='col-md-2'>
@@ -199,14 +226,14 @@ export const UsersManager = (): JSX.Element => {
 										buttonColor='danger'
 										buttonContent='Réinitialiser ses accès'
 										onClick={() => reinitLogins(user)}
-										disabled={!allNonNull(user)}
+										disabled={!allNonNull(user) || allowDelete(user)}
 									/>
 								</div>
-								<div className='col-md-2'>
+								<div className='col-md-1'>
 									<Button
 										size={12}
 										buttonColor='danger'
-										buttonContent='Supprimer cet utilisateur'
+										buttonContent='Supprimer'
 										onClick={() => Delete(user)}
 										disabled={allowDelete(user)}
 									/>

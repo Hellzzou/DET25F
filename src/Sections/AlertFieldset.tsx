@@ -19,30 +19,17 @@ export const AlertFieldset = (props: alertFieldsetProps): JSX.Element => {
 	const [techs, setTechs] = useState<Array<string>>(["Choix..."])
 	const [info, setInfo] = useState({ value: "", color: "" })
 	useAsyncEffect(async () => {
-		const cdas = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "CDA",
-		})
-		const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "pilote",
-		})
-		const mecbos = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "MECBO",
-		})
-		const navs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "DENAE",
-		})
-		const radios = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "GETBO",
-		})
-		const techs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-			function: "TECH",
-		})
-		if (typeof cdas !== "string" && typeof pilots !== "string")
-			setPilots([...cdas, ...pilots].map(({ trigram }) => trigram))
-		if (typeof mecbos !== "string") setMecbos(mecbos.map(({ trigram }) => trigram))
-		if (typeof navs !== "string") setNavs(navs.map(({ trigram }) => trigram))
-		if (typeof radios !== "string") setRadios(radios.map(({ trigram }) => trigram))
-		if (typeof techs !== "string") setTechs(techs.map(({ trigram }) => trigram))
+		const cdas = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "CDA" })
+		const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "pilote" })
+		const mecbos = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "MECBO" })
+		const navs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "DENAE" })
+		const radios = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "GETBO" })
+		const techs = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "TECH" })
+		setPilots([...cdas, ...pilots].map(({ trigram }) => trigram))
+		setMecbos(mecbos.map(({ trigram }) => trigram))
+		setNavs(navs.map(({ trigram }) => trigram))
+		setRadios(radios.map(({ trigram }) => trigram))
+		setTechs(techs.map(({ trigram }) => trigram))
 	}, [])
 	const dateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		props.setDepartureDate({

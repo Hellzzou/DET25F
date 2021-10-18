@@ -41,8 +41,9 @@ export const buildConsoChart = (groups: Group[], flights: Flight[]): ChartDatas 
 export const buildRepartition = (flights: Flight[], prop: "NCArea" | "type"): ChartDatas => {
 	const datas = flights.reduce<Record<string, number>>((acc, flight) => {
 		const { dayDuration, nightDuration } = flight
-		if (!acc[flight[prop]]) acc[flight[prop]] = 0
-		acc[flight[prop]] += parseFloat(dayDuration) + parseFloat(nightDuration)
+		const stat = flight[prop] === "Choix..." ? "Hors ZEE" : flight[prop]
+		if (!acc[stat]) acc[stat] = 0
+		acc[stat] += parseFloat(dayDuration) + parseFloat(nightDuration)
 		return acc
 	}, {})
 	return {
@@ -69,7 +70,7 @@ export const buildFlightNumber = (flights: Flight[]): ChartDatas => {
 			{
 				label: "Répartition par Zone",
 				data: Object.entries(datas).map(([, total]) => total),
-				backgroundColor: ["rgb(123, 214, 88)", "rgb(214, 107, 88)", "rgb(247, 163, 68)"],
+				backgroundColor: ["rgb(214, 107, 88)", "rgb(123, 214, 88)", "rgb(247, 163, 68)"],
 				borderColor: ["rgba(88, 160, 231, 0.2)"],
 			},
 		],

@@ -20,26 +20,20 @@ export const Etat400 = ({ match }: RouteComponentProps<{ monday: string }>): JSX
 	const [missionEvent, setMissionEvents] = useState<Event[]>([])
 	const [mouvementEvent, setMouvementEvents] = useState<Event[]>([])
 	useAsyncEffect(async () => {
+		const start = new Date(parseInt(match.params.monday))
+		const end = new Date(parseInt(match.params.monday) + 7 * inDays)
 		const chief = await postFetchRequest<CrewMember>(groundFunctionURL, { function: "Commandant" })
 		const second = await postFetchRequest<CrewMember>(groundFunctionURL, { function: "Commandant en second" })
 		const ops = await postFetchRequest<CrewMember>(groundFunctionURL, { function: "CSO" })
-		if (typeof chief !== "string") setChief(chief)
-		if (typeof second !== "string") setSecond(second)
-		if (typeof ops !== "string") setOps(ops)
-		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, {
-			start: new Date(parseInt(match.params.monday)),
-			end: new Date(parseInt(match.params.monday) + 7 * inDays),
-		})
+		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, { start, end })
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof flights !== "string" && typeof members !== "string") setFlights(buildEtat400View(flights, members))
-		const events = await postFetchRequest<Event[]>(eventDateFinderURL, {
-			start: new Date(parseInt(match.params.monday)),
-			end: new Date(parseInt(match.params.monday) + 7 * inDays),
-		})
-		if (typeof events !== "string") {
-			setMissionEvents(events.filter(({ type }) => type === "MISSION"))
-			setMouvementEvents(events.filter(({ type }) => type === "MOUV"))
-		}
+		const events = await postFetchRequest<Event[]>(eventDateFinderURL, { start, end })
+		setChief(chief)
+		setSecond(second)
+		setOps(ops)
+		setFlights(buildEtat400View(flights, members))
+		setMissionEvents(events.filter(({ type }) => type === "MISSION"))
+		setMouvementEvents(events.filter(({ type }) => type === "MOUV"))
 	}, [])
 	return (
 		<div className='m-2'>

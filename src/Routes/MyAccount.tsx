@@ -25,7 +25,9 @@ export const MyAccount = (): JSX.Element => {
 		setUser({
 			_id: user._id,
 			rank: prop === "rank" ? e.target.value : user.rank,
-			name: prop === "name" ? e.target.value : user.name,
+			firstName: prop === "firstName" ? e.target.value : user.firstName,
+			surName: prop === "surName" ? e.target.value : user.surName,
+			trigram: prop === "trigram" ? e.target.value : user.trigram,
 			email: prop === "email" ? e.target.value : user.email,
 			login: prop === "login" ? e.target.value : user.login,
 			responsability: user.responsability,
@@ -38,7 +40,7 @@ export const MyAccount = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const user = await getFetchRequest<User>(getOneUserURL)
-		if (typeof user !== "string") setUser(user)
+		setUser(user)
 	}, [])
 	return (
 		<div className='alegreya'>
@@ -91,6 +93,21 @@ export const MyAccount = (): JSX.Element => {
 					/>
 				</div>
 				<div className='row justify-content-center m-2'>
+					<Label title='Votre prénom : ' size={3} />
+					<UnvalidateInput
+						size={8}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						control={{
+							name: "firstName",
+							value: user.firstName,
+							validity: true,
+						}}
+						handleChange={(e) => handleChange(e, "firstName")}
+					/>
+				</div>
+				<div className='row justify-content-center m-2'>
 					<Label title='Votre nom : ' size={3} />
 					<UnvalidateInput
 						size={8}
@@ -98,11 +115,26 @@ export const MyAccount = (): JSX.Element => {
 						textColor='white'
 						type='text'
 						control={{
-							name: "name",
-							value: user.name,
+							name: "surName",
+							value: user.surName,
 							validity: true,
 						}}
-						handleChange={(e) => handleChange(e, "name")}
+						handleChange={(e) => handleChange(e, "surName")}
+					/>
+				</div>
+				<div className='row justify-content-center m-2'>
+					<Label title='Votre trigramme : ' size={3} />
+					<UnvalidateInput
+						size={8}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						control={{
+							name: "trigram",
+							value: user.trigram,
+							validity: true,
+						}}
+						handleChange={(e) => handleChange(e, "trigram")}
 					/>
 				</div>
 				<div className='row justify-content-center m-2'>
@@ -143,7 +175,14 @@ export const MyAccount = (): JSX.Element => {
 					buttonColor='primary'
 					buttonContent='Modifier mes informations'
 					onClick={modifyUser}
-					disabled={user.rank == "" || user.name === "" || user.email === "" || user.login === ""}
+					disabled={
+						user.rank == "" ||
+						user.firstName === "" ||
+						user.surName === "" ||
+						user.trigram === "" ||
+						user.email === "" ||
+						user.login === ""
+					}
 				/>
 				<div className='col-md-1'></div>
 				<Button
@@ -151,7 +190,14 @@ export const MyAccount = (): JSX.Element => {
 					buttonColor='primary'
 					buttonContent='Changer mon mot de passe'
 					onClick={() => setModalShow(true)}
-					disabled={user.rank == "" || user.name === "" || user.email === "" || user.login === ""}
+					disabled={
+						user.rank == "" ||
+						user.firstName === "" ||
+						user.surName === "" ||
+						user.trigram === "" ||
+						user.email === "" ||
+						user.login === ""
+					}
 				/>
 			</div>
 		</div>

@@ -98,6 +98,10 @@ export type debriefTimingFieldsetProps = {
 	setDone: React.Dispatch<React.SetStateAction<Control>>
 	cause: Control
 	setCause: React.Dispatch<React.SetStateAction<Control>>
+	dayDuration?: Control
+	setDayDuration?: React.Dispatch<React.SetStateAction<Control>>
+	nightDuration?: Control
+	setNightDuration?: React.Dispatch<React.SetStateAction<Control>>
 }
 export type CrewTPAFieldsetProps = {
 	chief: Control

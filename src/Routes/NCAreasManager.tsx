@@ -36,13 +36,11 @@ export const NCAreasManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
-		if (typeof NCAreas !== "string") {
-			setNCAreas(
-				NCAreas.map((NCArea) => {
-					return { name: NCArea.name, value: NCArea.name }
-				})
-			)
-		}
+		setNCAreas(
+			NCAreas.map((NCArea) => {
+				return { name: NCArea.name, value: NCArea.name }
+			})
+		)
 	}, [])
 	return (
 		<>

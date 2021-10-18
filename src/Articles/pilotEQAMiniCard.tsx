@@ -14,10 +14,8 @@ export const PilotEQAMiniCArd = (props: PilotEQAMiniCArdProps): JSX.Element => {
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			const member = members.find(({ trigram }) => trigram === props.pilot.name)
-			if (member) sertFullName(member)
-		}
+		const member = members.find(({ trigram }) => trigram === props.pilot.name)
+		if (member) sertFullName(member)
 		const purcentage = buildPilotEQAPurcentage(props.pilot.EQA, props.date)
 		setPurcentage({
 			value: purcentage + " %",

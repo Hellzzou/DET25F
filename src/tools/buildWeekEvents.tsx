@@ -62,7 +62,7 @@ export const buildWeekConflicts = (
 						parseInt(event.arrivalDate.split("T")[1].split(":")[0]) +
 						parseInt(event.arrivalDate.split("T")[1].split(":")[1]) / 60
 					;[event.chief, event.pilot, ...event.crewMembers].map((member) => {
-						acc[member] = [...acc[member], { type: "flight", departure, arrival }]
+						if (member !== "") acc[member] = [...acc[member], { type: "flight", departure, arrival }]
 					})
 					return acc
 				}, conflicts[i])
@@ -142,7 +142,7 @@ export const buildWeekConflicts = (
 								(event.arrival > flight.departure && event.arrival < flight.arrival) ||
 								(event.departure <= flight.departure && event.arrival >= flight.arrival)
 							)
-								acc[trigram].push("vacances pendant un vol")
+								acc[trigram].push("permissions pendant un vol")
 						})
 					const restOfFlights = conflicts[i][trigram].filter((event) => event.type === "flight")
 					for (let i = index; i < restOfFlights.length; i++) {
@@ -167,7 +167,7 @@ export const buildWeekConflicts = (
 								(holiday.arrival > event.departure && holiday.arrival < event.arrival) ||
 								(holiday.departure <= event.departure && holiday.arrival >= event.arrival)
 							)
-								acc[trigram].push("vacances pendant un évènement")
+								acc[trigram].push("permissions pendant un évènement")
 						})
 				})
 			return acc

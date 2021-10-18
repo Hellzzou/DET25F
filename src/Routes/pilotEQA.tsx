@@ -22,29 +22,28 @@ export const PilotEQA = (): JSX.Element => {
 	const [second, setSecond] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [ops, setOps] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [csve, setCsve] = useState<CrewMember>(INITIAL_CREWMEMBER)
-	const nextMonthClick = () => setDateToCompare(getEndOfNextMonth(dateTocompare))
+	const nextMonthClick = () => {
+		console.log(dateTocompare)
+		setDateToCompare(getEndOfNextMonth(dateTocompare))
+	}
 	const previousMonthClick = () => setDateToCompare(getEndOfPreviousMonth(dateTocompare))
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
 		setToken(token)
 		if (token) {
-			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate())
+			const endDate = new Date(dateTocompare.getFullYear(), dateTocompare.getMonth(), dateTocompare.getDate() + 1)
 			const lastFourYears = new Date(endDate.getFullYear() - 4, endDate.getMonth(), endDate.getDate())
 			const lastFourYearsFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate: lastFourYears,
 				endDate,
 			})
 			const allMembers = await getFetchRequest<CrewMember[]>(memberURL)
-			if (typeof allMembers !== "string") {
-				setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
-				setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
-				setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
-				setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
-			}
-			if (typeof allMembers !== "string" && typeof lastFourYearsFlights !== "string") {
-				const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
-				setPilotEQAs(EQAs)
-			}
+			const EQAs = buildAllEQAs(allMembers, lastFourYearsFlights, dateTocompare)
+			setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
+			setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
+			setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
+			setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
+			setPilotEQAs(EQAs)
 		}
 	}, [dateTocompare])
 	return !token ? (

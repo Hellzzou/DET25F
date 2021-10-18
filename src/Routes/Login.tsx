@@ -26,7 +26,7 @@ export const Login = (): JSX.Element => {
 			if (typeof findUser !== "string") {
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				sessionStorage.setItem("token", findUser.token!)
-				history.push(`/activities/null/${currentMonday}`)
+				history.push(`/activities/${currentMonday}`)
 			} else setLoginError(findUser)
 		})()
 	}

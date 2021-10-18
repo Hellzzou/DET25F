@@ -3,9 +3,9 @@ import { Control, Nights } from "../types/Objects"
 
 export const getWeekNumber = (date: number): number => {
 	let i = 0
-	for (i; i <= 7; i++) if (new Date(new Date(date).getFullYear(), 0, i).getDay() === 0) break
-	const firstMonday = Date.parse(new Date(new Date(date).getFullYear(), 0, i).toDateString())
-	return Math.ceil((date - firstMonday) / 1000 / 60 / 60 / 24 / 7)
+	for (i; i <= 7; i++) if (new Date(new Date(date).getFullYear(), 0, i).getDay() === 1) break
+	const firstMonday = new Date(new Date(date).getFullYear(), 0, i).getTime()
+	return Math.floor((date - firstMonday) / 1000 / 60 / 60 / 24 / 7) + 1
 }
 export const findNumberOfWeeks = (): number => {
 	let i = 0
@@ -32,26 +32,24 @@ export const returnDayNightDuration = (
 	jAeroTime: string,
 	nAeroTime: string
 ): { jour: number; nuit: number } => {
-	const start =
-		returnHoursInInteger(startTime.split(":")[0]) + (returnHoursInInteger(startTime.split(":")[1]) * 100) / 6000
-	const end = returnHoursInInteger(endTime.split(":")[0]) + (returnHoursInInteger(endTime.split(":")[1]) * 100) / 6000
+	const start = returnHoursInInteger(startTime.split(":")[0]) * 10 + returnHoursInInteger(startTime.split(":")[1]) / 6
+	const end = returnHoursInInteger(endTime.split(":")[0]) * 10 + returnHoursInInteger(endTime.split(":")[1]) / 6
 	const jAero =
-		returnHoursInInteger(jAeroTime.split("h")[0]) +
-		(returnHoursInInteger(jAeroTime.split("h")[1].split("L")[0]) * 100) / 6000
+		returnHoursInInteger(jAeroTime.split("h")[0]) * 10 +
+		returnHoursInInteger(jAeroTime.split("h")[1].split("L")[0]) / 6
 	const nAero =
-		returnHoursInInteger(nAeroTime.split("h")[0]) +
-		(returnHoursInInteger(nAeroTime.split("h")[1].split("L")[0]) * 100) / 6000
+		returnHoursInInteger(nAeroTime.split("h")[0]) * 10 +
+		returnHoursInInteger(nAeroTime.split("h")[1].split("L")[0]) / 6
 	let jour = 0
 	let nuit = 0
-	if (start < jAero) nuit += jAero - start
-	else if (start > jAero && start < nAero) jour += nAero - start
-	else if (start > nAero) nuit -= start - nAero
-	if (end < jAero) nuit -= jAero - end
-	else if (end > jAero && end < nAero) jour -= nAero - end
-	else if (end > nAero) nuit += end - nAero
-	jour = Math.ceil(jour * 10) / 10
-	nuit = Math.ceil(nuit * 10) / 10
-	return { jour: jour, nuit: nuit }
+	if (start < jAero) nuit += Math.ceil(jAero - start)
+	else if (start > jAero && start < nAero) jour += Math.floor(nAero - start)
+	else if (start > nAero) nuit -= Math.ceil(start - nAero)
+	if (end < jAero) nuit -= Math.ceil(jAero - end)
+	else if (end > jAero && end < nAero && start >= jAero) jour -= Math.floor(nAero - end)
+	else if (end > jAero && end < nAero && start < jAero) jour += Math.floor(end - jAero)
+	else if (end > nAero) nuit += Math.ceil(end - nAero)
+	return { jour: jour / 10, nuit: nuit / 10 }
 }
 export const INITIAL_STARTDATE_CONTROL = {
 	value: new Date().getFullYear() + "-" + getMonthNumber(new Date().getMonth()) + "-01",
@@ -69,7 +67,6 @@ export const INITIAL_ENDDATE_CONTROL = {
 	disabled: false,
 }
 export const getBriefingTime = (departureTime: Control): Control => {
-	console.log(departureTime.value)
 	let hours = 0
 	let minutes = 0
 	if (parseInt(departureTime.value.split(":")[1]) < 30) {

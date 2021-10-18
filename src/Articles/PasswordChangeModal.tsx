@@ -47,11 +47,13 @@ export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Elemen
 		setNewPassword2({ value: number === 1 ? newPassword2.value : e.target.value, validity, disabled: false })
 	}
 	const createNewUser = async () => {
-		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.name })
+		const deleted = await deleteFetchRequest(userDeleteURL, { name: user.firstName })
 		if (deleted === "success") {
 			const newUser = {
 				rank: user.rank,
-				name: user.name,
+				firstName: user.firstName,
+				surName: user.surName,
+				trigram: user.trigram,
 				responsability: user.responsability,
 				email: user.email,
 				login: user.login,
@@ -66,7 +68,7 @@ export const PasswordChangeModal = (props: PasswordChangeModalProps): JSX.Elemen
 	}
 	useAsyncEffect(async () => {
 		const user = await getFetchRequest<User>(getOneUserURL)
-		if (typeof user !== "string") setUser(user)
+		setUser(user)
 	}, [])
 	return (
 		<Modal show={props.show} onHide={handleClose} backdrop='static' keyboard={false} size='lg'>

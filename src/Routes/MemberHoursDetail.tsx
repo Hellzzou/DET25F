@@ -27,16 +27,14 @@ export const MemberHoursDetail = ({
 				startDate: new Date(match.params.startDate),
 				endDate: new Date(match.params.endDate),
 			})
-			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
-				setMember(allMembers.find(({ trigram }) => trigram === match.params.name))
-				const crewMembersHours = crewMembersFlights(
-					allMembers,
-					allDebriefedFlights
-						.filter(({ done }) => done !== "CNL")
-						.sort((f1, f2) => new Date(f1.departureDate).getTime() - new Date(f2.departureDate).getTime())
-				).find(({ name }) => name === match.params.name)?.flight
-				if (typeof crewMembersHours !== "undefined") setCrewMembersHours(crewMembersHours)
-			}
+			setMember(allMembers.find(({ trigram }) => trigram === match.params.name))
+			const crewMembersHours = crewMembersFlights(
+				allMembers,
+				allDebriefedFlights
+					.filter(({ done }) => done !== "CNL")
+					.sort((f1, f2) => new Date(f1.departureDate).getTime() - new Date(f2.departureDate).getTime())
+			).find(({ name }) => name === match.params.name)?.flight
+			if (crewMembersHours) setCrewMembersHours(crewMembersHours)
 		}
 	}, [])
 	return !token ? (

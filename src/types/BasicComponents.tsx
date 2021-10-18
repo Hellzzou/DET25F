@@ -93,6 +93,7 @@ export type SimpleSelectProps = {
 	value: string
 	options: Array<string>
 	handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+	disabled?: boolean
 }
 export type UncontrolledSelectProps = {
 	size: number
@@ -127,6 +128,7 @@ export type UnvalidateInputProps = {
 	placeholder?: string
 	control: { name: string; value: string; validity?: boolean }
 	handleChange: (e: React.ChangeEvent<HTMLInputElement>, arg1: { name: string; value: string }) => void
+	disabled?: boolean
 }
 export type CrewTPACardProps = {
 	member: {

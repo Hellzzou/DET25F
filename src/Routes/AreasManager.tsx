@@ -36,13 +36,11 @@ export const AreasManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const areas = await getFetchRequest<Area[]>(areaURL)
-		if (typeof areas !== "string") {
-			setAreas(
-				areas.map((area) => {
-					return { name: area.name, value: area.name }
-				})
-			)
-		}
+		setAreas(
+			areas.map((area) => {
+				return { name: area.name, value: area.name }
+			})
+		)
 	}, [])
 	return (
 		<>

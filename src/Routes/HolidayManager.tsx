@@ -43,7 +43,7 @@ export const HolidayManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") setMembers(members)
+		setMembers(members)
 	}, [])
 	return (
 		<>

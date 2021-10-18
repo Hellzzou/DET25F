@@ -36,13 +36,11 @@ export const AircraftManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const aircrafts = await getFetchRequest<Aircraft[]>(aircraftURL)
-		if (typeof aircrafts !== "string") {
-			setAircrafts(
-				aircrafts.map((aircraft) => {
-					return { name: aircraft.number, value: aircraft.number }
-				})
-			)
-		}
+		setAircrafts(
+			aircrafts.map((aircraft) => {
+				return { name: aircraft.number, value: aircraft.number }
+			})
+		)
 	}, [])
 	return (
 		<>

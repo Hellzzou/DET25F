@@ -6,17 +6,18 @@ import { AlertToast } from "../BasicComponents/AlertToast"
 import { Button } from "../BasicComponents/Button"
 import { SimpleSelect } from "../BasicComponents/SimpleSelect"
 import { UnvalidateInput } from "../BasicComponents/UnvalidateInput"
-import { memberURL, saveMemberURL } from "../Datas/urls"
+import { getOneUserURL, memberURL, saveMemberURL } from "../Datas/urls"
 import { crews, groundFunction, ranks, specialities } from "../Datas/constants"
 import { MainNavBar } from "../Sections/MainNavbar"
 import { deleteFetchRequest, getFetchRequest, postFetchRequest } from "../tools/fetch"
-import { CrewMember } from "../types/Objects"
+import { CrewMember, User } from "../types/Objects"
 import { INITIAL_CREWMEMBER } from "../Datas/initialObjects"
 
 export const membersManager = (): JSX.Element => {
 	const history = useHistory()
 	const [show, setShow] = useState(false)
 	const [members, setMembers] = useState<CrewMember[]>([])
+	const [currentUser, setCurrentUser] = useState<User>()
 	const Delete = (memberTarget: CrewMember) => setMembers(members.filter((member) => member !== memberTarget))
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
@@ -75,6 +76,7 @@ export const membersManager = (): JSX.Element => {
 						groundFunction,
 						tel: tel ? tel : "",
 						holidays: 0,
+						recoveries: 0,
 					},
 				})
 			})
@@ -83,7 +85,9 @@ export const membersManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") setMembers(members)
+		setMembers(members)
+		const user = await getFetchRequest<User>(getOneUserURL)
+		setCurrentUser(user)
 	}, [])
 	return (
 		<>
@@ -101,6 +105,7 @@ export const membersManager = (): JSX.Element => {
 						- Vous pouvez modifier la liste apparaissant sur cette page tant que vous ne cliquez pas sur
 						&apos;Enregistrer la liste&apos;, la base de donnée ne sera pas modifiée.
 					</div>
+					<div>- Vous ne pouvez pas vous modifier vous-même.</div>
 					<div>
 						- Afin d&apos;enregistrer la liste des membres aucune des propriétés marquées d&apos;un * doit
 						être vide.
@@ -140,6 +145,7 @@ export const membersManager = (): JSX.Element => {
 									value={member.rank}
 									handleChange={(event) => handleChange(event, member, "rank")}
 									options={ranks}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<UnvalidateInput
 									size={1}
@@ -148,6 +154,7 @@ export const membersManager = (): JSX.Element => {
 									type='number'
 									control={{ name: member.firstName, value: member.firstName }}
 									handleChange={(e) => handleChange(e, member, "firstName")}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<UnvalidateInput
 									size={1}
@@ -156,6 +163,7 @@ export const membersManager = (): JSX.Element => {
 									type='number'
 									control={{ name: member.surName, value: member.surName }}
 									handleChange={(e) => handleChange(e, member, "surName")}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<UnvalidateInput
 									size={1}
@@ -164,6 +172,7 @@ export const membersManager = (): JSX.Element => {
 									type='number'
 									control={{ name: member.registration!, value: member.registration! }}
 									handleChange={(e) => handleChange(e, member, "registration")}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<UnvalidateInput
 									size={1}
@@ -172,6 +181,7 @@ export const membersManager = (): JSX.Element => {
 									type='number'
 									control={{ name: member.trigram, value: member.trigram }}
 									handleChange={(e) => handleChange(e, member, "trigram")}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<SimpleSelect
 									size={1}
@@ -180,6 +190,7 @@ export const membersManager = (): JSX.Element => {
 									value={member.crew!}
 									handleChange={(event) => handleChange(event, member, "crew")}
 									options={crews}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<SimpleSelect
 									size={1}
@@ -188,6 +199,7 @@ export const membersManager = (): JSX.Element => {
 									value={member.onBoardFunction}
 									handleChange={(event) => handleChange(event, member, "onBoardFunction")}
 									options={specialities}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<SimpleSelect
 									size={2}
@@ -196,6 +208,7 @@ export const membersManager = (): JSX.Element => {
 									value={member.groundFunction}
 									handleChange={(event) => handleChange(event, member, "groundFunction")}
 									options={groundFunction}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<UnvalidateInput
 									size={1}
@@ -204,12 +217,14 @@ export const membersManager = (): JSX.Element => {
 									type='number'
 									control={{ name: member.tel!, value: member.tel! }}
 									handleChange={(e) => handleChange(e, member, "tel")}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 								<Button
 									size={2}
 									buttonColor='danger'
 									buttonContent='Supprimer ce membre'
 									onClick={() => Delete(member)}
+									disabled={member.trigram === currentUser?.trigram}
 								/>
 							</div>
 						))}

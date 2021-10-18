@@ -13,10 +13,8 @@ export const CrewMemberCard = (props: CrewMemberCardProps): JSX.Element => {
 	const [memberHours, setMemberHours] = useState<Record<string, number>>({})
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			const member = members.find(({ trigram }) => trigram === props.crewMemberName)
-			if (member) sertFullName(member)
-		}
+		const member = members.find(({ trigram }) => trigram === props.crewMemberName)
+		if (member) sertFullName(member)
 		const memberHours = crewMemberHours(props.crewMemberHours)
 		setMemberHours(memberHours)
 	}, [props.crewMemberHours])

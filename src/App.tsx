@@ -37,7 +37,7 @@ export const App = (): React.ReactElement => {
 		<BrowserRouter>
 			<Switch>
 				<Route path='/' exact component={Login} />
-				<Route path='/activities/:toast/:week' component={Activities} />
+				<Route path='/activities/:week' component={Activities} />
 				<Route path='/newFlight/:week' component={NewFlightForm} />
 				<Route path='/newEvent/:id/:week' component={NewEventForm} />
 				<Route path='/newPerm/:id/:week' component={NewHoliday} />

@@ -11,7 +11,7 @@ export const DBCard = (props: DBCardProps): JSX.Element => {
 	const [user, setUser] = useState<User>(INITIAL_USER)
 	useAsyncEffect(async () => {
 		const user = await getFetchRequest<User>(getOneUserURL)
-		if (typeof user !== "string") setUser(user)
+		setUser(user)
 	}, [])
 	return (
 		<div className='card m-1'>

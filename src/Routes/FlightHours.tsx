@@ -37,28 +37,24 @@ export const FlightHours = (): JSX.Element => {
 				endDate: new Date(endDate.value),
 			})
 			const cdas = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "CDA" })
-			if (typeof cdas !== "string") setPilots([...pilots, ...cdas.map(({ trigram }) => trigram)])
+			setPilots([...pilots, ...cdas.map(({ trigram }) => trigram)])
 			const allPilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "pilote" })
-			if (typeof allPilots !== "string") setPilots([...pilots, ...allPilots.map(({ trigram }) => trigram)])
+			setPilots([...pilots, ...allPilots.map(({ trigram }) => trigram)])
 			const mecbos = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "MECBO" })
-			if (typeof mecbos !== "string") setMecbos(mecbos.map(({ trigram }) => trigram))
+			setMecbos(mecbos.map(({ trigram }) => trigram))
 			const radios = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "GETBO" })
-			if (typeof radios !== "string") setRadios(radios.map(({ trigram }) => trigram))
+			setRadios(radios.map(({ trigram }) => trigram))
 			const denaes = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "DENAE" })
-			if (typeof denaes !== "string") setDenaes(denaes.map(({ trigram }) => trigram))
-			if (typeof allMembers !== "string") {
-				setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
-				setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
-				setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
-				setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
-			}
-			if (typeof allMembers !== "string" && typeof allDebriefedFlights !== "string") {
-				const crewMembersHours = crewMembersFlights(
-					allMembers.filter(({ onBoardFunction }) => onBoardFunction !== "TECH"),
-					allDebriefedFlights.filter(({ done }) => done !== "CNL")
-				)
-				setCrewMembersHours(crewMembersHours)
-			}
+			setDenaes(denaes.map(({ trigram }) => trigram))
+			setCdt(allMembers.find(({ groundFunction }) => groundFunction === "Commandant")!)
+			setSecond(allMembers.find(({ groundFunction }) => groundFunction === "Commandant en second")!)
+			setOps(allMembers.find(({ groundFunction }) => groundFunction === "CSO")!)
+			setCsve(allMembers.find(({ groundFunction }) => groundFunction === "CSVE")!)
+			const crewMembersHours = crewMembersFlights(
+				allMembers.filter(({ onBoardFunction }) => onBoardFunction !== "TECH"),
+				allDebriefedFlights.filter(({ done }) => done !== "CNL")
+			)
+			setCrewMembersHours(crewMembersHours)
 		}
 	}, [startDate.value, endDate.value])
 	return !token ? (

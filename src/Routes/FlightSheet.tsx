@@ -17,22 +17,16 @@ export const FlightSheet = ({ match }: RouteComponentProps<{ monday: string }>):
 	const [alertTech, setAlertTech] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	const [memberToSign, setMemberToSign] = useState<CrewMember>(INITIAL_CREWMEMBER)
 	useAsyncEffect(async () => {
-		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, {
-			start: new Date(parseInt(match.params.monday)),
-			end: new Date(parseInt(match.params.monday) + inDays),
-		})
+		const start = new Date(parseInt(match.params.monday))
+		const end = new Date(parseInt(match.params.monday) + inDays)
+		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, { start, end })
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof flights !== "string" && typeof members !== "string") setFlights(buildFDVView(flights, members))
-		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
-			start: new Date(parseInt(match.params.monday)),
-			end: new Date(parseInt(match.params.monday) + inDays),
-		})
-		if (typeof alerts !== "string" && typeof members !== "string" && alerts[0]) {
-			setAlertChief(members.find(({ trigram }) => trigram === alerts[0].chief)!)
-			setAlertTech(members.find(({ trigram }) => trigram === alerts[0].tech)!)
-		}
+		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, { start, end })
 		const memberToSign = await postFetchRequest<CrewMember>(groundFunctionURL, { function: "Commandant" })
-		if (typeof memberToSign !== "string") setMemberToSign(memberToSign)
+		setFlights(buildFDVView(flights, members))
+		setAlertChief(members.find(({ trigram }) => trigram === alerts[0].chief)!)
+		setAlertTech(members.find(({ trigram }) => trigram === alerts[0].tech)!)
+		setMemberToSign(memberToSign)
 	}, [])
 	return (
 		<div className='m-2'>

@@ -14,10 +14,8 @@ export const MecboMiniCard = (props: MecboMiniCardProps): JSX.Element => {
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			const member = members.find(({ trigram }) => trigram === props.mecbo.name)
-			if (member) sertFullName(member)
-		}
+		const member = members.find(({ trigram }) => trigram === props.mecbo.name)
+		if (member) sertFullName(member)
 		const purcentage = buildMecboPurcentage(props.mecbo.TPA, props.date)
 		setPurcentage({
 			value: purcentage + " %",

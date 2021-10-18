@@ -15,10 +15,8 @@ export const RadioMiniCard = (props: RadioMiniCardProps): JSX.Element => {
 	const [purcentage, setPurcentage] = useState({ value: "", color: "dark" })
 	useAsyncEffect(async () => {
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
-		if (typeof members !== "string") {
-			const member = members.find(({ trigram }) => trigram === props.radio.name)
-			if (member) sertFullName(member)
-		}
+		const member = members.find(({ trigram }) => trigram === props.radio.name)
+		if (member) sertFullName(member)
 		const purcentage = buildRadioPurcentage(props.radio.TPA, props.date)
 		setPurcentage({
 			value: purcentage + " %",

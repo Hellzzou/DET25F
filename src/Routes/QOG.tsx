@@ -22,10 +22,9 @@ export const QOG = (): JSX.Element => {
 			const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
 			const yearFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
 				startDate: new Date(new Date().getFullYear(), 0, 1),
-				endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+				endDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
 			})
-			if (typeof underGroups !== "string" && typeof yearFlights !== "string")
-				setQOGFlights(buildQOG(yearFlights, underGroups))
+			setQOGFlights(buildQOG(yearFlights, underGroups))
 		}
 	}, [])
 	return !token ? (

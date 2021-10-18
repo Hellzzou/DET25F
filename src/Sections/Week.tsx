@@ -38,7 +38,7 @@ import { ConflictsRow } from "../Articles/ConflictsRow"
 
 export const Week = (props: WeekProps): JSX.Element => {
 	const colNumber = Array.from(Array(34), () => "3.4%")
-	const [monday, setMonday] = useState(props.date === "null" ? currentMonday : parseInt(props.date))
+	const [monday, setMonday] = useState(parseInt(props.date))
 	const [weekFlights, setWeekFlights] = useState<Flight[][]>([])
 	const [weekAlerts, setWeekAlerts] = useState<Alert[]>([INITIAL_ALERT])
 	const [weekEvents, setWeekEvents] = useState<Event[][]>([])
@@ -48,50 +48,31 @@ export const Week = (props: WeekProps): JSX.Element => {
 	const [nights, setNights] = useState<Nights>([[]])
 	const history = useHistory()
 	useAsyncEffect(async () => {
-		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, {
-			start: new Date(monday),
-			end: new Date(monday + 7 * inDays),
-		})
-		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, {
-			start: new Date(monday),
-			end: new Date(monday + 7 * inDays),
-		})
-		const events = await postFetchRequest<Event[]>(eventDateFinderURL, {
-			start: new Date(monday),
-			end: new Date(monday + 7 * inDays),
-		})
-		const holidays = await postFetchRequest<Holiday[]>(holidayDateFinderURL, {
-			start: new Date(monday),
-			end: new Date(monday + 7 * inDays),
-		})
+		const start = new Date(monday)
+		const end = new Date(monday + 7 * inDays)
+		const flights = await postFetchRequest<Flight[]>(flightDateFinderURL, { start, end })
+		const alerts = await postFetchRequest<Alert[]>(alertDateFinderURL, { start, end })
+		const events = await postFetchRequest<Event[]>(eventDateFinderURL, { start, end })
+		const holidays = await postFetchRequest<Holiday[]>(holidayDateFinderURL, { start, end })
 		const members = await getFetchRequest<CrewMember[]>(memberURL)
 		const aircrafts = await getFetchRequest<Aircraft[]>(aircraftURL)
-		if (typeof aircrafts !== "string") setAircrafts(aircrafts)
-		if (typeof flights !== "string") setWeekFlights(buildWeekFlights(flights, monday))
-		if (typeof alerts !== "string") setWeekAlerts(buildWeekAlerts(alerts, monday))
-		if (typeof events !== "string") setWeekEvents(buildWeekEvents(events, monday))
-		if (typeof holidays !== "string") setWeekHolidays(buildWeekHolidays(holidays, monday))
-		if (
-			typeof flights !== "string" &&
-			typeof alerts !== "string" &&
-			typeof events !== "string" &&
-			typeof holidays !== "string" &&
-			typeof members !== "string" &&
-			typeof aircrafts !== "string"
-		)
-			setWeekConflicts(
-				buildWeekConflicts(
-					members,
-					buildWeekFlights(flights, monday),
-					buildWeekEvents(events, monday),
-					buildWeekAlerts(alerts, monday),
-					buildWeekHolidays(holidays, monday),
-					aircrafts
-				)
-			)
-
 		const nights = await getFetchRequest<Nights[]>(nightURL)
-		if (typeof nights !== "string") setNights(nights[0])
+		setNights(nights[0])
+		setAircrafts(aircrafts)
+		setWeekFlights(buildWeekFlights(flights, monday))
+		setWeekAlerts(buildWeekAlerts(alerts, monday))
+		setWeekEvents(buildWeekEvents(events, monday))
+		setWeekHolidays(buildWeekHolidays(holidays, monday))
+		setWeekConflicts(
+			buildWeekConflicts(
+				members,
+				buildWeekFlights(flights, monday),
+				buildWeekEvents(events, monday),
+				buildWeekAlerts(alerts, monday),
+				buildWeekHolidays(holidays, monday),
+				aircrafts
+			)
+		)
 	}, [monday])
 	return (
 		<>

@@ -15,6 +15,7 @@ export const UnvalidateInput = (props: UnvalidateInputProps): JSX.Element => {
 				placeholder={props.placeholder}
 				onChange={(e) => props.handleChange(e, props.control)}
 				value={props.control.value}
+				disabled={props.disabled ? props.disabled : false}
 			/>
 		</div>
 	)

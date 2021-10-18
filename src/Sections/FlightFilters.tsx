@@ -20,15 +20,15 @@ export const FlightFilters = (props: FlightFiltersProps): JSX.Element => {
 	const time = ["Jour", "Nuit"]
 	useAsyncEffect(async () => {
 		const allGroups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof allGroups !== "string") setGroups(allGroups.map(({ underGroup }) => underGroup))
+		setGroups(allGroups.map(({ underGroup }) => underGroup))
 		const aircraft = await getFetchRequest<Aircraft[]>(aircraftURL)
-		if (typeof aircraft !== "string") setAircraft(aircraft.map(({ number }) => number))
+		setAircraft(aircraft.map(({ number }) => number))
 		const types = await getFetchRequest<FlightType[]>(typeURL)
-		if (typeof types !== "string") setType(types.map(({ name }) => name))
+		setType(types.map(({ name }) => name))
 		const areas = await getFetchRequest<Area[]>(areaURL)
-		if (typeof areas !== "string") setAreas(areas.map(({ name }) => name))
+		setAreas(areas.map(({ name }) => name))
 		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
-		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map(({ name }) => name))
+		setNCAreas(NCAreas.map(({ name }) => name))
 	}, [])
 	return (
 		<>

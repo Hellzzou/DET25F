@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useHistory } from "react-router"
 import useAsyncEffect from "use-async-effect"
+import { currentMonday } from "../Datas/constants"
 import { nightURL } from "../Datas/urls"
 import { getSunsets } from "../tools/dateManager"
 import { getFetchRequest } from "../tools/fetch"
@@ -17,12 +18,12 @@ export const FlightTable = (props: FlightTableProps): JSX.Element => {
 				nights,
 				Date.parse(flight.departureDate),
 				"nuit"
-			)}`
+			)}/${currentMonday}`
 		)
 	useAsyncEffect(async () => {
 		const nights = await getFetchRequest<Nights[]>(nightURL)
-		if (typeof nights !== "string") setNights(nights[0])
-	})
+		setNights(nights[0])
+	}, [])
 	return (
 		<>
 			{props.flights.length !== 0 && (

@@ -36,6 +36,8 @@ export const fullfillFlightForm = (
 	setters[2]({ value: flight.arrivalDate.split("T")[0], validity: true, disabled: false })
 	setters[3]({ value: arrivalTime, validity: true, disabled: false })
 	setters[4]({ value: briefingTime, validity: true, disabled: false })
+	setters[22]({ value: flight.dayDuration, validity: true, disabled: false })
+	setters[23]({ value: flight.dayDuration, validity: true, disabled: false })
 	setters[5]({ value: flight.aircraft, validity: true, disabled: false })
 	setters[6]({ value: flight.fuel, validity: true, disabled: false })
 	setters[7]({ value: flight.config, validity: true, disabled: false })

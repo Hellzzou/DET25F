@@ -22,16 +22,13 @@ export const CRHebdo = (): JSX.Element => {
 	const [underGroups, setUnderGroups] = useState<string[]>(["110"])
 	const [flights, setFlights] = useState<Record<string, Duration>[]>()
 	useAsyncEffect(async () => {
+		const startDate = new Date(new Date().getFullYear(), 0, 1)
+		const endDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)
 		const underGroups = await getFetchRequest<string[]>(distinctUnderGroupURL)
-		const yearFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, {
-			startDate: new Date(new Date().getFullYear(), 0, 1),
-			endDate: new Date(),
-		})
-		if (typeof underGroups !== "string" && typeof yearFlights !== "string") {
-			setUnderGroups(underGroups)
-			const sortedFlights = buildWeekReport(yearFlights, underGroups)
-			setFlights(sortedFlights)
-		}
+		const yearFlights = await postFetchRequest<Flight[]>(DebriefedflightDateFinderURL, { startDate, endDate })
+		const sortedFlights = buildWeekReport(yearFlights, underGroups)
+		setUnderGroups(underGroups)
+		setFlights(sortedFlights)
 	}, [])
 	return (
 		<div className='alegreya'>

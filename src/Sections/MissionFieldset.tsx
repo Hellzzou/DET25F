@@ -22,28 +22,23 @@ export const MissionFieldset = (props: missionFieldsetProps): JSX.Element => {
 	const [config, setConfig] = useState<Array<string>>([])
 	useAsyncEffect(async () => {
 		const fuels = await getFetchRequest<Fuel[]>(fuelURL)
-		if (typeof fuels !== "string") setFuel(fuels.map(({ quantity }) => quantity))
+		setFuel(fuels.map(({ quantity }) => quantity))
 		const aircraft = await getFetchRequest<Aircraft[]>(aircraftURL)
-		if (typeof aircraft !== "string") setAircraft(aircraft.map(({ number }) => number))
+		setAircraft(aircraft.map(({ number }) => number))
 		const types = await getFetchRequest<FlightType[]>(typeURL)
-		if (typeof types !== "string") setType(types.map(({ name }) => name))
+		setType(types.map(({ name }) => name))
 		const areas = await getFetchRequest<Area[]>(areaURL)
-		if (typeof areas !== "string") setAreas(areas.map(({ name }) => name))
+		setAreas(areas.map(({ name }) => name))
 		const NCAreas = await getFetchRequest<NCArea[]>(NCAreaURL)
-		if (typeof NCAreas !== "string") setNCAreas(NCAreas.map(({ name }) => name))
+		setNCAreas(NCAreas.map(({ name }) => name))
 		const configs = await getFetchRequest<Config[]>(configURL)
-		if (typeof configs !== "string") setConfig(configs.map(({ name }) => name))
+		setConfig(configs.map(({ name }) => name))
 		const allGroups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof allGroups !== "string") {
-			setGroups(
-				allGroups
-					.map(({ underGroup }) => {
-						return { underGroup: underGroup, upgradedUndergroup: parseInt(underGroup.replace("X", "0")) }
-					})
-					.sort((u1, u2) => u1.upgradedUndergroup - u2.upgradedUndergroup)
-					.map((undergroup) => undergroup.underGroup)
-			)
-		}
+		setGroups(
+			allGroups
+				.sort((u1, u2) => parseInt(u1.underGroup.replace("X", "0")) - parseInt(u2.underGroup.replace("X", "0")))
+				.map(({ underGroup }) => underGroup)
+		)
 	}, [])
 	return (
 		<fieldset className=' card-body-color rounded py-1'>

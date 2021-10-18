@@ -8,88 +8,11 @@ export const ManageDB = (): JSX.Element => {
 		<div className='alegreya'>
 			<MainNavBar />
 			<div className='row m-2'>
-				<div className='col-md-4'>
-					<DBCard
-						title='AVIONS'
-						infos={DBInfos.aircraft.infos}
-						warning={DBInfos.aircraft.warning}
-						url='/aircrafts'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard title='FUEL' infos={DBInfos.fuel.infos} warning={DBInfos.fuel.warning} url='/fuels' />
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='CONFIGURATIONS'
-						infos={DBInfos.configs.infos}
-						warning={DBInfos.configs.warning}
-						url='/configs'
-					/>
-				</div>
-			</div>
-			<div className='row m-2'>
-				<div className='col-md-4'>
-					<DBCard title='ZONES' infos={DBInfos.areas.infos} warning={DBInfos.areas.warning} url='/areas' />
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='ZONES ZEENC'
-						infos={DBInfos.NCAreas.infos}
-						warning={DBInfos.NCAreas.warning}
-						url='/NCAreas'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='GROUPES'
-						infos={DBInfos.groups.infos}
-						warning={DBInfos.groups.warning}
-						url='/groups'
-					/>
-				</div>
-			</div>
-			<div className='row m-2'>
-				<div className='col-md-4'>
-					<DBCard
-						title='TYPES DE VOL'
-						infos={DBInfos.types.infos}
-						warning={DBInfos.types.warning}
-						url='/types'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title="MEMBRES D'EQUIPAGE"
-						infos={DBInfos.crewMembers.infos}
-						warning={DBInfos.crewMembers.warning}
-						url='/crewMembers'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='UTILISATEURS'
-						infos={DBInfos.users.infos}
-						warning={DBInfos.users.warning}
-						url='/users'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='CONSOMMATIONS'
-						infos={DBInfos.conso.infos}
-						warning={DBInfos.conso.warning}
-						url='/conso'
-					/>
-				</div>
-				<div className='col-md-4'>
-					<DBCard
-						title='PERMISSIONS'
-						infos={DBInfos.holidays.infos}
-						warning={DBInfos.holidays.warning}
-						url='/holiday'
-					/>
-				</div>
+				{DBInfos.map((card) => (
+					<div key={DBInfos.indexOf(card)} className='col-md-4'>
+						<DBCard title={card.title} infos={card.infos} warning={card.warning} url={card.url} />
+					</div>
+				))}
 			</div>
 		</div>
 	)

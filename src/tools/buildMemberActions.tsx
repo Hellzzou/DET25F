@@ -21,75 +21,17 @@ import {
 } from "../types/Objects"
 import { getAnnual, getQuadri } from "./colorManager"
 
-export const buildAllPilotsTPA = (
+export function buildSpecialitiesTPA<Type>(
 	membersActions: Record<string, Record<string, Date[]>>,
-	members: CrewMember[]
-): { name: string; TPA: PilotDateTPA }[] => {
-	const pilots = members
-		.filter(({ onBoardFunction }) => ["CDA", "pilote"].includes(onBoardFunction))
+	members: CrewMember[],
+	speciality: string[],
+	initialTPA: Type
+): { name: string; TPA: Type }[] {
+	const specialities = members
+		.filter(({ onBoardFunction }) => speciality.includes(onBoardFunction))
 		.map(({ trigram }) => trigram)
 	const allTPAs = Object.entries(membersActions)
-		.filter(([trigram]) => pilots.includes(trigram))
-		.map(([trigram, actions]) => {
-			const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(([type, dates]) => {
-				const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime())
-				if (type === "TMAHD" || type === "PH" || type === "IMINT")
-					return [type, [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2)]
-				if (type === "appRDR") return [type, [...sortedDates.slice(0, 6), ...Array(6).fill(old)].slice(0, 6)]
-				return [type, sortedDates[0]]
-			})
-			return {
-				name: trigram,
-				TPA: {
-					...INITIAL_PILOT_DATE_TPA,
-					...Object.fromEntries(actionLatest),
-				},
-			}
-		})
-	const allTPAsNames = allTPAs.map(({ name }) => name)
-	const missingMembers = pilots
-		.filter((member) => !allTPAsNames.includes(member))
-		.map((member) => ({ name: member, TPA: INITIAL_PILOT_DATE_TPA }))
-	return [...allTPAs, ...missingMembers]
-}
-export const buildAllMecbosTPA = (
-	membersActions: Record<string, Record<string, Date[]>>,
-	members: CrewMember[]
-): { name: string; TPA: MecboDateTPA }[] => {
-	const mecbos = members.filter(({ onBoardFunction }) => onBoardFunction === "MECBO").map(({ trigram }) => trigram)
-	const allTPAs = Object.entries(membersActions)
-		.filter(([trigram]) => mecbos.includes(trigram))
-		.map(([trigram, actions]) => {
-			const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(([type, dates]) => {
-				const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime())
-				if (type === "TMAHD" || type === "PH" || type === "IMINT")
-					return [type, [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2)]
-				if (type === "appRDR") return [type, [...sortedDates.slice(0, 6), ...Array(6).fill(old)].slice(0, 6)]
-				return [type, sortedDates[0]]
-			})
-			return {
-				name: trigram,
-				TPA: {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					...INITIAL_MECBO_DATE_TPA,
-					...Object.fromEntries(actionLatest),
-				},
-			}
-		})
-	const allTPAsNames = allTPAs.map(({ name }) => name)
-
-	const missingMembers = mecbos
-		.filter((member) => !allTPAsNames.includes(member))
-		.map((member) => ({ name: member, TPA: INITIAL_MECBO_DATE_TPA }))
-	return [...allTPAs, ...missingMembers]
-}
-export const buildAllRadiosTPA = (
-	membersActions: Record<string, Record<string, Date[]>>,
-	members: CrewMember[]
-): { name: string; TPA: RadioDateTPA }[] => {
-	const radios = members.filter(({ onBoardFunction }) => onBoardFunction === "GETBO").map(({ trigram }) => trigram)
-	const allTPAs = Object.entries(membersActions)
-		.filter(([trigram]) => radios.includes(trigram))
+		.filter(([trigram]) => specialities.includes(trigram))
 		.map(([trigram, actions]) => {
 			const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(([type, dates]) => {
 				const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime())
@@ -103,50 +45,18 @@ export const buildAllRadiosTPA = (
 				name: trigram,
 				TPA: {
 					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					...INITIAL_RADIO_DATE_TPA,
+					...initialTPA,
 					...Object.fromEntries(actionLatest),
 				},
 			}
 		})
 	const allTPAsNames = allTPAs.map(({ name }) => name)
 
-	const missingMembers = radios
+	const missingMembers = specialities
 		.filter((member) => !allTPAsNames.includes(member))
-		.map((member) => ({ name: member, TPA: INITIAL_RADIO_DATE_TPA }))
+		.map((member) => ({ name: member, TPA: initialTPA }))
 	return [...allTPAs, ...missingMembers]
 }
-export const buildAllDeanesTPA = (
-	membersActions: Record<string, Record<string, Date[]>>,
-	members: CrewMember[]
-): { name: string; TPA: DenaeDateTPA }[] => {
-	const denaes = members.filter(({ onBoardFunction }) => onBoardFunction === "DENAE").map(({ trigram }) => trigram)
-	const allTPAs = Object.entries(membersActions)
-		.filter(([trigram]) => denaes.includes(trigram))
-		.map(([trigram, actions]) => {
-			const actionLatest: [string, Date | Date[]][] = Object.entries(actions).map(([type, dates]) => {
-				const sortedDates = dates.sort((d1, d2) => d2.getTime() - d1.getTime())
-				if (type === "TMAHD" || type === "PH" || type === "IMINT")
-					return [type, [...sortedDates.slice(0, 2), ...Array(2).fill(old)].slice(0, 2)]
-				if (type === "appRDR") return [type, [...sortedDates.slice(0, 6), ...Array(6).fill(old)].slice(0, 6)]
-				return [type, sortedDates[0]]
-			})
-			return {
-				name: trigram,
-				TPA: {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					...INITIAL_DENAE_DATE_TPA,
-					...Object.fromEntries(actionLatest),
-				},
-			}
-		})
-	const allTPAsNames = allTPAs.map(({ name }) => name)
-
-	const missingMembers = denaes
-		.filter((member) => !allTPAsNames.includes(member))
-		.map((member) => ({ name: member, TPA: INITIAL_DENAE_DATE_TPA }))
-	return [...allTPAs, ...missingMembers]
-}
-
 export const buildAllTPAs = (members: Array<CrewMember>, allFlights: Array<Flight>): AllTPAs => {
 	const membersActions = allFlights
 		.flatMap((flight) =>
@@ -194,10 +104,15 @@ export const buildAllTPAs = (members: Array<CrewMember>, allFlights: Array<Fligh
 			return acc
 		}, {})
 	return {
-		pilotTPA: buildAllPilotsTPA(membersActions, members),
-		mecboTPA: buildAllMecbosTPA(membersActions, members),
-		radioTPA: buildAllRadiosTPA(membersActions, members),
-		denaeTPA: buildAllDeanesTPA(membersActions, members),
+		pilotTPA: buildSpecialitiesTPA<PilotDateTPA>(
+			membersActions,
+			members,
+			["CDA", "pilote"],
+			INITIAL_PILOT_DATE_TPA
+		),
+		mecboTPA: buildSpecialitiesTPA<MecboDateTPA>(membersActions, members, ["MECBO"], INITIAL_MECBO_DATE_TPA),
+		radioTPA: buildSpecialitiesTPA<RadioDateTPA>(membersActions, members, ["GETBO"], INITIAL_RADIO_DATE_TPA),
+		denaeTPA: buildSpecialitiesTPA<DenaeDateTPA>(membersActions, members, ["DENAE"], INITIAL_DENAE_DATE_TPA),
 	}
 }
 export const buildPilotPurcentage = (pilotTPA: PilotDateTPA, dateToCompare: Date): number => {

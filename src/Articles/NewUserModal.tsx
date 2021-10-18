@@ -11,7 +11,9 @@ import { NewUserModalProps } from "../types/Articles"
 
 export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 	const [rank, setRank] = useState("")
-	const [name, setName] = useState("")
+	const [firstName, setFirstName] = useState("")
+	const [surName, setSurName] = useState("")
+	const [trigram, setTrigram] = useState("")
 	const [responsability, setResponsability] = useState("")
 	const [email, setEmail] = useState("")
 	const handleChange = (
@@ -19,13 +21,17 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 		prop: string
 	) => {
 		if (prop === "rank") setRank(e.target.value)
-		if (prop === "name") setName(e.target.value)
+		if (prop === "firstName") setFirstName(e.target.value)
+		if (prop === "surName") setSurName(e.target.value)
+		if (prop === "trigram") setTrigram(e.target.value)
 		if (prop === "responsability") setResponsability(e.target.value)
 		if (prop === "email") setEmail(e.target.value)
 	}
 	const handleClose = () => {
 		setRank("")
-		setName("")
+		setFirstName("")
+		setSurName("")
+		setTrigram("")
 		setResponsability("")
 		setEmail("")
 		props.onHide()
@@ -33,7 +39,9 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 	const createNewUser = async () => {
 		const newUser = {
 			rank,
-			name,
+			firstName,
+			surName,
+			trigram,
 			responsability,
 			email,
 			login: email,
@@ -43,7 +51,9 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 		if (saved === "Utilisateur crée") {
 			props.setUsers([...props.users, newUser])
 			setRank("")
-			setName("")
+			setFirstName("")
+			setSurName("")
+			setTrigram("")
 			setResponsability("")
 			setEmail("")
 			handleClose()
@@ -68,6 +78,21 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 					/>
 				</div>
 				<div className='row'>
+					<Label size={4} title='Prénom : ' />
+					<UnvalidateInput
+						size={8}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						control={{
+							name: "firstName",
+							value: firstName,
+							validity: true,
+						}}
+						handleChange={(event) => handleChange(event, "name")}
+					/>
+				</div>
+				<div className='row'>
 					<Label size={4} title='Nom : ' />
 					<UnvalidateInput
 						size={8}
@@ -75,8 +100,23 @@ export const NewUserModal = (props: NewUserModalProps): JSX.Element => {
 						textColor='white'
 						type='text'
 						control={{
-							name: "name",
-							value: name,
+							name: "surName",
+							value: surName,
+							validity: true,
+						}}
+						handleChange={(event) => handleChange(event, "name")}
+					/>
+				</div>
+				<div className='row'>
+					<Label size={4} title='Trigramme : ' />
+					<UnvalidateInput
+						size={8}
+						backgroundColor='dark'
+						textColor='white'
+						type='text'
+						control={{
+							name: "trigram",
+							value: trigram,
 							validity: true,
 						}}
 						handleChange={(event) => handleChange(event, "name")}

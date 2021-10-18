@@ -56,20 +56,18 @@ export const GroupsManager = (): JSX.Element => {
 	}
 	useAsyncEffect(async () => {
 		const groups = await getFetchRequest<Group[]>(groupURL)
-		if (typeof groups !== "string") {
-			const upgradedGroups = groups.map((group) => {
-				return {
-					group: group.group,
-					underGroup: group.underGroup,
-					updradedUnderGroup: parseInt(group.underGroup.replace("X", "0")),
-					description: group.description,
-					manager: group.manager,
-					client: group.client,
-					allocation: group.allocation,
-				}
-			})
-			setGroups(upgradedGroups.sort((g1, g2) => g1.updradedUnderGroup - g2.updradedUnderGroup))
-		}
+		const upgradedGroups = groups.map((group) => {
+			return {
+				group: group.group,
+				underGroup: group.underGroup,
+				updradedUnderGroup: parseInt(group.underGroup.replace("X", "0")),
+				description: group.description,
+				manager: group.manager,
+				client: group.client,
+				allocation: group.allocation,
+			}
+		})
+		setGroups(upgradedGroups.sort((g1, g2) => g1.updradedUnderGroup - g2.updradedUnderGroup))
 	}, [])
 	return (
 		<>

@@ -92,7 +92,10 @@ export const NewFlightForm = ({ match }: RouteComponentProps<{ week: string }>):
 	async function addFlightClick() {
 		const newFlight = await buildNewFlight(hooks, crewMembers, allGroups, allMembers)
 		const res = await postFetchRequest(saveFlightURL, { newFlight: newFlight })
-		if (res === "success") history.push(`/activities/newFlight/${match.params.week}`)
+		if (res === "success") {
+			sessionStorage.setItem("activitiesAlert", "newFlight")
+			history.push(`/activities/${match.params.week}`)
+		}
 	}
 	useAsyncEffect(async () => {
 		const token = await tokenCheck()
@@ -100,25 +103,17 @@ export const NewFlightForm = ({ match }: RouteComponentProps<{ week: string }>):
 		if (token) {
 			const nights = await getFetchRequest<Nights[]>(nightURL)
 			const crewMembers = await getFetchRequest<CrewMember[]>(memberURL)
-			const CDA = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-				function: "CDA",
-			})
-			const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, {
-				function: "pilote",
-			})
+			const CDA = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "CDA" })
+			const pilots = await postFetchRequest<CrewMember[]>(onBoardFunctionURL, { function: "pilote" })
 			const allGroups = await getFetchRequest<Group[]>(groupURL)
-			if (typeof allGroups !== "string") setAllGroups(allGroups)
-			if (typeof nights !== "string") setNights(nights[0])
-			if (typeof CDA !== "string") setCDAList(CDA.map(({ trigram }) => trigram))
-			if (typeof pilots !== "string") setPilotList(pilots.map(({ trigram }) => trigram))
-			if (typeof crewMembers !== "string") {
-				setAddableCrewMembers(
-					crewMembers
-						.filter(({ onBoardFunction }) => onBoardFunction !== "TECH")
-						.map(({ trigram }) => trigram)
-				)
-				setAllMembers(crewMembers)
-			}
+			setAllGroups(allGroups)
+			setNights(nights[0])
+			setCDAList(CDA.map(({ trigram }) => trigram))
+			setPilotList(pilots.map(({ trigram }) => trigram))
+			setAddableCrewMembers(
+				crewMembers.filter(({ onBoardFunction }) => onBoardFunction !== "TECH").map(({ trigram }) => trigram)
+			)
+			setAllMembers(crewMembers)
 		}
 	}, [])
 	useEffect(() => {
@@ -250,7 +245,7 @@ export const NewFlightForm = ({ match }: RouteComponentProps<{ week: string }>):
 						size={4}
 						buttonColor='danger'
 						buttonContent='Annuler'
-						onClick={() => history.push(`/activities/null/${match.params.week}`)}
+						onClick={() => history.push(`/activities/${match.params.week}`)}
 					/>
 				</div>
 			</div>

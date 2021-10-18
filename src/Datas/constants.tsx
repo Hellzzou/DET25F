@@ -42,54 +42,77 @@ export const groundFunction = [
 	"CORSIC",
 	"Adjudant",
 	"ESCSMN",
+	"Inactif",
 ]
 export const access = ["Utilisateur", "Membre des activités", "Admin"]
-export const DBInfos = {
-	aircraft: {
+export const DBInfos = [
+	{
+		title: "AVIONS",
 		infos: "Vous pourrez ici, modifier tous les numéros d'avions présents en flotille",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/aircrafts",
 	},
-	fuel: {
+	{
+		title: "FUEL",
 		infos: "Vous pourrez ici, modifier les différentes quantité de fuel embarquable à bord",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/fuels",
 	},
-	configs: {
+	{
+		title: "CONFIGURATIONS",
 		infos: "Vous pourrez ici, modifier les différentes configuration des aéronefs",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/configs",
 	},
-	areas: {
+	{
+		title: "ZONES",
 		infos: "Vous pourrez ici, modifier les différents pays où peut se rendre l'avion",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/areas",
 	},
-	NCAreas: {
+	{
+		title: "ZONES EN ZEE NC",
 		infos: "Vous pourrez ici, modifier les différentes zones de travail en ZEENC",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/NCAreas",
 	},
-	groups: {
+	{
+		title: "GROUPES",
 		infos: "Vous pourrez ici, modifier les différents groupes des comptes-rendus ",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/groups",
 	},
-	types: {
+	{
+		title: "TYPES",
 		infos: "Vous pourrez ici, modifier les différents types de missions",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/types",
 	},
-	crewMembers: {
+	{
+		title: "MEMBRES D'EQUIPAGE",
 		infos: "Vous pourrez ici, modifier toutes les infos de tous les membres de la flottille",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/crewMembers",
 	},
-	users: {
+	{
+		title: "UTILISATEURS",
 		infos: "Vous pourrez ici, modifier toutes les infos de tous les utilisateurs de l'appli",
 		warning: "Attention vous devez être administrateur pour pouvoir les modifier",
+		url: "/users",
 	},
-	conso: {
+	{
+		title: "CONSOMMATIONS",
 		infos: "Vous pourrez ici, modifier les groupes pour les courbes de consommation",
 		warning: "Attention vous devez être du personnel des activités pour pouvoir les modifier",
+		url: "/conso",
 	},
-	holidays: {
+	{
+		title: "PERMISSIONS",
 		infos: "Vous pourrez ici, modifier les permissions des membres de la flottille",
 		warning: "Attention vous devez être de l'adjudanant pour pouvoir les modifier",
+		url: "/holiday",
 	},
-}
+]
 export const eventType = [
 	"REPOS",
 	"EXER",
@@ -104,3 +127,61 @@ export const eventType = [
 	"ARRET TRAVAIL",
 	"JET AVIATION",
 ]
+export const activitiesAlert: Record<string, { color: string; info: string }> = {
+	newFlight: {
+		color: "success",
+		info: "Le vol a bien été crée",
+	},
+	newEvent: {
+		color: "success",
+		info: "L'évènement a bien été crée",
+	},
+	newAlerte: {
+		color: "success",
+		info: "L'alerte a bien été créee",
+	},
+	newHoliday: {
+		color: "success",
+		info: "La permission a bien été créee",
+	},
+	modifyFlight: {
+		color: "primary",
+		info: "Le vol a bien été modifié",
+	},
+	modifyEvent: {
+		color: "primary",
+		info: "L'évènement a bien été modifié",
+	},
+	modifyAlerte: {
+		color: "primary",
+		info: "L'alerte a bien été modifiée",
+	},
+	modifyHoliday: {
+		color: "primary",
+		info: "La permission a bien été modifiée",
+	},
+	deleteFlight: {
+		color: "danger",
+		info: "Le vol a bien été supprimé",
+	},
+	deleteEvent: {
+		color: "danger",
+		info: "L'évènement a bien été supprimé",
+	},
+	deleteAlerte: {
+		color: "danger",
+		info: "L'alerte a bien été supprimée",
+	},
+	deleteHoliday: {
+		color: "danger",
+		info: "La permission a bien été supprimée",
+	},
+	debriefFlight: {
+		color: "primary",
+		info: "Le vol a bien été debriefé",
+	},
+	debriefHoliday: {
+		color: "primary",
+		info: "La permission a bien été validée",
+	},
+}
